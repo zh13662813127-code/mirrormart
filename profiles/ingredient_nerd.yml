@@ -21,6 +21,7 @@ consumer_traits:
   brand_loyalty: 0.3
   review_dependency: 0.9
   content_preference: [成分分析, 测评, 对比, 配方解读]
+  interest_tags: [护肤, 面膜, 成分分析, 敏感肌]
   trust_kol: false
   trust_ingredients: true
 
@@ -42,6 +43,19 @@ platform_behavior:
     review_pages_read: [2, 5]
     cart_before_buy: true
     price_compare: true
+
+  douyin:
+    daily_usage_minutes: [15, 30]
+    interaction_style: analytical
+    typical_actions: [watch, comment, search]
+    typical_comments:
+      - "成分表能拉出来看看吗"
+      - "这个配方里氨基酸用的是哪种"
+
+  weibo:
+    daily_usage_minutes: [10, 20]
+    interaction_style: lurker
+    typical_actions: [search, search_topic, browse]
 
 decision_triggers:
   buy_positive:

@@ -21,6 +21,7 @@ consumer_traits:
   brand_loyalty: 0.1
   review_dependency: 0.7
   content_preference: [测评, 性价比分析, 对比]
+  interest_tags: [面膜, 平价好物, 性价比, 测评]
   trust_kol: false
   trust_ingredients: false
 
@@ -41,6 +42,16 @@ platform_behavior:
     review_pages_read: [1, 3]
     cart_before_buy: true
     price_compare: true
+
+  douyin:
+    daily_usage_minutes: [10, 20]
+    interaction_style: lurker
+    typical_actions: [watch, search, browse]
+
+  weibo:
+    daily_usage_minutes: [5, 15]
+    interaction_style: lurker
+    typical_actions: [search, browse]
 
 decision_triggers:
   buy_positive:

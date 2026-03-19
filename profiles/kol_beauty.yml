@@ -21,6 +21,7 @@ consumer_traits:
   brand_loyalty: 0.2
   review_dependency: 0.3
   content_preference: [新品测评, 成分解读, 对比测试]
+  interest_tags: [面膜, 护肤, 美妆, 测评, 成分分析, 敏感肌]
   trust_kol: false
   trust_ingredients: true
 
@@ -45,6 +46,25 @@ platform_behavior:
     review_pages_read: [1, 2]
     cart_before_buy: false
     price_compare: true
+
+  douyin:
+    daily_usage_minutes: [60, 120]
+    interaction_style: creator
+    typical_actions: [post, watch, like, comment, share]
+    typical_comments:
+      - "来测评一下这款面膜！"
+      - "成分不错，适合敏感肌"
+    typical_post_content:
+      - "【面膜测评】氨基酸面膜实测！敏感肌必看"
+      - "三款面膜横评，谁是性价比之王？"
+
+  weibo:
+    daily_usage_minutes: [30, 60]
+    interaction_style: creator
+    typical_actions: [post, repost, comment, search_topic]
+    typical_comments:
+      - "安利一下这款面膜，成分真的很好"
+      - "测评来了，结论在评论区"
 
 decision_triggers:
   buy_positive:

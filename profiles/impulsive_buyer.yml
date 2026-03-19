@@ -21,6 +21,7 @@ consumer_traits:
   brand_loyalty: 0.2
   review_dependency: 0.6
   content_preference: [好看的图片, 网红推荐, 使用前后对比]
+  interest_tags: [护肤, 面膜, 美妆, 平价好物, 网红推荐]
   trust_kol: true
   trust_ingredients: false
 
@@ -42,6 +43,20 @@ platform_behavior:
     review_pages_read: [0, 1]
     cart_before_buy: false
     price_compare: false
+
+  douyin:
+    daily_usage_minutes: [60, 120]
+    interaction_style: casual
+    typical_actions: [watch, like, share, comment]
+    typical_comments:
+      - "天哪这也太好用了吧！"
+      - "已下单！等不及要试了"
+      - "看完就想买"
+
+  weibo:
+    daily_usage_minutes: [30, 60]
+    interaction_style: casual
+    typical_actions: [like, repost, comment, browse]
 
 decision_triggers:
   buy_positive:

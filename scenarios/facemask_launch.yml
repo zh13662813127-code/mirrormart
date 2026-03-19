@@ -1,6 +1,6 @@
 id: facemask_launch
-name: 氨基酸面膜小红书推广
-description: 模拟一款新面膜在小红书种草→淘宝转化的完整链路
+name: 氨基酸面膜四平台推广
+description: 模拟一款新面膜在小红书种草→抖音短视频→微博话题→淘宝转化的完整链路
 
 # 产品信息
 product:
@@ -53,6 +53,53 @@ platforms:
         initial_reviews: 8900
         initial_rating: 4.5
         initial_sales: 230000
+
+  - type: douyin
+    initial_content:
+      - title: 氨基酸面膜开箱实测！敏感肌放心用
+        content: >
+          开箱测评！这款氨基酸面膜主打温和修护，
+          成分表干净，敏感肌友好。上脸不刺激，
+          精华液很多，贴合度不错。59块10片，性价比OK
+        author_id: brand_official
+        tags: [面膜, 氨基酸面膜, 护肤, 敏感肌]
+        duration: 45
+        initial_views: 500
+        initial_likes: 30
+        initial_comments: 5
+        completion_rate: 0.65
+      - title: 面膜测评合集｜平价 vs 大牌谁赢了？
+        content: >
+          今天测评三款面膜：平价补水面膜、氨基酸面膜、大牌修护面膜。
+          分别从成分、肤感、性价比三个维度对比。结论出人意料！
+        author_id: kol_douyin
+        tags: [面膜测评, 护肤, 平价好物, 面膜]
+        duration: 60
+        initial_views: 2000
+        initial_likes: 150
+        initial_comments: 20
+        completion_rate: 0.72
+
+  - type: weibo
+    initial_content:
+      - content: >
+          #氨基酸面膜# 新品上市！主打温和修护，
+          氨基酸+玻尿酸+烟酰胺三重配方，
+          敏感肌救星来了！59元超值入手 #护肤好物#
+        author_id: brand_official
+        topics: [氨基酸面膜, 护肤好物]
+        initial_likes: 15
+        initial_reposts: 3
+        initial_comments: 4
+      - content: >
+          最近发现一款氨基酸面膜，成分表很干净，
+          用了一周觉得皮肤状态变好了。想问问姐妹们
+          有没有人也在用？#面膜推荐# #敏感肌护肤#
+        author_id: kol_weibo
+        topics: [面膜推荐, 敏感肌护肤]
+        initial_likes: 45
+        initial_reposts: 12
+        initial_comments: 8
 
 # Agent 配置
 agents:

@@ -1,0 +1,62 @@
+id: lurker
+name: 潜水者小明
+description: 几乎不发言不互动，只默默浏览，偶尔收藏，极少购买，需要大量信息堆积才会行动
+
+demographics:
+  age_range: [20, 35]
+  gender: male
+  city_tier: [2, 3]
+  income_level: middle
+
+personality:
+  openness: 0.4
+  conscientiousness: 0.5
+  extraversion: 0.2
+  agreeableness: 0.5
+  neuroticism: 0.3
+
+consumer_traits:
+  decision_style: cautious
+  price_sensitivity: 0.6
+  brand_loyalty: 0.3
+  review_dependency: 0.8
+  content_preference: [测评, 使用体验, 对比]
+  interest_tags: [面膜, 护肤]
+  trust_kol: false
+  trust_ingredients: false
+
+platform_behavior:
+  xiaohongshu:
+    daily_usage_minutes: [10, 20]
+    content_creation_freq: 0.01
+    interaction_style: lurker
+    search_before_buy: true
+    typical_actions: [browse, search, collect]
+    typical_comments: []
+
+  taobao:
+    search_before_buy: true
+    compare_products: 3
+    review_pages_read: [2, 4]
+    cart_before_buy: true
+    price_compare: true
+
+  douyin:
+    daily_usage_minutes: [20, 40]
+    interaction_style: lurker
+    typical_actions: [watch, browse]
+
+  weibo:
+    daily_usage_minutes: [5, 15]
+    interaction_style: lurker
+    typical_actions: [browse, search]
+
+decision_triggers:
+  buy_positive:
+    - "多个平台一致好评且持续一段时间"
+    - "身边朋友推荐"
+    - "价格降到心理预期以下"
+  buy_negative:
+    - "任何差评都会犹豫"
+    - "没有足够多的信息支撑决策"
+    - "刚上市的新品，想等等看"
