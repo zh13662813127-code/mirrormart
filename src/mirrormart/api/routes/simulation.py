@@ -17,6 +17,7 @@ from typing import Any
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 from pydantic import BaseModel, Field
 
+from mirrormart.api.websocket import EventQueue
 from mirrormart.config import SimulationConfig
 from mirrormart.engine import SimulationEngine
 
@@ -46,19 +47,33 @@ class SimulationStatus(BaseModel):
 
 
 async def _run_simulation(run_id: str, config: SimulationConfig) -> None:
-    """后台异步执行模拟。"""
+    """后台异步执行模拟（含 WebSocket 事件推送）。"""
     _run_status[run_id] = "running"
+
+    # 创建事件队列并启动广播
+    event_queue = EventQueue(run_id)
+    event_queue.start()
+
     try:
-        engine = SimulationEngine(config)
+        engine = SimulationEngine(config, event_callback=event_queue.put)
         result = await engine.run_monte_carlo()
         result["run_id"] = run_id
         _run_results[run_id] = result
         _run_status[run_id] = "completed"
         logger.info("模拟完成: run_id=%s", run_id)
+
+        # 发送完成事件
+        await event_queue.put({
+            "type": "run_complete",
+            "run_id": run_id,
+            "result": result,
+        })
     except Exception as e:
         logger.error("模拟失败: run_id=%s, error=%s", run_id, e)
         _run_status[run_id] = "failed"
         _run_results[run_id] = {"error": str(e)}
+    finally:
+        await event_queue.finish()
 
 
 @router.post("", status_code=202)

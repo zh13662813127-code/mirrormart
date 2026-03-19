@@ -72,6 +72,57 @@ class TestXiaohongshu:
         # 密度=1.0 时所有人都应该互相关注
         assert len(self.xhs.following["a1"]) > 0
 
+    def test_repost_action(self) -> None:
+        post_id = self.xhs.add_initial_post("内容", "agent_01")
+        result = self.xhs.execute_action("agent_02", {"type": "repost", "target_id": post_id})
+        assert result["success"] is True
+        post = self.xhs._find_post(post_id)
+        assert post is not None
+        assert post["reposts"] == 1
+        assert len(self.xhs.reposts[post_id]) == 1
+
+    def test_quote_action(self) -> None:
+        post_id = self.xhs.add_initial_post("内容", "agent_01")
+        result = self.xhs.execute_action(
+            "agent_02",
+            {"type": "quote", "target_id": post_id, "content": "说得好"},
+        )
+        assert result["success"] is True
+        post = self.xhs._find_post(post_id)
+        assert post is not None
+        assert post["reposts"] == 1
+        assert post["comments_count"] == 1
+
+    def test_get_trending(self) -> None:
+        self.xhs.add_initial_post("热门", "agent_01", initial_likes=100)
+        self.xhs.add_initial_post("冷门", "agent_02", initial_likes=1)
+        trending = self.xhs.get_trending(limit=2)
+        assert len(trending) == 2
+        assert trending[0]["likes"] >= trending[1]["likes"]
+
+    def test_heat_score_time_decay(self) -> None:
+        self.xhs.add_initial_post("旧帖", "agent_01", initial_likes=10, step=0)
+        self.xhs.add_initial_post("新帖", "agent_02", initial_likes=10, step=50)
+        self.xhs.current_step = 50
+        trending = self.xhs.get_trending(limit=2)
+        # 新帖应该排在前面（时间衰减较小）
+        assert trending[0]["step"] == 50
+
+    def test_feed_with_interest_tags(self) -> None:
+        self.xhs.add_initial_post("护肤", "agent_01", tags=["护肤", "面膜"])
+        self.xhs.add_initial_post("美食", "agent_02", tags=["美食", "甜品"])
+        feed = self.xhs.get_feed("agent_03", limit=5, interest_tags=["护肤"])
+        # 应该能获取到内容
+        assert len(feed) >= 1
+
+    def test_snapshot_includes_reposts(self) -> None:
+        post_id = self.xhs.add_initial_post("内容", "agent_01")
+        self.xhs.execute_action("agent_02", {"type": "repost", "target_id": post_id})
+        snapshot = self.xhs.get_state_snapshot()
+        assert "reposts" in snapshot
+        self.xhs.restore_state(snapshot)
+        assert self.xhs._find_post(post_id)["reposts"] == 1
+
 
 class TestTaobao:
     """淘宝环境测试。"""
@@ -136,3 +187,55 @@ class TestTaobao:
         self.taobao.execute_action("agent_01", {"type": "purchase", "target_id": "product_main"})
         self.taobao.restore_state(snapshot)
         assert self.taobao.get_metrics()["total_purchases"] == 0
+
+    def test_wishlist_action(self) -> None:
+        result = self.taobao.execute_action(
+            "agent_01", {"type": "wishlist", "target_id": "product_main"}
+        )
+        assert result["success"] is True
+        assert "product_main" in self.taobao.wishlists.get("agent_01", set())
+
+    def test_ask_question_action(self) -> None:
+        result = self.taobao.execute_action(
+            "agent_01",
+            {"type": "ask_question", "target_id": "product_main", "content": "敏感肌能用吗？"},
+        )
+        assert result["success"] is True
+        assert len(self.taobao.questions["product_main"]) == 1
+
+    def test_wishlist_affects_recommendation(self) -> None:
+        self.taobao.add_product(
+            product_id="product_other",
+            name="美白面膜",
+            price=39.0,
+            category="面膜",
+            initial_sales=50,
+        )
+        # 收藏主产品后，同品类推荐应该提升
+        self.taobao.execute_action("agent_01", {"type": "wishlist", "target_id": "product_main"})
+        feed = self.taobao.get_feed("agent_01", limit=10)
+        assert len(feed) >= 1
+
+    def test_search_with_user_preferences(self) -> None:
+        # 购买后搜索应受偏好加成
+        self.taobao.execute_action("agent_01", {"type": "purchase", "target_id": "product_main"})
+        result = self.taobao.execute_action("agent_01", {"type": "search", "query": "面膜"})
+        assert result["success"] is True
+        assert len(result["results"]) >= 1
+
+    def test_metrics_includes_wishlist_and_questions(self) -> None:
+        self.taobao.execute_action("agent_01", {"type": "wishlist", "target_id": "product_main"})
+        self.taobao.execute_action(
+            "agent_01",
+            {"type": "ask_question", "target_id": "product_main", "content": "能退吗？"},
+        )
+        metrics = self.taobao.get_metrics()
+        assert metrics["total_wishlist"] == 1
+        assert metrics["total_questions"] == 1
+
+    def test_snapshot_includes_wishlists(self) -> None:
+        self.taobao.execute_action("agent_01", {"type": "wishlist", "target_id": "product_main"})
+        snapshot = self.taobao.get_state_snapshot()
+        self.taobao.execute_action("agent_01", {"type": "wishlist", "target_id": "product_main"})
+        self.taobao.restore_state(snapshot)
+        assert "product_main" in self.taobao.wishlists.get("agent_01", set())

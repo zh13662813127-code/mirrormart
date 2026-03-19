@@ -1,8 +1,8 @@
 # MirrorMart 进度追踪
 # 每次完成功能后更新此文件
 
-## 当前阶段: Phase 1 进行中
-## 最后更新: 2026-03-10
+## 当前阶段: Phase 2 准备中
+## 最后更新: 2026-03-18
 
 ---
 
@@ -66,10 +66,36 @@
 - [x] 引擎集成 Phase 1 全部组件 (engine.py)
 - [x] 36个单元测试全部通过 (pytest tests/)
 
+### ✅ Phase 1.5 平台增强 + 遗留修复 (2026-03-18)
+- [x] 小红书增强 (xiaohongshu.py)
+  - 帖子 step 字段 + 时间衰减热度公式
+  - Feed 三路混合: 关注(40%) + 热度(40%) + 兴趣标签(20%)
+  - 新 action: repost（转发）、quote（引用转发+评论）
+  - get_trending() 热榜接口
+  - current_step 由引擎维护
+- [x] 淘宝增强 (taobao.py)
+  - 收藏夹 wishlists + 商品问答 questions
+  - 新 action: wishlist（收藏）、ask_question（提问）
+  - 推荐算法基于购买+收藏+浏览的品类偏好权重
+  - 搜索加入用户偏好加成
+- [x] Agent 更新 (agent.py)
+  - SYSTEM_PROMPT 更新可用 action（repost/quote/wishlist/ask_question）
+  - perceive() 显示转发数
+  - get_feed 传入 interest_tags（来自 persona）
+- [x] 并发 Semaphore 限速 (engine.py) — Phase 1 遗留
+- [x] WebSocket event_callback 接入 API 路由 — Phase 1 遗留
+- [x] engine.py 维护 xhs.current_step + 汇总新指标
+- [x] config.py 新增 concurrency 字段
+- [x] 48 个单元测试全部通过
+- [x] 代码推送到 GitHub
+
 ---
 
 ## 当前阻塞项
 - 无
 
-## 下一步行动
-- 确定 LLM 选型后，初始化项目仓库并开始 Phase 0 编码
+## 下一步行动 (Phase 2)
+- 重跑完整模拟验证增强后的平台环境效果
+- 新增抖音/微博平台环境
+- 前端可视化仪表盘
+- A/B 测试场景对比功能

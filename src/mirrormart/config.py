@@ -45,6 +45,7 @@ class SimulationConfig:
     max_memory_per_agent: int = 100
     temperature: float = 0.8
     max_tokens: int = 512
+    concurrency: int = 5     # 并发 LLM 调用上限
 
     @classmethod
     def from_env(cls, scenario_path: str) -> "SimulationConfig":

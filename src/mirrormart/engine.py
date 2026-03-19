@@ -53,6 +53,8 @@ class SimulationEngine:
             max_tokens=min(config.max_tokens, 512),
         )
         self._redis: RedisCache = RedisCache()
+        # 并发限速：限制同时调用 LLM 的 Agent 数量
+        self._semaphore = asyncio.Semaphore(config.concurrency or 5)
         self._load_scenario()
 
     def _load_scenario(self) -> None:
@@ -202,10 +204,13 @@ class SimulationEngine:
         run_id = output_dir.parent.name
 
         for step in range(num_steps):
+            # 更新平台时间步（用于热度时间衰减）
+            xhs.current_step = step
+
             # 打乱 Agent 顺序（模拟并发）
             rng.shuffle(agents)
             step_tasks = [
-                self._run_agent_step(
+                self._run_agent_step_throttled(
                     agent, xhs, taobao, step, branch_tag, events,
                     chroma_store=chroma_stores.get(agent.id),
                     run_id=run_id,
@@ -250,6 +255,25 @@ class SimulationEngine:
 
         logger.info("%s 运行完成，购买次数: %d", branch_tag, result["taobao_purchases"])
         return result
+
+    async def _run_agent_step_throttled(
+        self,
+        agent: Agent,
+        xhs: XiaohongshuEnvironment,
+        taobao: TaobaoEnvironment,
+        step: int,
+        branch_tag: str,
+        events: list[dict[str, Any]],
+        chroma_store: ChromaMemoryStore | None = None,
+        run_id: str = "",
+        branch_id: int = 0,
+    ) -> None:
+        """带 Semaphore 限速的 Agent 单步循环。"""
+        async with self._semaphore:
+            await self._run_agent_step(
+                agent, xhs, taobao, step, branch_tag, events,
+                chroma_store=chroma_store, run_id=run_id, branch_id=branch_id,
+            )
 
     async def _run_agent_step(
         self,
@@ -406,9 +430,12 @@ class SimulationEngine:
             "main_product_purchases": main_product_purchases,
             "taobao_purchases": purchases,
             "taobao_revenue": taobao_metrics["total_revenue"],
+            "taobao_wishlist": taobao_metrics.get("total_wishlist", 0),
+            "taobao_questions": taobao_metrics.get("total_questions", 0),
             "xhs_posts": xhs_metrics["total_posts"],
             "xhs_likes": xhs_metrics["total_likes"],
             "xhs_comments": xhs_metrics["total_comments"],
+            "xhs_reposts": xhs_metrics.get("total_reposts", 0),
             "high_intent_agents": high_intent,
             "total_events": len(events),
         }
