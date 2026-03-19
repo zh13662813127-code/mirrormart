@@ -6,8 +6,10 @@ import random
 
 import pytest
 
-from mirrormart.platforms.xiaohongshu import XiaohongshuEnvironment
+from mirrormart.platforms.douyin import DouyinEnvironment
 from mirrormart.platforms.taobao import TaobaoEnvironment
+from mirrormart.platforms.weibo import WeiboEnvironment
+from mirrormart.platforms.xiaohongshu import XiaohongshuEnvironment
 
 
 class TestXiaohongshu:
@@ -239,3 +241,171 @@ class TestTaobao:
         self.taobao.execute_action("agent_01", {"type": "wishlist", "target_id": "product_main"})
         self.taobao.restore_state(snapshot)
         assert "product_main" in self.taobao.wishlists.get("agent_01", set())
+
+
+class TestDouyin:
+    """抖音环境测试。"""
+
+    def setup_method(self) -> None:
+        self.rng = random.Random(42)
+        self.douyin = DouyinEnvironment(rng=self.rng)
+
+    def test_add_video_and_get_feed(self) -> None:
+        vid_id = self.douyin.add_video(
+            content="氨基酸面膜使用体验",
+            author_id="agent_01",
+            title="面膜测评",
+            tags=["面膜", "护肤"],
+        )
+        assert vid_id.startswith("vid_")
+        feed = self.douyin.get_feed("agent_02", limit=5)
+        assert len(feed) == 1
+
+    def test_watch_updates_views_and_completion(self) -> None:
+        vid_id = self.douyin.add_video("内容", "agent_01", completion_rate=0.5)
+        result = self.douyin.execute_action(
+            "agent_02", {"type": "watch", "target_id": vid_id, "watch_percent": 1.0}
+        )
+        assert result["success"] is True
+        video = self.douyin._find_video(vid_id)
+        assert video is not None
+        assert video["views"] == 1
+        assert video["completion_rate"] > 0.5  # 完播率应该上升
+
+    def test_like_action(self) -> None:
+        vid_id = self.douyin.add_video("内容", "agent_01")
+        result = self.douyin.execute_action("agent_02", {"type": "like", "target_id": vid_id})
+        assert result["success"] is True
+        assert self.douyin._find_video(vid_id)["likes"] == 1
+
+    def test_comment_action(self) -> None:
+        vid_id = self.douyin.add_video("内容", "agent_01")
+        result = self.douyin.execute_action(
+            "agent_02", {"type": "comment", "target_id": vid_id, "content": "太好了"}
+        )
+        assert result["success"] is True
+        assert len(self.douyin.comments[vid_id]) == 1
+
+    def test_share_action(self) -> None:
+        vid_id = self.douyin.add_video("内容", "agent_01")
+        result = self.douyin.execute_action("agent_02", {"type": "share", "target_id": vid_id})
+        assert result["success"] is True
+        assert self.douyin._find_video(vid_id)["shares"] == 1
+
+    def test_search_action(self) -> None:
+        self.douyin.add_video("氨基酸面膜超温和", "agent_01", title="面膜测评", tags=["面膜"])
+        result = self.douyin.execute_action("agent_02", {"type": "search", "query": "面膜"})
+        assert result["success"] is True
+        assert len(result["results"]) == 1
+
+    def test_get_trending(self) -> None:
+        self.douyin.add_video("热门视频", "agent_01", initial_views=1000, initial_likes=500)
+        self.douyin.add_video("冷门视频", "agent_02", initial_views=10, initial_likes=1)
+        trending = self.douyin.get_trending(limit=2)
+        assert len(trending) == 2
+        assert trending[0]["views"] >= trending[1]["views"]
+
+    def test_feed_excludes_watched(self) -> None:
+        vid_id = self.douyin.add_video("内容", "agent_01")
+        self.douyin.execute_action("agent_02", {"type": "watch", "target_id": vid_id})
+        feed = self.douyin.get_feed("agent_02", limit=5)
+        # 已看过的不应该出现
+        assert all(v["video_id"] != vid_id for v in feed)
+
+    def test_state_snapshot_restore(self) -> None:
+        vid_id = self.douyin.add_video("内容", "agent_01")
+        snapshot = self.douyin.get_state_snapshot()
+        self.douyin.execute_action("agent_02", {"type": "like", "target_id": vid_id})
+        self.douyin.restore_state(snapshot)
+        assert self.douyin._find_video(vid_id)["likes"] == 0
+
+    def test_metrics(self) -> None:
+        self.douyin.add_video("内容", "agent_01", initial_views=100, initial_likes=50)
+        metrics = self.douyin.get_metrics()
+        assert metrics["total_videos"] == 1
+        assert metrics["total_views"] == 100
+        assert metrics["total_likes"] == 50
+
+
+class TestWeibo:
+    """微博环境测试。"""
+
+    def setup_method(self) -> None:
+        self.rng = random.Random(42)
+        self.weibo = WeiboEnvironment(rng=self.rng)
+
+    def test_add_post_and_get_feed(self) -> None:
+        post_id = self.weibo.add_post(
+            content="氨基酸面膜真的好用！#护肤好物#",
+            author_id="agent_01",
+            topics=["护肤好物"],
+        )
+        assert post_id.startswith("wb_")
+        feed = self.weibo.get_feed("agent_02", limit=5)
+        assert len(feed) == 1
+
+    def test_like_action(self) -> None:
+        post_id = self.weibo.add_post("内容", "agent_01")
+        result = self.weibo.execute_action("agent_02", {"type": "like", "target_id": post_id})
+        assert result["success"] is True
+        assert self.weibo._find_post(post_id)["likes"] == 1
+
+    def test_comment_action(self) -> None:
+        post_id = self.weibo.add_post("内容", "agent_01")
+        result = self.weibo.execute_action(
+            "agent_02", {"type": "comment", "target_id": post_id, "content": "说得对"}
+        )
+        assert result["success"] is True
+        assert len(self.weibo.comments[post_id]) == 1
+
+    def test_repost_creates_new_post(self) -> None:
+        post_id = self.weibo.add_post("原始内容", "agent_01", topics=["测试"])
+        result = self.weibo.execute_action(
+            "agent_02", {"type": "repost", "target_id": post_id, "content": "转发"}
+        )
+        assert result["success"] is True
+        assert self.weibo._find_post(post_id)["reposts"] == 1
+        # 转发应该生成新帖子
+        assert len(self.weibo.posts) == 2
+
+    def test_search_topic(self) -> None:
+        self.weibo.add_post("面膜推荐", "agent_01", topics=["护肤好物"])
+        self.weibo.add_post("另一篇面膜", "agent_02", topics=["护肤好物"])
+        result = self.weibo.execute_action(
+            "agent_03", {"type": "search_topic", "topic": "护肤好物"}
+        )
+        assert result["success"] is True
+        assert len(result["results"]) == 2
+
+    def test_get_hot_search(self) -> None:
+        self.weibo.add_post("热帖", "agent_01", topics=["热门话题"], initial_likes=100, initial_reposts=50)
+        self.weibo.add_post("冷帖", "agent_02", topics=["冷门话题"], initial_likes=1)
+        hot = self.weibo.get_hot_search(limit=5)
+        assert len(hot) == 2
+        assert hot[0]["topic"] == "热门话题"
+
+    def test_search_action(self) -> None:
+        self.weibo.add_post("氨基酸面膜太好用了", "agent_01")
+        result = self.weibo.execute_action("agent_02", {"type": "search", "query": "面膜"})
+        assert result["success"] is True
+        assert len(result["results"]) == 1
+
+    def test_state_snapshot_restore(self) -> None:
+        post_id = self.weibo.add_post("内容", "agent_01")
+        snapshot = self.weibo.get_state_snapshot()
+        self.weibo.execute_action("agent_02", {"type": "like", "target_id": post_id})
+        self.weibo.restore_state(snapshot)
+        assert self.weibo._find_post(post_id)["likes"] == 0
+
+    def test_metrics(self) -> None:
+        self.weibo.add_post("内容", "agent_01", topics=["话题1"], initial_likes=10, initial_reposts=5)
+        metrics = self.weibo.get_metrics()
+        assert metrics["total_posts"] == 1
+        assert metrics["total_likes"] == 10
+        assert metrics["total_reposts"] == 5
+        assert metrics["total_topics"] == 1
+
+    def test_init_following(self) -> None:
+        agents = ["a1", "a2", "a3", "a4", "a5"]
+        self.weibo.init_following(agents, density=1.0)
+        assert len(self.weibo.following["a1"]) > 0

@@ -21,7 +21,9 @@ from mirrormart.agent import Agent
 from mirrormart.cache.redis_cache import RedisCache
 from mirrormart.config import SimulationConfig
 from mirrormart.memory.chroma_store import ChromaMemoryStore
+from mirrormart.platforms.douyin import DouyinEnvironment
 from mirrormart.platforms.taobao import TaobaoEnvironment
+from mirrormart.platforms.weibo import WeiboEnvironment
 from mirrormart.platforms.xiaohongshu import XiaohongshuEnvironment
 from mirrormart.reflect import ReflectEngine
 
@@ -118,10 +120,14 @@ class SimulationEngine:
         """根据场景配置构建平台环境。"""
         xhs = XiaohongshuEnvironment(rng=random.Random(rng.randint(0, 2**32)))
         taobao = TaobaoEnvironment(rng=random.Random(rng.randint(0, 2**32)))
+        douyin = DouyinEnvironment(rng=random.Random(rng.randint(0, 2**32)))
+        weibo = WeiboEnvironment(rng=random.Random(rng.randint(0, 2**32)))
 
-        # 初始化小红书内容
+        product_info = self.scenario.get("product", {})
+
         for platform_cfg in self.scenario.get("platforms", []):
-            if platform_cfg["type"] == "xiaohongshu":
+            ptype = platform_cfg["type"]
+            if ptype == "xiaohongshu":
                 for post_cfg in platform_cfg.get("initial_content", []):
                     xhs.add_initial_post(
                         content=post_cfg.get("content", ""),
@@ -131,8 +137,7 @@ class SimulationEngine:
                         initial_likes=post_cfg.get("initial_likes", 0),
                         initial_comments=post_cfg.get("initial_comments", 0),
                     )
-            elif platform_cfg["type"] == "taobao":
-                product_info = self.scenario.get("product", {})
+            elif ptype == "taobao":
                 for prod_cfg in platform_cfg.get("initial_products", []):
                     taobao.add_product(
                         product_id=prod_cfg["id"],
@@ -146,8 +151,36 @@ class SimulationEngine:
                         initial_rating=prod_cfg.get("initial_rating", 4.5),
                         initial_reviews=prod_cfg.get("initial_reviews", 0),
                     )
+            elif ptype == "douyin":
+                for vid_cfg in platform_cfg.get("initial_content", []):
+                    douyin.add_video(
+                        content=vid_cfg.get("content", ""),
+                        author_id=vid_cfg.get("author_id", "brand_official"),
+                        title=vid_cfg.get("title", ""),
+                        tags=vid_cfg.get("tags", []),
+                        duration=vid_cfg.get("duration", 30),
+                        initial_views=vid_cfg.get("initial_views", 0),
+                        initial_likes=vid_cfg.get("initial_likes", 0),
+                        initial_comments=vid_cfg.get("initial_comments", 0),
+                        completion_rate=vid_cfg.get("completion_rate", 0.6),
+                    )
+            elif ptype == "weibo":
+                for post_cfg in platform_cfg.get("initial_content", []):
+                    weibo.add_post(
+                        content=post_cfg.get("content", ""),
+                        author_id=post_cfg.get("author_id", "brand_official"),
+                        topics=post_cfg.get("topics", []),
+                        initial_likes=post_cfg.get("initial_likes", 0),
+                        initial_reposts=post_cfg.get("initial_reposts", 0),
+                        initial_comments=post_cfg.get("initial_comments", 0),
+                    )
 
-        return {"xiaohongshu": xhs, "taobao": taobao}
+        return {
+            "xiaohongshu": xhs,
+            "taobao": taobao,
+            "douyin": douyin,
+            "weibo": weibo,
+        }
 
     async def run_branch(
         self,
@@ -173,8 +206,10 @@ class SimulationEngine:
         rng = random.Random(seed)
         agents = self._build_agents(profiles, rng)
         platforms = self._build_platforms(rng)
-        xhs = platforms["xiaohongshu"]
-        taobao = platforms["taobao"]
+        xhs: XiaohongshuEnvironment = platforms["xiaohongshu"]
+        taobao: TaobaoEnvironment = platforms["taobao"]
+        douyin: DouyinEnvironment = platforms["douyin"]
+        weibo: WeiboEnvironment = platforms["weibo"]
 
         # 为每个 Agent 创建 Chroma 记忆存储（分支隔离）
         chroma_dir = f".chroma_data/branch_{branch_id}"
@@ -197,6 +232,8 @@ class SimulationEngine:
             .get("density", 0.15)
         )
         xhs.init_following(agent_ids, density=follow_density)
+        douyin.init_following(agent_ids, density=follow_density * 0.7)
+        weibo.init_following(agent_ids, density=follow_density * 1.3)
 
         events: list[dict[str, Any]] = []
         num_steps = self.config.num_steps
@@ -206,12 +243,14 @@ class SimulationEngine:
         for step in range(num_steps):
             # 更新平台时间步（用于热度时间衰减）
             xhs.current_step = step
+            douyin.current_step = step
+            weibo.current_step = step
 
             # 打乱 Agent 顺序（模拟并发）
             rng.shuffle(agents)
             step_tasks = [
                 self._run_agent_step_throttled(
-                    agent, xhs, taobao, step, branch_tag, events,
+                    agent, platforms, step, branch_tag, events,
                     chroma_store=chroma_stores.get(agent.id),
                     run_id=run_id,
                     branch_id=branch_id,
@@ -223,13 +262,16 @@ class SimulationEngine:
             if (step + 1) % 5 == 0:
                 xhs_metrics = xhs.get_metrics()
                 taobao_metrics = taobao.get_metrics()
+                douyin_metrics = douyin.get_metrics()
+                weibo_metrics = weibo.get_metrics()
                 logger.info(
-                    "%s Step %d 完成 | XHS: 帖子%d 点赞%d | 淘宝: 购买%d",
+                    "%s Step %d 完成 | XHS: 帖子%d 点赞%d | 抖音: 视频%d 播放%d | 微博: 帖子%d 转发%d | 淘宝: 购买%d",
                     branch_tag, step + 1,
                     xhs_metrics["total_posts"], xhs_metrics["total_likes"],
+                    douyin_metrics["total_videos"], douyin_metrics["total_views"],
+                    weibo_metrics["total_posts"], weibo_metrics["total_reposts"],
                     taobao_metrics["total_purchases"],
                 )
-                # 发送步骤完成事件
                 if self._event_callback:
                     await self._event_callback({
                         "type": "step_complete",
@@ -239,11 +281,13 @@ class SimulationEngine:
                         "metrics": {
                             "xhs": xhs_metrics,
                             "taobao": taobao_metrics,
+                            "douyin": douyin_metrics,
+                            "weibo": weibo_metrics,
                         },
                     })
 
         # 汇总分支结果
-        result = self._summarize_branch(branch_id, agents, xhs, taobao, events)
+        result = self._summarize_branch(branch_id, agents, platforms, events)
 
         # 写入文件
         branch_dir = output_dir / f"branch_{branch_id}"
@@ -259,8 +303,7 @@ class SimulationEngine:
     async def _run_agent_step_throttled(
         self,
         agent: Agent,
-        xhs: XiaohongshuEnvironment,
-        taobao: TaobaoEnvironment,
+        platforms: dict[str, Any],
         step: int,
         branch_tag: str,
         events: list[dict[str, Any]],
@@ -271,15 +314,83 @@ class SimulationEngine:
         """带 Semaphore 限速的 Agent 单步循环。"""
         async with self._semaphore:
             await self._run_agent_step(
-                agent, xhs, taobao, step, branch_tag, events,
+                agent, platforms, step, branch_tag, events,
                 chroma_store=chroma_store, run_id=run_id, branch_id=branch_id,
             )
+
+    def _pick_platform(
+        self, agent: Agent, step: int, platforms: dict[str, Any],
+    ) -> tuple[Any, str, str, str | None]:
+        """选择本步使用的平台，返回 (platform, name, context, query)。"""
+        purchase_intent = agent.internal_state.get("purchase_intent", 0)
+
+        # 基础概率：小红书35%、抖音25%、微博15%、淘宝25%
+        weights = {"xiaohongshu": 0.35, "douyin": 0.25, "weibo": 0.15, "taobao": 0.25}
+
+        # 前半段偏向种草平台，后半段偏向转化
+        if step < 10:
+            weights["xiaohongshu"] += 0.1
+            weights["douyin"] += 0.05
+            weights["taobao"] -= 0.15
+        else:
+            weights["taobao"] += 0.15
+            weights["xiaohongshu"] -= 0.1
+            weights["douyin"] -= 0.05
+
+        # 购买意向高时更倾向淘宝
+        if purchase_intent > 0.6:
+            weights["taobao"] += 0.2
+            weights["xiaohongshu"] -= 0.1
+            weights["douyin"] -= 0.05
+            weights["weibo"] -= 0.05
+
+        # 归一化
+        total = sum(weights.values())
+        probs = {k: v / total for k, v in weights.items()}
+
+        # 加权随机选择
+        r = agent.rng.random()
+        cumulative = 0.0
+        chosen = "xiaohongshu"
+        for name, prob in probs.items():
+            cumulative += prob
+            if r < cumulative:
+                chosen = name
+                break
+
+        contexts = {
+            "xiaohongshu": (
+                "你正在小红书浏览。小红书是种草社区，人们在这里分享使用体验、"
+                "找产品推荐。你可以看笔记、评论、收藏、转发或搜索。"
+            ),
+            "taobao": (
+                "你正在淘宝购物。淘宝是购物平台，你可以搜索商品、查看详情、"
+                "比价、加购物车、收藏或直接购买。"
+            ),
+            "douyin": (
+                "你正在刷抖音。抖音是短视频平台，你可以观看视频、点赞、评论、"
+                "分享或搜索感兴趣的内容。"
+            ),
+            "weibo": (
+                "你正在刷微博。微博是社交媒体平台，你可以看热搜、转发、评论、"
+                "搜索话题或发表自己的观点。"
+            ),
+        }
+
+        query = None
+        search_keywords = ["面膜", "氨基酸面膜", "敏感肌面膜", "温和护肤"]
+        if chosen in ("xiaohongshu", "douyin", "weibo"):
+            if agent.rng.random() < 0.3:
+                query = agent.rng.choice(search_keywords)
+        elif chosen == "taobao" and purchase_intent > 0.4:
+            query = agent.rng.choice(["氨基酸面膜", "面膜", "温和面膜"])
+
+        return platforms[chosen], chosen, contexts[chosen], query
 
     async def _run_agent_step(
         self,
         agent: Agent,
-        xhs: XiaohongshuEnvironment,
-        taobao: TaobaoEnvironment,
+        platforms: dict[str, Any],
         step: int,
         branch_tag: str,
         events: list[dict[str, Any]],
@@ -288,42 +399,10 @@ class SimulationEngine:
         branch_id: int = 0,
     ) -> None:
         """运行单个 Agent 的单步循环（含 reflect 机制和 Chroma 记忆）。"""
-        # 决定本步使用哪个平台（基于人设偏好 + 随机性）
-        platform_behavior = agent.persona.get("platform_behavior", {})
-        xhs_usage = platform_behavior.get("xiaohongshu", {}).get("daily_usage_minutes", [30, 60])
-        taobao_usage = platform_behavior.get("taobao", {})
-
-        # 简单概率：前半段偏向小红书种草，后半段偏向淘宝转化
-        xhs_prob = 0.65 if step < 10 else 0.4
-
-        # 购买意向高时更倾向淘宝
-        if agent.internal_state.get("purchase_intent", 0) > 0.6:
-            xhs_prob = 0.3
-
-        use_xhs = agent.rng.random() < xhs_prob
-
         try:
-            if use_xhs:
-                platform = xhs
-                platform_name = "xiaohongshu"
-                platform_context = (
-                    "你正在小红书浏览。小红书是种草社区，人们在这里分享使用体验、"
-                    "找产品推荐。你可以看笔记、评论、收藏、分享或搜索。"
-                )
-                query = None
-                if agent.rng.random() < 0.3:
-                    query = agent.rng.choice(["面膜", "氨基酸面膜", "敏感肌面膜", "温和护肤"])
-            else:
-                platform = taobao
-                platform_name = "taobao"
-                platform_context = (
-                    "你正在淘宝购物。淘宝是购物平台，你可以搜索商品、查看详情、"
-                    "比价、加购物车或直接购买。"
-                )
-                # 有购买意向时搜索目标商品
-                query = None
-                if agent.internal_state.get("purchase_intent", 0) > 0.4:
-                    query = agent.rng.choice(["氨基酸面膜", "面膜", "温和面膜"])
+            platform, platform_name, platform_context, query = self._pick_platform(
+                agent, step, platforms,
+            )
 
             # 感知（先查 Redis 缓存）
             cached = await self._redis.get_perception(agent.id, platform_name, step)
@@ -396,13 +475,14 @@ class SimulationEngine:
         self,
         branch_id: int,
         agents: list[Agent],
-        xhs: XiaohongshuEnvironment,
-        taobao: TaobaoEnvironment,
+        platforms: dict[str, Any],
         events: list[dict],
     ) -> dict[str, Any]:
         """汇总单分支结果。"""
-        xhs_metrics = xhs.get_metrics()
-        taobao_metrics = taobao.get_metrics()
+        xhs_metrics = platforms["xiaohongshu"].get_metrics()
+        taobao_metrics = platforms["taobao"].get_metrics()
+        douyin_metrics = platforms["douyin"].get_metrics()
+        weibo_metrics = platforms["weibo"].get_metrics()
         purchases = taobao_metrics["total_purchases"]
         num_agents = len(agents)
 
@@ -436,6 +516,13 @@ class SimulationEngine:
             "xhs_likes": xhs_metrics["total_likes"],
             "xhs_comments": xhs_metrics["total_comments"],
             "xhs_reposts": xhs_metrics.get("total_reposts", 0),
+            "douyin_videos": douyin_metrics["total_videos"],
+            "douyin_views": douyin_metrics["total_views"],
+            "douyin_likes": douyin_metrics["total_likes"],
+            "douyin_shares": douyin_metrics["total_shares"],
+            "weibo_posts": weibo_metrics["total_posts"],
+            "weibo_reposts": weibo_metrics["total_reposts"],
+            "weibo_comments": weibo_metrics["total_comments"],
             "high_intent_agents": high_intent,
             "total_events": len(events),
         }

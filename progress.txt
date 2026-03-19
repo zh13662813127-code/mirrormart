@@ -94,8 +94,32 @@
 ## 当前阻塞项
 - 无
 
-## 下一步行动 (Phase 2)
-- 重跑完整模拟验证增强后的平台环境效果
-- 新增抖音/微博平台环境
+### ✅ Phase 2 — 四平台完整支持 (2026-03-18)
+- [x] 抖音平台环境 (douyin.py)
+  - 短视频信息流 + 完播率加权推荐
+  - action: post/watch/like/comment/share/search/follow
+  - 已看过的视频不再推荐
+  - watch 动态更新完播率
+  - get_trending() 热门视频
+- [x] 微博平台环境 (weibo.py)
+  - 热搜机制 + 转发链扩散（转发生成新帖子）
+  - action: post/like/comment/repost/search/search_topic/follow
+  - get_hot_search() 热搜榜（话题维度聚合）
+  - 话题索引系统
+- [x] engine.py 四平台集成
+  - 智能平台选择：基于阶段+购买意向的加权概率
+  - 四平台关注关系初始化（不同密度）
+  - 四平台 current_step 维护
+  - 汇总所有平台指标
+- [x] agent.py 更新
+  - SYSTEM_PROMPT 加入抖音/微博可用 action
+  - perceive() 支持四种平台的格式化输出
+- [x] platforms/__init__.py 导出四个平台类
+- [x] 68 个单元测试全部通过（新增 20 个）
+
+## 下一步行动
+- 更新场景 YAML 加入抖音/微博初始内容
+- 更新人设 YAML 加入抖音/微博行为偏好
+- 重跑完整模拟验证四平台协同效果
 - 前端可视化仪表盘
 - A/B 测试场景对比功能
