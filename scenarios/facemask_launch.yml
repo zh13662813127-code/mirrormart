@@ -1,0 +1,81 @@
+id: facemask_launch
+name: 氨基酸面膜小红书推广
+description: 模拟一款新面膜在小红书种草→淘宝转化的完整链路
+
+# 产品信息
+product:
+  name: 润颜氨基酸面膜
+  price: 59
+  category: 面膜
+  key_ingredients:
+    - 氨基酸
+    - 玻尿酸
+    - 烟酰胺
+  selling_points:
+    - 温和不刺激
+    - 成分干净
+    - 敏感肌可用
+  brand_awareness: low
+
+# 平台配置
+platforms:
+  - type: xiaohongshu
+    initial_content:
+      - type: brand_post
+        title: 敏感肌救星！氨基酸温和面膜
+        content: >
+          敏感肌的姐妹们！终于找到了这款氨基酸面膜💧
+          主打成分：氨基酸+玻尿酸+烟酰胺，温和不刺激，
+          敏感肌亲测无负担。坚持用了两周，肤色明显均匀了，
+          补水效果超级好！59元一盒，性价比绝了
+          #面膜 #氨基酸面膜 #敏感肌 #护肤
+        tags: [面膜, 氨基酸面膜, 敏感肌, 护肤, 补水]
+        initial_likes: 5
+        initial_comments: 2
+
+  - type: taobao
+    initial_products:
+      - id: product_main
+        name: 润颜氨基酸面膜（10片装）
+        price: 59
+        initial_reviews: 12
+        initial_rating: 4.6
+        initial_sales: 230
+      - id: competitor_a
+        name: 某大牌氨基酸修护面膜（5片装）
+        price: 89
+        initial_reviews: 5600
+        initial_rating: 4.8
+        initial_sales: 120000
+      - id: competitor_b
+        name: 平价玻尿酸补水面膜（20片装）
+        price: 39
+        initial_reviews: 8900
+        initial_rating: 4.5
+        initial_sales: 230000
+
+# Agent 配置
+agents:
+  profiles:
+    - type: ingredient_nerd
+      count: 5
+    - type: impulsive_buyer
+      count: 4
+    - type: price_hunter
+      count: 4
+    - type: rational_buyer
+      count: 4
+    - type: kol_beauty
+      count: 2
+    - type: lurker
+      count: 1
+
+  relationships:
+    - type: random_follow
+      density: 0.15
+
+# 模拟参数
+simulation:
+  num_steps: 20
+  step_duration_hours: 12
+  num_branches: 5

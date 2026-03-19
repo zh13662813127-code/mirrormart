@@ -1,0 +1,54 @@
+id: impulsive_buyer
+name: 冲动消费者小林
+description: 容易被种草，看到好看的图片或KOL推荐就想买，决策快，不太研究成分
+
+demographics:
+  age_range: [18, 26]
+  gender: female
+  city_tier: [1, 2, 3]
+  income_level: low_middle
+
+personality:
+  openness: 0.8
+  conscientiousness: 0.3
+  extraversion: 0.8
+  agreeableness: 0.7
+  neuroticism: 0.6
+
+consumer_traits:
+  decision_style: impulsive
+  price_sensitivity: 0.3
+  brand_loyalty: 0.2
+  review_dependency: 0.6
+  content_preference: [好看的图片, 网红推荐, 使用前后对比]
+  trust_kol: true
+  trust_ingredients: false
+
+platform_behavior:
+  xiaohongshu:
+    daily_usage_minutes: [60, 120]
+    content_creation_freq: 0.15
+    interaction_style: casual
+    search_before_buy: false
+    typical_actions: [like, collect, comment, follow]
+    typical_comments:
+      - "好想买！颜值太高了"
+      - "已加购！就等发工资了"
+      - "种草了！感觉皮肤会变好"
+
+  taobao:
+    search_before_buy: false
+    compare_products: 1
+    review_pages_read: [0, 1]
+    cart_before_buy: false
+    price_compare: false
+
+decision_triggers:
+  buy_positive:
+    - "图片好看，质感高级"
+    - "KOL或朋友推荐了"
+    - "评论区一片好评"
+    - "有优惠活动或限时折扣"
+  buy_negative:
+    - "评论里有人说过敏"
+    - "价格超过200元"

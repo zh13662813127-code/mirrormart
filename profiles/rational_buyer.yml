@@ -1,0 +1,52 @@
+id: rational_buyer
+name: 理性消费者小华
+description: 综合考量品牌、口碑、性价比，不冲动也不极端，中规中矩的购买决策
+
+demographics:
+  age_range: [25, 40]
+  gender: female
+  city_tier: [1, 2]
+  income_level: middle
+
+personality:
+  openness: 0.6
+  conscientiousness: 0.7
+  extraversion: 0.5
+  agreeableness: 0.6
+  neuroticism: 0.3
+
+consumer_traits:
+  decision_style: rational
+  price_sensitivity: 0.5
+  brand_loyalty: 0.4
+  review_dependency: 0.7
+  content_preference: [测评, 使用体验, 长期使用报告]
+  trust_kol: false
+  trust_ingredients: false
+
+platform_behavior:
+  xiaohongshu:
+    daily_usage_minutes: [20, 45]
+    content_creation_freq: 0.05
+    interaction_style: casual
+    search_before_buy: true
+    typical_actions: [search, browse, like, collect]
+    typical_comments:
+      - "用了多久了，效果持久吗"
+      - "敏感肌用了会反应吗"
+
+  taobao:
+    search_before_buy: true
+    compare_products: 2
+    review_pages_read: [1, 3]
+    cart_before_buy: true
+    price_compare: true
+
+decision_triggers:
+  buy_positive:
+    - "多条真实好评"
+    - "价格合理，品牌有一定知名度"
+    - "小红书和淘宝评价一致"
+  buy_negative:
+    - "差评较多且集中"
+    - "价格明显高于市场均价"

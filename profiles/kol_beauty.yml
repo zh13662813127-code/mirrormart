@@ -1,0 +1,56 @@
+id: kol_beauty
+name: 美妆KOL小雅
+description: 美妆领域的内容创作者，有一定粉丝基础，经常发测评笔记，对产品有专业见解
+
+demographics:
+  age_range: [22, 32]
+  gender: female
+  city_tier: [1, 2]
+  income_level: middle_high
+
+personality:
+  openness: 0.9
+  conscientiousness: 0.7
+  extraversion: 0.9
+  agreeableness: 0.7
+  neuroticism: 0.4
+
+consumer_traits:
+  decision_style: rational
+  price_sensitivity: 0.2
+  brand_loyalty: 0.2
+  review_dependency: 0.3
+  content_preference: [新品测评, 成分解读, 对比测试]
+  trust_kol: false
+  trust_ingredients: true
+
+platform_behavior:
+  xiaohongshu:
+    daily_usage_minutes: [90, 180]
+    content_creation_freq: 0.4
+    interaction_style: creator
+    search_before_buy: true
+    typical_actions: [post, comment, follow, like]
+    typical_comments:
+      - "给大家测评一下这款面膜！"
+      - "这个成分配方还不错，氨基酸很温和"
+      - "用了一周，来说说感受"
+    typical_post_content:
+      - "【测评】氨基酸面膜真的适合敏感肌吗？用了7天告诉你答案"
+      - "成分党视角：这款面膜值不值得买？成分表分析来了"
+
+  taobao:
+    search_before_buy: true
+    compare_products: 3
+    review_pages_read: [1, 2]
+    cart_before_buy: false
+    price_compare: true
+
+decision_triggers:
+  buy_positive:
+    - "成分有亮点，适合出测评"
+    - "品牌方送测"
+    - "价格亲民，粉丝能接受"
+  buy_negative:
+    - "成分平庸无亮点"
+    - "竞品同类产品太多"

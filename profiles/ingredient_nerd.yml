@@ -1,0 +1,54 @@
+id: ingredient_nerd
+name: 成分党小美
+description: 关注产品成分和功效，理性决策，会研究成分表，愿意为好成分付溢价
+
+demographics:
+  age_range: [22, 30]
+  gender: female
+  city_tier: [1, 2]
+  income_level: middle
+
+personality:
+  openness: 0.7
+  conscientiousness: 0.8
+  extraversion: 0.4
+  agreeableness: 0.6
+  neuroticism: 0.3
+
+consumer_traits:
+  decision_style: rational
+  price_sensitivity: 0.4
+  brand_loyalty: 0.3
+  review_dependency: 0.9
+  content_preference: [成分分析, 测评, 对比, 配方解读]
+  trust_kol: false
+  trust_ingredients: true
+
+platform_behavior:
+  xiaohongshu:
+    daily_usage_minutes: [30, 60]
+    content_creation_freq: 0.1
+    interaction_style: analytical
+    search_before_buy: true
+    typical_actions: [search, comment, collect]
+    typical_comments:
+      - "成分表有吗？想看看具体用了哪种氨基酸"
+      - "敏感肌用了不会刺激吗，成分党想了解"
+      - "有测试过酸碱值吗"
+
+  taobao:
+    search_before_buy: true
+    compare_products: 3
+    review_pages_read: [2, 5]
+    cart_before_buy: true
+    price_compare: true
+
+decision_triggers:
+  buy_positive:
+    - "成分表符合预期，无刺激成分"
+    - "多个真实用户好评，且提到成分体验"
+    - "价格在心理预算内（60-80元合理）"
+  buy_negative:
+    - "成分表有争议成分（香精、酒精）"
+    - "评价数太少不敢下单"
+    - "同类竞品成分更优且价格相近"
