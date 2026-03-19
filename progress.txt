@@ -1,0 +1,75 @@
+# MirrorMart 进度追踪
+# 每次完成功能后更新此文件
+
+## 当前阶段: Phase 1 进行中
+## 最后更新: 2026-03-10
+
+---
+
+### ✅ 已完成
+- [x] 产品设计文档 v6.1 (MirrorMart_v6_1.docx)
+- [x] 技术设计蓝图与竞品调研报告 (中文版)
+- [x] 六份 Vibe Coding 规范文档:
+  - [x] 01_PRD.md — 产品需求文档
+  - [x] 02_TECH_SPEC.md — 技术规范文档
+  - [x] 03_FRONTEND_GUIDELINES.md — 前端指南
+  - [x] 04_BACKEND_STRUCTURE.md — 后端结构文档
+  - [x] 05_APP_FLOW.md — 应用流程文档
+  - [x] 06_STATE_MANAGEMENT.md — 状态管理文档
+- [x] CLAUDE.md — Claude Code 规则文件
+- [x] progress.txt — 本文件
+- [x] lessons.md — 经验教训记录
+
+### Phase 0 待办 (3天实验)
+- [x] 初始化项目仓库 (uv init)
+- [x] 创建 pyproject.toml 配置 (含 ruff/mypy/pytest 配置)
+- [x] 实现 Agent 基类 (src/mirrormart/agent.py)
+- [x] 实现小红书简化环境 (platforms/xiaohongshu.py)
+- [x] 实现淘宝简化环境 (platforms/taobao.py)
+- [x] 实现 LLM 调用封装 (src/mirrormart/llm.py, litellm)
+- [x] 编写 Agent 画像 YAML (5个: ingredient_nerd/impulsive_buyer/price_hunter/rational_buyer/kol_beauty)
+- [x] 编写面膜发布场景 YAML (scenarios/facemask_launch.yml)
+- [x] 实现模拟引擎主循环 (src/mirrormart/engine.py)
+- [x] 实现蒙特卡洛运行器 (5个分支, engine.run_monte_carlo)
+- [x] 实现结果聚合与分析 (src/mirrormart/analysis.py)
+- [x] 20个单元测试全部通过 (pytest tests/)
+- [x] 配置 MiniMax M2.5 API 并运行第一次完整模拟 (run_20260309_212618)
+- [ ] 在 Jupyter 中分析结果 (outputs/run_20260309_212618/)
+- [x] 回答核心假设:
+  - 假设1 ✅ 简化环境能驱动有意义的互动链路（Agent人设行为差异显著）
+  - 假设2 ⚠️ 分支有差异但存在极化问题（需修复网络初始化）
+- [ ] 修复已发现的3个问题后重跑验证（见 lessons.md #6 #7 #8）
+
+### ✅ Phase 1 已完成
+- [x] 修复 CLI --branches/--steps 覆盖场景 YAML 的 bug (engine.py)
+- [x] 安装 Phase 1 依赖: chromadb, redis, fastapi, uvicorn, websockets
+- [x] 实现 reflect 机制 (src/mirrormart/reflect.py)
+  - 触发条件: 购买后 / 每5步 / 连续3次空闲
+  - 更新 Agent 购买意向和兴趣标签
+- [x] 实现 Chroma 向量记忆存储 (src/mirrormart/memory/chroma_store.py)
+  - 分支隔离 (branch_id × agent_id → collection)
+  - 语义检索增强感知上下文
+  - 优雅降级：不可用时退回列表记忆
+- [x] 实现 Redis 热态缓存 (src/mirrormart/cache/redis_cache.py)
+  - 缓存 feed 和 perception 结果
+  - TTL 30s 自动过期
+  - 优雅降级：连接失败时透明跳过
+- [x] 实现 FastAPI REST API (src/mirrormart/api/)
+  - POST /simulations — 创建模拟（后台异步运行）
+  - GET /simulations — 列出所有运行
+  - GET /simulations/{run_id} — 获取结果
+  - GET /simulations/{run_id}/status — 查询状态
+- [x] 实现 WebSocket 实时事件流 (src/mirrormart/api/websocket.py)
+  - ws://host/ws/{run_id} 订阅事件
+  - 事件类型: agent_action, step_complete, run_complete
+  - EventQueue 解耦引擎和 WebSocket
+- [x] 引擎集成 Phase 1 全部组件 (engine.py)
+- [x] 36个单元测试全部通过 (pytest tests/)
+
+---
+
+## 当前阻塞项
+- 无
+
+## 下一步行动
+- 确定 LLM 选型后，初始化项目仓库并开始 Phase 0 编码
