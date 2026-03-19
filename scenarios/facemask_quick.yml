@@ -1,0 +1,80 @@
+id: facemask_quick
+name: 氨基酸面膜四平台推广（快速验证）
+description: 5 Agent × 5 步 × 5 分支，用于端到端验证
+
+product:
+  name: 润颜氨基酸面膜
+  price: 59
+  category: 面膜
+  key_ingredients: [氨基酸, 玻尿酸, 烟酰胺]
+  selling_points: [温和不刺激, 成分干净, 敏感肌可用]
+  brand_awareness: low
+
+platforms:
+  - type: xiaohongshu
+    initial_content:
+      - title: 敏感肌救星！氨基酸温和面膜
+        content: >
+          敏感肌的姐妹们！这款氨基酸面膜主打温和修护，
+          氨基酸+玻尿酸+烟酰胺，59元一盒性价比绝了
+        tags: [面膜, 氨基酸面膜, 敏感肌, 护肤]
+        initial_likes: 5
+        initial_comments: 2
+
+  - type: taobao
+    initial_products:
+      - id: product_main
+        name: 润颜氨基酸面膜（10片装）
+        price: 59
+        initial_reviews: 12
+        initial_rating: 4.6
+        initial_sales: 230
+      - id: competitor_a
+        name: 某大牌氨基酸修护面膜（5片装）
+        price: 89
+        initial_reviews: 5600
+        initial_rating: 4.8
+        initial_sales: 120000
+
+  - type: douyin
+    initial_content:
+      - title: 氨基酸面膜开箱实测
+        content: 开箱测评氨基酸面膜，成分干净敏感肌友好
+        author_id: brand_official
+        tags: [面膜, 氨基酸面膜, 护肤]
+        duration: 45
+        initial_views: 500
+        initial_likes: 30
+        initial_comments: 5
+        completion_rate: 0.65
+
+  - type: weibo
+    initial_content:
+      - content: "#氨基酸面膜# 新品上市！温和修护，敏感肌救星 #护肤好物#"
+        author_id: brand_official
+        topics: [氨基酸面膜, 护肤好物]
+        initial_likes: 15
+        initial_reposts: 3
+        initial_comments: 4
+
+agents:
+  profiles:
+    - type: ingredient_nerd
+      count: 1
+    - type: impulsive_buyer
+      count: 1
+    - type: price_hunter
+      count: 1
+    - type: rational_buyer
+      count: 1
+    - type: kol_beauty
+      count: 1
+
+  relationships:
+    - type: random_follow
+      density: 0.3
+
+simulation:
+  num_steps: 5
+  step_duration_hours: 12
+  num_branches: 5

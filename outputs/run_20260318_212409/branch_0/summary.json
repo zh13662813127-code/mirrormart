@@ -1,0 +1,23 @@
+{
+  "branch_id": 0,
+  "outcome": "平淡",
+  "conversion_rate": 0.0,
+  "main_product_purchases": 0,
+  "taobao_purchases": 0,
+  "taobao_revenue": 0,
+  "taobao_wishlist": 0,
+  "taobao_questions": 0,
+  "xhs_posts": 1,
+  "xhs_likes": 7,
+  "xhs_comments": 5,
+  "xhs_reposts": 0,
+  "douyin_videos": 1,
+  "douyin_views": 501,
+  "douyin_likes": 30,
+  "douyin_shares": 0,
+  "weibo_posts": 1,
+  "weibo_reposts": 3,
+  "weibo_comments": 5,
+  "high_intent_agents": 1,
+  "total_events": 25
+}

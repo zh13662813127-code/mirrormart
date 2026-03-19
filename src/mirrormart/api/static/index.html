@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>镜市 MirrorMart — 模拟仪表盘</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="header">
+    <h1>镜市 MirrorMart</h1>
+    <p>LLM 驱动的中国社会模拟引擎 — 蒙特卡洛多路径推演</p>
+  </div>
+
+  <div class="container">
+    <div class="tabs">
+      <div class="tab active" data-tab="overview">模拟总览</div>
+      <div class="tab" data-tab="detail">运行详情</div>
+      <div class="tab" data-tab="ab">A/B 对比</div>
+      <div class="tab" data-tab="create">新建模拟</div>
+    </div>
+
+    <!-- 模拟总览 -->
+    <div id="tab-overview" class="tab-panel active">
+      <div class="card">
+        <h3>历史运行</h3>
+        <div id="run-list" class="loading"><div class="spinner"></div><p>加载中...</p></div>
+      </div>
+    </div>
+
+    <!-- 运行详情 -->
+    <div id="tab-detail" class="tab-panel">
+      <div class="card">
+        <h3>选择运行 <select id="detail-select" style="margin-left:12px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0"></select></h3>
+      </div>
+      <div id="detail-content"></div>
+    </div>
+
+    <!-- A/B 对比 -->
+    <div id="tab-ab" class="tab-panel">
+      <div class="card">
+        <h3>A/B 场景对比</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>方案 A（运行 ID）</label>
+            <select id="ab-run-a"></select>
+          </div>
+          <div class="form-group">
+            <label>方案 B（运行 ID）</label>
+            <select id="ab-run-b"></select>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="ab-compare-btn" onclick="compareAB()">开始对比</button>
+      </div>
+      <div id="ab-result"></div>
+    </div>
+
+    <!-- 新建模拟 -->
+    <div id="tab-create" class="tab-panel">
+      <div class="card">
+        <h3>创建新模拟</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>场景文件</label>
+            <select id="create-scenario">
+              <option value="scenarios/facemask_launch.yml">氨基酸面膜四平台推广（完整）</option>
+              <option value="scenarios/facemask_quick.yml">氨基酸面膜快速验证（5×5×5）</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>分支数</label>
+            <input type="number" id="create-branches" value="5" min="1" max="20">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>步数</label>
+            <input type="number" id="create-steps" value="5" min="1" max="100">
+          </div>
+          <div class="form-group">
+            <label>LLM 模型</label>
+            <input type="text" id="create-model" placeholder="留空使用默认">
+          </div>
+        </div>
+        <button class="btn btn-primary" id="create-btn" onclick="createSimulation()">启动模拟</button>
+        <div id="create-status" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/dashboard.js"></script>
+</body>
+</html>

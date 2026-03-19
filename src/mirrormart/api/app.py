@@ -1,25 +1,30 @@
-"""FastAPI 应用入口 — Phase 1 实现。
+"""FastAPI 应用入口。
 
 启动:
     uv run uvicorn mirrormart.api.app:app --reload --port 8000
 
-WebSocket 订阅:
-    ws://localhost:8000/ws/{run_id}
+仪表盘: http://localhost:8000/
+WebSocket: ws://localhost:8000/ws/{run_id}
 """
 
 from __future__ import annotations
 
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import AsyncIterator
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from mirrormart.api.routes.simulation import router as simulation_router
 from mirrormart.api.websocket import manager
 
 logger = logging.getLogger(__name__)
+
+STATIC_DIR = Path(__file__).parent / "static"
 
 
 @asynccontextmanager
@@ -33,7 +38,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 app = FastAPI(
     title="MirrorMart API",
     description="镜市社会模拟引擎 REST API",
-    version="1.0.0",
+    version="2.0.0",
     lifespan=lifespan,
 )
 
@@ -45,14 +50,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 静态文件服务
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
 # 注册路由
 app.include_router(simulation_router)
 
 
 @app.get("/")
-async def root() -> dict[str, str]:
-    """健康检查。"""
-    return {"status": "ok", "service": "MirrorMart API", "version": "1.0.0"}
+async def dashboard() -> FileResponse:
+    """仪表盘首页。"""
+    return FileResponse(STATIC_DIR / "index.html")
 
 
 @app.get("/health")
@@ -63,19 +71,10 @@ async def health() -> dict[str, str]:
 
 @app.websocket("/ws/{run_id}")
 async def websocket_endpoint(websocket: WebSocket, run_id: str) -> None:
-    """WebSocket 事件流端点。
-
-    客户端连接后，实时接收模拟运行过程中的所有 agent_action 事件。
-
-    消息格式:
-        {"type": "agent_action", "run_id": "...", "step": 0, "agent_id": "...", ...}
-        {"type": "step_complete", "run_id": "...", "step": 0, "metrics": {...}}
-        {"type": "run_complete", "run_id": "...", "result": {...}}
-    """
+    """WebSocket 事件流端点。"""
     await manager.connect(websocket, run_id)
     try:
         while True:
-            # 保持连接活跃，接收心跳
             data = await websocket.receive_text()
             if data == "ping":
                 await websocket.send_text("pong")

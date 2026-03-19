@@ -117,9 +117,26 @@
 - [x] platforms/__init__.py 导出四个平台类
 - [x] 68 个单元测试全部通过（新增 20 个）
 
+### ✅ 端到端验证 (2026-03-18)
+- [x] 5×5×5 压缩模拟跑通，四平台指标全部正确输出
+- [x] 场景 YAML 含四平台初始内容 (facemask_quick.yml)
+- [x] 人设 YAML 含四平台行为偏好 + interest_tags
+- [x] 新增 lurker 人设
+
+### ✅ 前端仪表盘 + A/B 对比 (2026-03-18)
+- [x] 前端仪表盘 (static/index.html + dashboard.js + style.css)
+  - 模拟总览：历史运行列表
+  - 运行详情：结局饼图、转化率柱状图、分支概览表
+  - A/B 对比：双方案指标对比、转化率分布图、自动判定赢家
+  - 新建模拟：表单创建 + 轮询进度
+- [x] A/B 对比 API (GET /simulations/compare?run_a=X&run_b=Y)
+  - 多维度指标对比（转化率、购买次数、XHS 点赞等）
+  - 自动生成结论文本
+- [x] 分支详情 API (GET /simulations/{run_id}/branch/{branch_id})
+- [x] FastAPI 静态文件服务 + Chart.js 图表
+- [x] 68 个测试通过，API 全部端点验证通过
+
 ## 下一步行动
-- 更新场景 YAML 加入抖音/微博初始内容
-- 更新人设 YAML 加入抖音/微博行为偏好
-- 重跑完整模拟验证四平台协同效果
-- 前端可视化仪表盘
-- A/B 测试场景对比功能
+- WebSocket 实时进度推送到仪表盘
+- 更多场景（A/B 对比不同投放策略）
+- 部署方案（Docker）

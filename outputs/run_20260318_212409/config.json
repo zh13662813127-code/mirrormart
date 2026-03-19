@@ -1,0 +1,8 @@
+{
+  "scenario": "氨基酸面膜四平台推广（快速验证）",
+  "num_branches": 5,
+  "num_steps": 5,
+  "llm_model": "openai/MiniMax-M2",
+  "redis_available": false,
+  "chroma_available": true
+}
