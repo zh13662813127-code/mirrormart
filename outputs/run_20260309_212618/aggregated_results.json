@@ -1,0 +1,41 @@
+{
+  "num_branches": 5,
+  "outcome_distribution": {
+    "爆款": 0.2,
+    "一般": 0.2,
+    "平淡": 0.6
+  },
+  "metrics": {
+    "conversion_rate": {
+      "mean": 0.13,
+      "std": 0.168,
+      "values": [
+        0.421,
+        0.211,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "main_product_purchases": {
+      "mean": 2.4,
+      "std": 3.2,
+      "values": [
+        8,
+        4,
+        0,
+        0,
+        0
+      ]
+    },
+    "xhs_posts": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "xhs_likes": {
+      "mean": 7.0,
+      "std": 2.449
+    }
+  },
+  "run_id": "run_20260309_212618"
+}

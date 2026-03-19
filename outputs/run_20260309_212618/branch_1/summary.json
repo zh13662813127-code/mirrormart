@@ -1,0 +1,13 @@
+{
+  "branch_id": 1,
+  "outcome": "一般",
+  "conversion_rate": 0.211,
+  "main_product_purchases": 4,
+  "taobao_purchases": 10,
+  "taobao_revenue": 670,
+  "xhs_posts": 1,
+  "xhs_likes": 10,
+  "xhs_comments": 31,
+  "high_intent_agents": 0,
+  "total_events": 380
+}

@@ -1,0 +1,211 @@
+{
+  "kol_beauty_01": {
+    "id": "kol_beauty_01",
+    "persona_name": "美妆KOL小雅",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "impulsive_buyer_03": {
+    "id": "impulsive_buyer_03",
+    "persona_name": "冲动消费者小林",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "ingredient_nerd_01": {
+    "id": "ingredient_nerd_01",
+    "persona_name": "成分党小美",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "ingredient_nerd_05": {
+    "id": "ingredient_nerd_05",
+    "persona_name": "成分党小美",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "rational_buyer_03": {
+    "id": "rational_buyer_03",
+    "persona_name": "理性消费者小华",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "rational_buyer_02": {
+    "id": "rational_buyer_02",
+    "persona_name": "理性消费者小华",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "price_hunter_01": {
+    "id": "price_hunter_01",
+    "persona_name": "比价达人小强",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "price_hunter_04": {
+    "id": "price_hunter_04",
+    "persona_name": "比价达人小强",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "rational_buyer_01": {
+    "id": "rational_buyer_01",
+    "persona_name": "理性消费者小华",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "ingredient_nerd_02": {
+    "id": "ingredient_nerd_02",
+    "persona_name": "成分党小美",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "impulsive_buyer_04": {
+    "id": "impulsive_buyer_04",
+    "persona_name": "冲动消费者小林",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "ingredient_nerd_03": {
+    "id": "ingredient_nerd_03",
+    "persona_name": "成分党小美",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "impulsive_buyer_02": {
+    "id": "impulsive_buyer_02",
+    "persona_name": "冲动消费者小林",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "price_hunter_02": {
+    "id": "price_hunter_02",
+    "persona_name": "比价达人小强",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "price_hunter_03": {
+    "id": "price_hunter_03",
+    "persona_name": "比价达人小强",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "impulsive_buyer_01": {
+    "id": "impulsive_buyer_01",
+    "persona_name": "冲动消费者小林",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "rational_buyer_04": {
+    "id": "rational_buyer_04",
+    "persona_name": "理性消费者小华",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "kol_beauty_02": {
+    "id": "kol_beauty_02",
+    "persona_name": "美妆KOL小雅",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  },
+  "ingredient_nerd_04": {
+    "id": "ingredient_nerd_04",
+    "persona_name": "成分党小美",
+    "memories_count": 0,
+    "actions_count": 0,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": []
+  }
+}

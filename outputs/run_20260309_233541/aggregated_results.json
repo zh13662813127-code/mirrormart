@@ -1,0 +1,39 @@
+{
+  "num_branches": 5,
+  "outcome_distribution": {
+    "平淡": 1.0
+  },
+  "metrics": {
+    "conversion_rate": {
+      "mean": 0.0,
+      "std": 0.0,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "main_product_purchases": {
+      "mean": 0.0,
+      "std": 0.0,
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "xhs_posts": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "xhs_likes": {
+      "mean": 5.0,
+      "std": 0.0
+    }
+  },
+  "run_id": "run_20260309_233541"
+}

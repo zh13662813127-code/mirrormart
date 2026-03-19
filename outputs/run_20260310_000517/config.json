@@ -1,0 +1,6 @@
+{
+  "scenario": "氨基酸面膜小红书推广",
+  "num_branches": 2,
+  "num_steps": 5,
+  "llm_model": "openai/MiniMax-M2"
+}

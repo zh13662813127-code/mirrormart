@@ -1,0 +1,6848 @@
+{
+  "rational_buyer_04": {
+    "id": "rational_buyer_04",
+    "persona_name": "理性消费者小华",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "这个面膜推广感比较强，我需要看更多真实测评和使用体验才能判断。作为理性消费者，不能只看一条推荐就下结论。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": null,
+          "content": null,
+          "query": "氨基酸面膜 敏感肌 真实测评 使用体验"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 敏感肌 真实测评 使用体验",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 敏感肌 真实测评 使用体验'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.1,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "这条笔记互动量太低（点赞6评论3），描述比较夸张像是软文。作为理性消费者，我需要看更多真实用户的测评和使用体验，而不是只看一篇推广笔记。我应该换个搜索词或去淘宝看看实际产品和评价。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸面膜 真实测评 长期使用 敏感肌"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 真实测评 长期使用 敏感肌",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 真实测评 长期使用 敏感肌'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.1,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "这篇笔记数据量太小（6赞5评论），而且措辞偏推广。对于理性消费者来说，我需要看更多真实用户的长期使用反馈，而不是冲动下单。",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "查看这篇笔记的评论区和其他相关信息"
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.1,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "这条笔记点赞评论都较少，看起来像是推广内容。我需要查看评论了解真实用户体验，同时搜索更多相关信息进行对比验证。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "请问这款面膜是哪家品牌的？用了多久？有长期使用的反馈吗？"
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_3c5ebc4a",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "这篇帖子只展示了使用两周的效果，缺乏深度测评和品牌信息。我需要看看其他笔记或搜索更详细的测评信息，才能做出理性判断。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 推荐 测评 性价比",
+          "target_id": null,
+          "content": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 推荐 测评 性价比",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 推荐 测评 性价比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "之前搜索氨基酸面膜测评都没找到结果，现在看到润颜氨基酸面膜（¥59）最符合需求。作为理性消费者，我需要先查看这个产品的详情和用户评价，了解成分和实际使用效果，再决定是否购买。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情、成分表和用户评价",
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 231,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "我之前搜索测评没找到太多结果，现在看到三个面膜选项。作为理性消费者，我应该先比较一下这三个商品的详情和评价，了解更多后再决定是否购买。",
+        "action": {
+          "type": "compare",
+          "platform": "taobao",
+          "target_id": "competitor_a,competitor_b,product_main",
+          "content": "对比三个面膜的详情、评价和性价比",
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "compare",
+          "products": [],
+          "effect": "比较了0件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "我之前看了润颜氨基酸面膜，但作为理性消费者，我需要了解更多真实使用体验再决定是否购买。三个选项里，润颜的性价比相对均衡（59元10片），我想再看看其他用户的真实评价。",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "作为理性消费者，我需要多比较几个商品再决定。已经查看了润颜氨基酸面膜，但购买意向还较低。让我再看看其他两个商品的详情，对比一下性价比。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_a",
+          "content": "查看某大牌氨基酸修护面膜详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_a",
+            "name": "某大牌氨基酸修护面膜（5片装）",
+            "price": 89,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 120002,
+            "rating": 4.8,
+            "review_count": 5600,
+            "reviews": []
+          },
+          "effect": "查看了商品 某大牌氨基酸修护面膜（5片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "作为理性消费者，我需要查看商品详情和评价来辅助决策。润颜氨基酸面膜性价比还可以，但销量较低，我需要看看具体评价如何再做决定。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情和评价"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 233,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.35
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "我需要更多关于润颜氨基酸面膜的真实评价和价格信息，来帮助我做购买决策。虽然看到了推荐笔记，但作为理性消费者，我想看看淘宝上的具体价格和用户反馈。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "润颜氨基酸面膜"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.45,
+          "purchase_intent": 0.35
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "润颜氨基酸面膜已经看了2次，销量太低（235）让我有些担心。但我还想再搜索看看有没有其他氨基酸面膜可选，对比一下再做决定。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸补水面膜"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'氨基酸补水面膜',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.35
+        }
+      }
+    ]
+  },
+  "rational_buyer_03": {
+    "id": "rational_buyer_03",
+    "persona_name": "理性消费者小华",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "作为理性消费者，我需要先查看商品的详细信息和评价来做出判断。三款面膜价格和定位不同，我想先了解主推产品'润颜氨基酸面膜'的具体成分和用户反馈，再与另外两款对比。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "看到这款氨基酸面膜的推荐，但我是理性消费者，不会盲目种草。我应该搜索一下这款润颜氨基酸面膜的实际测评和使用体验，了解更多真实反馈后再做判断。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "润颜氨基酸面膜 测评 使用体验"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 测评 使用体验",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 测评 使用体验'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "我之前搜索润颜氨基酸面膜的测评没有结果，现在看到其他品牌的氨基酸面膜笔记。作为理性消费者，我想先了解润颜这个品牌的口碑和产品评价，看看值不值得进一步了解。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "润颜面膜 测评 怎么样"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜面膜 测评 怎么样",
+          "results": [],
+          "effect": "搜索'润颜面膜 测评 怎么样'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.15,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "搜索润颜氨基酸面膜没找到测评，现在看到的是其他品牌的氨基酸面膜推荐，不是同款产品。购买意向还很低，需要进一步了解产品信息和真实评价。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "润颜氨基酸面膜 真实测评 使用体验"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 真实测评 使用体验",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 真实测评 使用体验'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "我反复搜索润颜面膜的测评都没找到，作为理性消费者，没有真实使用反馈我不敢买。对比看，大牌销量12万+评分4.8，平价款销量23万+20片装价格才39，都比润颜（销量230、10片59元）更有说服力。购买意向很低，决定不再纠结这款了。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_a",
+          "query": "某大牌氨基酸修护面膜"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_a",
+            "name": "某大牌氨基酸修护面膜（5片装）",
+            "price": 89,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 120002,
+            "rating": 4.8,
+            "review_count": 5600,
+            "reviews": []
+          },
+          "effect": "查看了商品 某大牌氨基酸修护面膜（5片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "我之前搜索润颜氨基酸面膜的测评没找到结果，现在看到这款氨基酸面膜的推荐笔记。虽然内容看起来不错，但这不是我之前查看的商品。作为理性消费者，我应该多看看真实使用体验，再决定是否进一步了解。",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2"
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "之前搜索润颜氨基酸面膜的测评都没找到结果，作为理性消费者我需要先了解这个产品的具体信息和用户评价，再决定是否购买。不能冲动消费，但也不能一直观望。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜商品详情和用户评价",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 231,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "看到这篇氨基酸面膜的分享笔记，有8赞16评论看起来口碑不错。作为理性消费者，我想看看更多真实使用体验再决定，毕竟之前搜索润颜面膜没找到测评。可以先互动看看评论区的反馈。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "想问一下这款面膜适合敏感肌吗？用了两周效果真的好吗？求真实反馈~"
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_3743efbc",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "我之前搜索润颜氨基酸面膜没找到测评，现在看到这篇面膜笔记，但我需要更全面地了解不同品牌氨基酸面膜的使用体验和性价比，再做决定。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 真实测评 对比 性价比"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 真实测评 对比 性价比",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 真实测评 对比 性价比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "我需要更多真实用户的使用体验和对比测评，不能只看一个推荐就做决定。继续搜索更客观的内容。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 真实测评 敏感肌 长期使用"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 真实测评 敏感肌 长期使用",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 真实测评 敏感肌 长期使用'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "作为理性消费者，我已经看了润颜氨基酸面膜2次，需要更多信息帮助决策。之前搜索测评没找到结果，现在想先看看详情和用户评价，再做比价。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情和用户评价"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 234,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.45,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "已经查看这个润颜氨基酸面膜3次了，按照规则必须做决定。对比三个产品，润颜比平价款贵但成分更温和（氨基酸），比大牌便宜很多。¥59/10片的价格我可以接受，作为理性消费者，先买来试试效果，不满意可以退。",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "润颜氨基酸面膜（10片装）"
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_0de295df",
+          "effect": "购买了 润颜氨基酸面膜（10片装）（¥59）"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.75
+        }
+      }
+    ]
+  },
+  "ingredient_nerd_05": {
+    "id": "ingredient_nerd_05",
+    "persona_name": "成分党小美",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "看到润颜氨基酸面膜，'氨基酸'成分吸引了我。作为成分党，我需要查看这款产品的详细成分表和功效说明，来判断是否值得购买。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "作为成分党，我需要查看润颜氨基酸面膜的详细成分信息，和其他产品对比一下配方，再决定是否购买",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "我需要更多成分信息来决策。作为成分党，我不能只看价格和销量，需要了解产品配方是否值得购买。让我搜索一下润颜氨基酸面膜的成分分析。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": null,
+          "content": null,
+          "query": "润颜氨基酸面膜 成分 表"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'润颜氨基酸面膜 成分 表',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "作为成分党，我需要更多了解这款产品的具体成分分析。刚才看到的笔记只提到了氨基酸+玻尿酸+烟酰胺，但没有详细配方。我应该搜索更专业的成分分析内容，或者去淘宝看看这款润颜氨基酸面膜的详细成分表。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "润颜氨基酸面膜 成分分析 配方"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 成分分析 配方",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 成分分析 配方'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "这篇笔记没有详细的成分分析，只是普通种草，不符合我成分党的需求。我已经查看润颜氨基酸面膜2次了，应该去淘宝看具体的成分信息和配方详情。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜的详细成分表和商品详情"
+        },
+        "result": {
+          "success": false,
+          "error": "未知行为类型: view"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "作为成分党，我已经查看这个面膜3次了，按规则必须做最终决定。但我需要先确认成分信息是否值得购买。让我搜索一下这个产品的成分分析笔记。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "润颜氨基酸面膜 成分 分析"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 成分 分析",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 成分 分析'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "作为成分党，我反复查看了这款润颜氨基酸面膜3次，但始终没有找到详细的成分分析或配方解读。购买意向只有0.3，不足以支撑购买决策。缺少成分信息是我做出购买决策的关键障碍。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "这款面膜的成分表能分享一下吗？特别是氨基酸的具体含量和搭配其他成分的比例，想了解下配方逻辑[微笑]"
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_aeb3b8a8",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "作为成分党，我之前多次搜索润颜氨基酸面膜的成分分析但没找到结果。没有成分信息我无法做理性决策。查看次数已达3次上限，必须做最终决定。",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "none",
+          "content": "决定不买",
+          "query": ""
+        },
+        "result": {
+          "success": false,
+          "error": "商品 none 不存在"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "作为成分党，我之前搜索了这个产品的成分分析但没找到任何信息。查看3次了，按照规则必须做最终决定。没有成分信息我无法做出理性判断，而且产品销量很低（只有232），评分也一般。其他两个竞品虽然也没有成分信息，但至少品牌和口碑更可靠。综合考虑，这个产品缺乏我需要的成分透明度，放弃购买。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸修护面膜 成分表 功效"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'氨基酸修护面膜 成分表 功效',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "润颜氨基酸面膜已经查看3次了，必须做决定。但作为成分党，我需要了解具体成分才能判断是否值得购买。让我再查看一下这款产品的详情，了解成分表后再决定买或不买。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情和成分表"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 232,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "已经查看商品4次了，必须做决定。作为成分党，我想先确认润颜氨基酸面膜的成分分析，再决定是否购买。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "润颜氨基酸面膜 成分 分析"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 成分 分析",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 成分 分析'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "作为成分党，我已经查看这个商品4次了，需要做最终决定。虽然笔记提到了氨基酸+玻尿酸+烟酰胺这三个成分，但我之前搜索'润颜氨基酸面膜 成分分析'没找到详细配方信息。作为理性消费者，我需要完整的成分表和配方解读才能放心购买。购买意向只有0.3，不足以冲动下单。决定放弃这个商品，继续寻找成分信息更透明的面膜。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 成分表 配方分析 敏感肌"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 成分表 配方分析 敏感肌",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 成分表 配方分析 敏感肌'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.1
+        }
+      }
+    ]
+  },
+  "price_hunter_02": {
+    "id": "price_hunter_02",
+    "persona_name": "比价达人小强",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "作为比价达人，我先详细看看性价比最高的平价玻尿酸面膜，计算一下单片价格是否真的划算，同时看看评价如何",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_b",
+          "content": "查看平价玻尿酸补水面膜详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_b",
+            "name": "平价玻尿酸补水面膜（20片装）",
+            "price": 39,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230000,
+            "rating": 4.5,
+            "review_count": 8900,
+            "reviews": []
+          },
+          "effect": "查看了商品 平价玻尿酸补水面膜（20片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "在小红书看到面膜推荐，但我主要是来比价的。刚才在淘宝看了平价玻尿酸面膜，应该去淘宝搜索同款对比价格，找性价比最高的。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "平价玻尿酸补水面膜 20片"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "平价玻尿酸补水面膜 20片",
+          "results": [],
+          "effect": "搜索'平价玻尿酸补水面膜 20片'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "这篇氨基酸面膜笔记没有提价格，我需要搜一下同款或者类似平价产品的价格对比。我作为比价达人，不能只看推荐，要找到真正的性价比产品。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "平价补水面膜 性价比 推荐"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "平价补水面膜 性价比 推荐",
+          "results": [],
+          "effect": "搜索'平价补水面膜 性价比 推荐'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "之前在小红书搜索平价补水面膜没找到合适结果，现在看到这款氨基酸面膜，但没提价格。作为价格敏感的人，我需要去淘宝看看同类产品的价格对比，才能判断是否值得进一步了解。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "平价补水面膜 20片 玻尿酸"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "平价补水面膜 20片 玻尿酸",
+          "results": [],
+          "effect": "搜索'平价补水面膜 20片 玻尿酸'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "这个氨基酸面膜看起来适合敏感肌，但我需要了解具体价格。我之前搜索平价20片装面膜没找到合适的，可以先问问这个产品的价格和规格，看是否符合我的性价比要求。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "请问这款面膜多少钱一盒呀？有20片装的吗？",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_6deb6cb9",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "我一直在找平价玻尿酸补水面膜20片装，现在终于看到了！¥39/20片，每片才1.95元，比¥59/10片的划算多了。但我要先仔细看看详情，确认质量和口碑。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_b",
+          "content": "查看平价玻尿酸补水面膜20片装详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_b",
+            "name": "平价玻尿酸补水面膜（20片装）",
+            "price": 39,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230000,
+            "rating": 4.5,
+            "review_count": 8900,
+            "reviews": []
+          },
+          "effect": "查看了商品 平价玻尿酸补水面膜（20片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.75,
+          "purchase_intent": 0.4
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "这款氨基酸面膜看起来不错，但我需要先了解它的价格是不是我想要的平价区间。我在小红书搜一下这个产品的价格信息，对比一下是不是真的性价比高。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸温和面膜 价格 平价"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和面膜 价格 平价",
+          "results": [],
+          "effect": "搜索'氨基酸温和面膜 价格 平价'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.45,
+          "purchase_intent": 0.4
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "这款氨基酸面膜看起来不错，但我需要先看看笔记详情了解价格信息，然后去淘宝比价。作为价格敏感用户，我不会冲动购买。",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "查看笔记详情获取产品信息"
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.45
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "这篇推荐的氨基酸面膜看起来不错，但我作为价格敏感用户，需要先确认它的价格是否真的平价。我应该去淘宝搜索同款或者类似产品的价格，进行比价后再决定是否继续了解。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "氨基酸温和补水面膜 20片 平价"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和补水面膜 20片 平价",
+          "results": [],
+          "effect": "搜索'氨基酸温和补水面膜 20片 平价'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.5
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "之前的搜索没找到合适结果，这款氨基酸面膜看起来不错，但我要先看看有没有平价替代品。淘宝上已经看了competitor_b两次，再搜搜小红书上的平价面膜推荐。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "平价补水面膜 学生党 20片",
+          "target_id": null,
+          "content": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "平价补水面膜 学生党 20片",
+          "results": [],
+          "effect": "搜索'平价补水面膜 学生党 20片'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.6,
+          "purchase_intent": 0.5
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "我之前已经看过这个平价玻尿酸面膜2次了，¥39/20片确实是最便宜的选择。让我再仔细看看详情，确认质量和口碑是否靠谱，毕竟价格太低可能有问题。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_b",
+          "content": "查看平价玻尿酸补水面膜详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_b",
+            "name": "平价玻尿酸补水面膜（20片装）",
+            "price": 39,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230004,
+            "rating": 4.5,
+            "review_count": 8900,
+            "reviews": []
+          },
+          "effect": "查看了商品 平价玻尿酸补水面膜（20片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.7,
+          "purchase_intent": 0.6
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "我在小红书看到氨基酸面膜推荐，但购买意向0.6还没到决策线。我需要继续比价，查看更多平价面膜的选择。competitor_b已经查看3次，但还没决定买不买，先在小红书找更多替代方案。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "平价补水面膜 20片 学生党 性价比"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "平价补水面膜 20片 学生党 性价比",
+          "results": [],
+          "effect": "搜索'平价补水面膜 20片 学生党 性价比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.65,
+          "purchase_intent": 0.6
+        }
+      }
+    ]
+  },
+  "price_hunter_03": {
+    "id": "price_hunter_03",
+    "persona_name": "比价达人小强",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "一个面膜推荐，敏感肌用的。我不信任KOL推广，需要自己找测评对比。而且我极度价格敏感，不会直接被种草。兴趣度目前为0。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 测评 对比 性价比"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 测评 对比 性价比",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 测评 对比 性价比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.0,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "这篇笔记只是种草推荐，没有价格信息，也没有对比测评，不符合我找性价比分析的需求。我需要继续寻找有价格对比和测评的内容。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸面膜 价格对比 测评"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 价格对比 测评",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 价格对比 测评'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.1,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "这篇笔记没有品牌和价格信息，我需要去淘宝搜索氨基酸面膜的具体产品和价格，进行比价后再决定是否购买",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "氨基酸面膜 补水 敏感肌 性价比"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 补水 敏感肌 性价比",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 补水 敏感肌 性价比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "看到一款氨基酸面膜笔记，但没有价格信息。我极度价格敏感，需要先看看淘宝上有没有同款或类似产品的价格，再决定是否进一步了解。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "氨基酸温和面膜 敏感肌 补水"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和面膜 敏感肌 补水",
+          "results": [],
+          "effect": "搜索'氨基酸温和面膜 敏感肌 补水'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "这个笔记看起来像是推广内容，没有价格信息也没有对比分析。我需要去淘宝看看实际价格和用户评价，才能判断性价比。购买意向还很低，不急着决定。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "氨基酸温和面膜 敏感肌 补水 性价比"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和面膜 敏感肌 补水 性价比",
+          "results": [],
+          "effect": "搜索'氨基酸温和面膜 敏感肌 补水 性价比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.15,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "这条笔记只是普通推荐，没有价格也没有测评对比。作为比价达人，我需要去淘宝看具体价格和不同产品的对比，才能做理性决策。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸温和面膜 敏感肌 补水 性价比"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和面膜 敏感肌 补水 性价比",
+          "results": [],
+          "effect": "搜索'氨基酸温和面膜 敏感肌 补水 性价比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.15,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "之前搜氨基酸面膜都没找到合适的，现在看到几个选项。我最关注性价比，应该先看看润颜氨基酸面膜（10片装¥59）的详情，这是正符合我搜索目标的产品。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 231,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "这篇笔记推荐了氨基酸温和面膜，但我需要了解价格。作为价格敏感的人，没有价格信息无法判断性价比。先评论问问价格，再去淘宝比价。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "这款面膜多少钱呀？求店铺链接，想对比下价格",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_62679a5a",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "我需要继续比价，找性价比最高的。之前看了润颜氨基酸面膜，¥59/10片，但看到有更便宜的平价玻尿酸面膜¥39/20片，我想再搜索看看有没有其他更划算的选项。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "补水面膜 性价比 学生平价"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'补水面膜 性价比 学生平价',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "我之前已经评论过这个面膜笔记了，现在需要去淘宝搜索同款产品看价格对比。我是价格敏感用户，不能只看种草，必须比价后再决定。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "氨基酸温和面膜 敏感肌 补水 玻尿酸 烟酰胺",
+          "target_id": null,
+          "content": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和面膜 敏感肌 补水 玻尿酸 烟酰胺",
+          "results": [],
+          "effect": "搜索'氨基酸温和面膜 敏感肌 补水 玻尿酸 烟酰胺'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.35
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "润颜氨基酸面膜¥59有点贵，我得再看看那个¥39的平价玻尿酸补水面膜，20片装平均每片才2块钱，性价比应该更高。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_b",
+          "content": "查看平价玻尿酸补水面膜详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_b",
+            "name": "平价玻尿酸补水面膜（20片装）",
+            "price": 39,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230004,
+            "rating": 4.5,
+            "review_count": 8900,
+            "reviews": []
+          },
+          "effect": "查看了商品 平价玻尿酸补水面膜（20片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.55,
+          "purchase_intent": 0.45
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "我需要再仔细对比这三款面膜的性价比。润颜氨基酸面膜我已经查看过了，价格和评分都还可以，但想看看有没有其他用户评价来确认实际使用效果。主要是想确认这款是否真的适合敏感肌且效果好。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜的详情和用户评价"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 235,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.55,
+          "purchase_intent": 0.45
+        }
+      }
+    ]
+  },
+  "ingredient_nerd_04": {
+    "id": "ingredient_nerd_04",
+    "persona_name": "成分党小美",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "这个氨基酸面膜主打氨基酸+玻尿酸+烟酰胺，但笔记信息太简略。作为成分党，我想看看其他博主的成分分析或测评，了解配方是否真正温和，烟酰胺浓度是否适合敏感肌",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 成分分析 测评 对比"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 成分分析 测评 对比",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 成分分析 测评 对比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "这个笔记只提到了三个成分名，没有具体的浓度、配方体系或第三方检测报告。作为成分党，我需要更专业的成分分析，而不是这种笼统的种草笔记。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 成分表 配方分析 烟酰胺 玻尿酸 浓度"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 成分表 配方分析 烟酰胺 玻尿酸 浓度",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 成分表 配方分析 烟酰胺 玻尿酸 浓度'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "这条笔记只提到了氨基酸+玻尿酸+烟酰胺这三个成分，但没有给出具体浓度和配方比例。作为成分党，我需要了解成分的具体浓度才能判断是否值得购买。我要追问成分浓度信息。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "谢谢分享！想问一下这款面膜的成分浓度分别是多少呀？烟酰胺的浓度是多少？有没有添加防腐剂或香精？配方表能发一下吗？作为敏感肌想了解更详细的成分信息~",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_41d29ca2",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "作为成分党，我需要查看商品的成分信息才能做决定。润颜氨基酸面膜价格适中，符合我的搜索需求，先看看成分表再决定是否继续研究。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情，获取成分信息",
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "我需要找更专业的成分分析内容。之前搜索氨基酸面膜没找到成分分析笔记，这款面膜提到烟酰胺和玻尿酸，但我不确定浓度和配方是否适合敏感肌。需要看看评论里有没有成分党分析，或者搜索更专业的成分解读笔记。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 成分党 配方分析 烟酰胺浓度 敏感肌"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 成分党 配方分析 烟酰胺浓度 敏感肌",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 成分党 配方分析 烟酰胺浓度 敏感肌'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "这个帖子我只看到成分名称但没有具体浓度和配方比例，作为成分党需要更详细的成分分析。我来搜索一下这个产品或者类似产品的成分党测评笔记。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": null,
+          "content": null,
+          "query": "氨基酸面膜 成分党测评 烟酰胺浓度 配方分析 真实测评"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 成分党测评 烟酰胺浓度 配方分析 真实测评",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 成分党测评 烟酰胺浓度 配方分析 真实测评'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "这个笔记只提到成分是氨基酸+玻尿酸+烟酰胺，但没有给出具体浓度。作为成分党，我需要知道烟酰胺浓度、氨基酸含量等具体数据才能判断产品价值。之前的搜索都没有找到满意的成分分析笔记。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "想请教一下这款面膜的成分具体浓度是多少呀？比如烟酰胺浓度是多少？氨基酸含量是多少？作为成分党比较关注这些数据，谢谢！"
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_77316642",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "作为成分党，我需要知道烟酰胺的具体浓度和配方比例才能判断是否值得购买。这个笔记只说了成分名称，没有具体数据。我应该评论询问成分详情。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "想问一下这款面膜烟酰胺的具体浓度是多少呀？配方表里烟酰胺排第几位？氨基酸是哪种形式？感谢解答~"
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_62ee9651",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "这个笔记提到了氨基酸+玻尿酸+烟酰胺，但没有具体浓度。作为成分党，我需要知道烟酰胺的具体浓度才能判断是否值得购买。之前搜索成分分析没找到结果，可以直接评论问博主。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "想问一下这款面膜烟酰胺浓度是多少呀？烟酰胺达到2%以上才有美白效果，成分党表示很好奇配方比例~ 另外氨基酸具体是哪种氨基酸呀？"
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_786ab86e",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "作为成分党，这款氨基酸面膜提到含烟酰胺，但我需要知道具体浓度和配方比例。之前的搜索没找到成分分析，我应该看看这篇笔记的评论区有没有成分党分析，或者搜索更具体的产品信息。",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "查看笔记评论区，寻找成分分析",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "作为成分党，我需要先查看商品的成分信息再做决策。润颜氨基酸面膜是搜索结果中的选项，我需要查看它的成分表和功效说明。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情，了解成分表和功效"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 234,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "作为成分党，我需要仔细看润颜氨基酸面膜的成分表，判断它的配方是否值这个价格。已经查看2次了，这次要深入看成分详情。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜的成分详情和配方说明"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 236,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.45,
+          "purchase_intent": 0.3
+        }
+      }
+    ]
+  },
+  "ingredient_nerd_02": {
+    "id": "ingredient_nerd_02",
+    "persona_name": "成分党小美",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "我需要先看看润颜氨基酸面膜的成分表，了解配方是否符合我的需求。氨基酸面膜通常比较温和，我得看看具体成分才能决定。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情和成分表"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "看到同类氨基酸面膜推荐，想搜索更详细的成分分析。作为成分党，我需要了解具体成分配比和功效数据。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜成分分析 测评"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜成分分析 测评",
+          "results": [],
+          "effect": "搜索'氨基酸面膜成分分析 测评'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "作为成分党，我需要先了解润颜氨基酸面膜的具体成分配方，才能判断是否值得购买。单纯看价格和销量无法做理性决策。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜商品详情，了解成分配方"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "我需要查看润颜氨基酸面膜的详细成分信息，这是成分党决策的关键依据。查看次数达到3次后无论是否满意都要做决定。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜的成分表和详细参数"
+        },
+        "result": {
+          "success": false,
+          "error": "未知行为类型: view"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "已经查看这个面膜3次了，按规则必须做决定。但购买意向只有0.15，说明信息还不够。作为成分党，我想再搜索一下这款产品的成分分析和真实评价，确认是否值得购买。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "润颜氨基酸面膜成分 测评"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜成分 测评",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜成分 测评'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "我已经查看这款润颜氨基酸面膜3次了，但作为成分党，我始终找不到详细的成分分析信息。之前两次搜索都显示0条结果，我无法获得足够的成分信息来做出理性决策。这不符合我成分党的人设——没有成分详情我是不会购买的。应该放弃这款产品，继续寻找有成分分析的面膜。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "平价补水面膜 成分分析 推荐"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "平价补水面膜 成分分析 推荐",
+          "results": [],
+          "effect": "搜索'平价补水面膜 成分分析 推荐'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.1,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "已经反复查看润颜氨基酸面膜3次了，达到了决策节点。作为成分党，我之前搜索了多次成分测评都没有找到满意的信息，无法充分了解产品成分功效匹配度。价格敏感度0.4意味着我愿意为好成分付溢价，但前提是能确认成分可靠。缺乏成分透明信息是理性决策的阻碍，应该明确放弃并说明原因。",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "润颜氨基酸面膜已经查看了3次，搜索成分测评也没找到结果。购买意向是0.0，说明我并不想在此时购买。与其继续犹豫，不如直接放弃这款产品，把精力转向寻找成分更透明、评价更好的替代品。作为成分党，我需要找到成分表清晰、有详细测评的产品。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "平价补水面膜 成分分析 测评"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "平价补水面膜 成分分析 测评",
+          "results": [],
+          "effect": "搜索'平价补水面膜 成分分析 测评'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "作为成分党，我需要看到具体的成分浓度和配方表才能做决策。这篇笔记只提到了氨基酸+玻尿酸+烟酰胺这三个成分，但没有具体浓度、排名、配伍性分析，信息不够透明。已查看3次，购买意向为0，应该做出决定了。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "想问一下这款面膜的成分表具体是哪些？氨基酸含量多少？烟酰胺的浓度是多少呀？作为成分党表示想了解更详细的配方信息~",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_4393ea55",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "作为成分党，这款氨基酸面膜的成分介绍太简单了，只提到氨基酸+玻尿酸+烟酰胺，没有详细的成分表和浓度分析。而且购买意向只有0.1，说明我并不真正需要。product_main已经查看3次了，需要做个了断。",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.1,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "已经查看润颜氨基酸面膜3次了，按照规则必须做决定。购买意向只有0.1，但作为成分党，我需要先确认成分是否值得购买，不能冲动决定。再看一次成分表，如果成分好且价格合理就买，成分一般就放弃。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜的成分表和详细功效描述"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 234,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "已经查看这个商品4次了，按规则必须做最终决定。作为成分党，我理性分析一下：氨基酸+玻尿酸+烟酰胺的配方确实不错，适合敏感肌，补水功效也明确。虽然购买意向0.3不算高，但产品本身符合我的护肤需求，且是平价产品，可以尝试购买。",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "润颜氨基酸面膜（10片装）",
+          "query": ""
+        },
+        "result": {
+          "success": false,
+          "error": "未知行为类型: purchase"
+        },
+        "internal_state": {
+          "interest_level": 0.6,
+          "purchase_intent": 0.75
+        }
+      }
+    ]
+  },
+  "ingredient_nerd_03": {
+    "id": "ingredient_nerd_03",
+    "persona_name": "成分党小美",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "作为成分党，这款面膜的氨基酸+玻尿酸+烟酰胺组合引起了我的兴趣，但我需要了解具体成分浓度和配方细节，不能只看营销文案。烟酰胺有美白功效，但我需要确认浓度是否足够。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "想问一下这款面膜的成分具体浓度是多少呀？烟酰胺排名第几呀？氨基酸是哪种类型？感谢！",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_31da53ce",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "作为成分党，我需要先了解产品的具体成分才能做决定。润颜氨基酸面膜是新品，销量较低但评分不错，我想看看它的成分配方是否值得购买",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "我需要查看润颜氨基酸面膜的成分表，了解它的配方是否符合我的护肤需求。作为成分党，我不能仅看价格和销量就做决定。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看商品详情和成分信息"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "作为成分党，我需要查看这款润颜氨基酸面膜的详细成分表，验证笔记中提到的成分是否真实，以及是否有其他有效成分。理性决策需要数据支撑。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "query": "润颜氨基酸面膜成分"
+        },
+        "result": {
+          "success": false,
+          "error": "未知行为类型: view"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "已经看了润颜氨基酸面膜3次了，购买意向还是只有0.15。作为成分党，我需要更了解产品的成分和配方才能做决定。让我再查看一下详情页的成分信息，或者搜索一下这个产品的成分分析。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情，重点关注成分表"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "已经查看这个润颜氨基酸面膜4次了，购买意向还是只有0.25，说明我确实在犹豫。这个笔记推荐的成分（氨基酸+玻尿酸+烟酰胺）虽然不错，但作为成分党，我需要看到更详细的成分浓度和配方体系才能下决定。不能因为查看次数多就冲动购买，理性决策更重要。先看看这个笔记的评论有没有成分党分析。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "想问一下这款面膜的成分表具体浓度是多少呀？烟酰胺是烟酰胺几号？氨基酸表活用的是哪种？作为成分党表示很好奇配方细节[斜眼笑]"
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_96e538f6",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "已经查看润颜氨基酸面膜4次了，按规则必须做决定。作为成分党，我需要查看它的成分表来判断是否值得购买，再做最终决定。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜成分表和详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 231,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.6,
+          "purchase_intent": 0.4
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "润颜氨基酸面膜我已经查看了5次，必须做最终决定了。刚才看到的笔记刚好也是推荐氨基酸面膜的，主要成分是氨基酸+玻尿酸+烟酰胺。作为成分党，我需要确认这个配方是否值得购买。让我再搜索一下这个产品的成分分析笔记，加深了解后再决定买或不买。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "润颜氨基酸面膜 成分分析"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 成分分析",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 成分分析'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.6,
+          "purchase_intent": 0.4
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "我已经查看这个面膜5次了，按照规则必须做决定。作为成分党，我之前搜索成分分析没找到结果，这是我的决策阻碍。让我最后在淘宝查看一下产品详情页的成分信息，如果成分OK就买，不OK就放弃。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜商品详情，获取成分表信息"
+        },
+        "result": {
+          "success": false,
+          "error": "未知行为类型: view"
+        },
+        "internal_state": {
+          "interest_level": 0.6,
+          "purchase_intent": 0.5
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "已经查看6次了，但作为成分党，我找不到这款面膜的成分分析信息，无法做理性决策。对比来看成分不明风险较高，宁可放弃也不能盲目买。",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "none",
+          "content": "决定不购买",
+          "query": "润颜氨基酸面膜"
+        },
+        "result": {
+          "success": false,
+          "error": "商品 none 不存在"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "已经查看这款润颜氨基酸面膜6次了，搜索成分分析也没有结果。作为成分党，看不到成分表心里不踏实。但规则要求必须做决定。算了，虽然找不到详细成分信息，但这个价格和氨基酸修护的概念基本ok，先买一单试试，不满意再说。",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "购买润颜氨基酸面膜（10片装）"
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_14f1f3e9",
+          "effect": "购买了 润颜氨基酸面膜（10片装）（¥59）"
+        },
+        "internal_state": {
+          "interest_level": 0.6,
+          "purchase_intent": 0.75
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "已经购买了润颜氨基酸面膜，但想进一步了解烟酰胺在这个产品中的作用和搭配，看是否有更好的选择或者验证购买决策",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "烟酰胺 氨基酸面膜 功效"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "烟酰胺 氨基酸面膜 功效",
+          "results": [],
+          "effect": "搜索'烟酰胺 氨基酸面膜 功效'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.75,
+          "purchase_intent": 0.75
+        }
+      }
+    ]
+  },
+  "ingredient_nerd_01": {
+    "id": "ingredient_nerd_01",
+    "persona_name": "成分党小美",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "看到这款氨基酸面膜，主打成分有烟酰胺，这是我很关注的成分。但笔记里没有提到具体浓度和配方体系，我需要搜索更多成分分析笔记来理性判断是否值得购买。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "烟酰胺面膜成分分析"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "烟酰胺面膜成分分析",
+          "results": [],
+          "effect": "搜索'烟酰胺面膜成分分析'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "作为成分党，我需要先了解产品的具体成分才能做决策。润颜氨基酸面膜是10片装¥59，价格适中且是氨基酸配方，我需要查看它的成分表来确认是否值得购买。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情，了解成分表"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "我需要查看润颜氨基酸面膜的成分表，作为成分党这是我的核心关注点，成分合适才会考虑购买",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情和成分表"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "作为成分党，我想对比不同面膜的成分和功效。目前只看了润颜氨基酸面膜2次，还没超过3次限制。我需要查看其他产品的成分信息来做理性对比，特别是那款销量很高但价格很低的平价面膜，以及那个大牌面膜。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_b",
+          "content": "查看平价玻尿酸补水面膜的成分表和详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_b",
+            "name": "平价玻尿酸补水面膜（20片装）",
+            "price": 39,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230000,
+            "rating": 4.5,
+            "review_count": 8900,
+            "reviews": []
+          },
+          "effect": "查看了商品 平价玻尿酸补水面膜（20片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "我已经看了润颜氨基酸面膜2次了，但还没仔细看成分表。作为成分党，我需要确认成分是否安全有效才能做决定。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "query": "成分表"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "作为成分党，我需要更多成分分析信息来帮助决定是否购买润颜氨基酸面膜。已经查看3次了，需要理性判断。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "烟酰胺面膜成分分析"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "烟酰胺面膜成分分析",
+          "results": [],
+          "effect": "搜索'烟酰胺面膜成分分析'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "润颜氨基酸面膜已经看了3次，但作为成分党，我需要看到详细的成分表和配方分析才能做决定。购买意向只有0.2，说明信息还不够充分。我应该去淘宝查看该产品的详细成分信息。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main"
+        },
+        "result": {
+          "success": false,
+          "error": "未知行为类型: view"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "作为成分党，我已经查看这款氨基酸面膜4次了，但购买意向只有0.2。刚才搜索烟酰胺面膜成分分析也没找到相关深度测评。理性来看，成分信息不够充分，反复查看多次仍下不了决心，说明不是真正需要的产品，应该放弃。",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "浏览但不购买"
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "我查看了润颜氨基酸面膜4次，是时候做最终决定了。但作为成分党，在购买前我需要确认成分配方是否适合我的肤质。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看商品详情和成分信息"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 232,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "已查看商品5次必须做决定。作为成分党，我需要成分信息支撑决策。让我搜索烟酰胺成分分析笔记，获取更多信息后再决定买或不买。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": null,
+          "content": null,
+          "query": "烟酰胺成分分析 功效"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "烟酰胺成分分析 功效",
+          "results": [],
+          "effect": "搜索'烟酰胺成分分析 功效'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "我在小红书看到这款氨基酸面膜推荐，但我已经反复查看润颜氨基酸面膜5次了，需要做最终决定。我的购买意向只有0.1，说明我并不想购买。成分党理性分析：虽然这款面膜有烟酰胺，但之前搜索烟酰胺成分分析没有找到可靠信息，我需要再搜索一下成分相关的真实测评。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸面膜成分分析 烟酰胺"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜成分分析 烟酰胺",
+          "results": [],
+          "effect": "搜索'氨基酸面膜成分分析 烟酰胺'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "作为成分党，我已经查看这款润颜氨基酸面膜5次了，必须做最终决定。看到小红书推荐含有烟酰胺，但缺乏详细的成分分析报告。购买意向只有0.1，还不够高。我需要做出决定：放弃或询问更多成分信息。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "想问一下这款面膜的烟酰胺浓度是多少呀？排名第几位？除了烟酰胺还有其他美白成分吗？成分党表示很好奇[偷笑]"
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_036b8bd9",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.15
+        }
+      }
+    ]
+  },
+  "rational_buyer_02": {
+    "id": "rational_buyer_02",
+    "persona_name": "理性消费者小华",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "作为理性消费者，我需要先了解各产品的口碑和测评信息。目前看到三款面膜，价格从39到89元不等。我会先搜索一下润颜氨基酸面膜的测评和用户评价，了解实际使用效果后再做决定。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "润颜氨基酸面膜 测评 使用体验",
+          "target_id": "product_main"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'润颜氨基酸面膜 测评 使用体验',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "润颜氨基酸面膜是我搜索的目标商品，但销量只有230，评分4.6。作为理性消费者，我需要先查看商品详情和用户评价，了解实际使用体验后再做判断。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜商品详情和评价"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "这篇笔记看起来像是推广内容，数据不太自然（5点赞6评论5收藏）。作为理性消费者，我只看到两周的反馈，需要找更多真实的使用体验和长期测评。打算搜索一下这款面膜的真实评价。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "润颜氨基酸面膜 真实测评 长期使用"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 真实测评 长期使用",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 真实测评 长期使用'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.15,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "这篇笔记看起来是推广内容，点赞评论都很少。我之前搜索长期使用测评没找到结果，需要再看更多真实用户反馈，不能只看这一个博主的说辞。",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "看到这篇种草笔记，但只有5点赞，内容比较像推广。对于我这种理性消费者，需要更多真实用户的使用体验和长期反馈才能做决定。目前购买意向还很低（0.1），想再搜索更多真实评价。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "润颜氨基酸面膜 真实用户评价 避坑"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 真实用户评价 避坑",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 真实用户评价 避坑'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "润颜氨基酸面膜的销量很低（230），而且之前搜索真实评价都没结果。作为理性消费者，我想看看其他两个竞品的详情，对比一下再决定是否放弃这款",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_a",
+          "content": "查看某大牌氨基酸修护面膜详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_a",
+            "name": "某大牌氨基酸修护面膜（5片装）",
+            "price": 89,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 120002,
+            "rating": 4.8,
+            "review_count": 5600,
+            "reviews": []
+          },
+          "effect": "查看了商品 某大牌氨基酸修护面膜（5片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "刚才看到的笔记更像是推广内容，不是真实的测评报告。我需要继续搜索长期使用体验和真实评价，这样才能做出理性判断。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 长期使用 真实测评",
+          "target_id": null,
+          "content": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 长期使用 真实测评",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 长期使用 真实测评'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "这篇笔记看起来像是推广内容，点赞才8个，不太可信。作为理性消费者，我应该看看评论区有没有真实用户反馈，或者搜索更客观的测评内容。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "请问这款面膜是哪家的？用了两周真的不刺激吗？求真实反馈",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_6d63af2c",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "我之前在这篇笔记下评论过了，现在想找更多真实用户的长期使用反馈。之前的搜索没有找到有效信息，需要换个关键词再试试。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 踩雷 真实评价",
+          "content": "",
+          "target_id": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 踩雷 真实评价",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 踩雷 真实评价'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "我之前搜索的关键词都没找到有用结果。现在看到三款面膜，价格从39到89元不等。润颜氨基酸面膜是10片装¥59，评分4.6，销量较低但口碑看起来还可以。我应该搜索一下这款产品的真实评价再做决定。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "润颜氨基酸面膜 真实评价 好不好用"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'润颜氨基酸面膜 真实评价 好不好用',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "我已经在这篇笔记下留过评论，现在想看看其他用户的真实反馈，了解这款产品的优缺点，作为理性决策的参考",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "查看评论区其他用户的真实使用体验和评价"
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "我需要更详细地了解这些产品的具体信息和用户评价，特别是润颜氨基酸面膜，这是我之前搜索过的产品，想深入了解后再做决定。作为理性消费者，我会综合对比后再决策。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜（10片装）详情",
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 235,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.3
+        }
+      }
+    ]
+  },
+  "rational_buyer_01": {
+    "id": "rational_buyer_01",
+    "persona_name": "理性消费者小华",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "这个面膜笔记点赞评论都很少，作为一个理性消费者，我不太信任网红推荐。我需要搜索更多测评信息，了解品牌、价格和真实使用体验，再决定是否继续关注。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 测评 对比"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 测评 对比",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 测评 对比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.1,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "这篇笔记有5赞6评论，数据偏低。作为理性消费者，我想先看看评论区其他用户的真实使用反馈，特别是长期使用效果。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "请问这款面膜是哪个品牌的？用了两周真的能看到美白效果吗？求真实反馈[作揖]"
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_6f3f8044",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "我需要看更多真实用户的使用体验再做判断，单纯看推荐不够理性",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "想问一下这款面膜用多久能看到效果？价格大概多少呀？",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_75def040",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "我需要看看其他用户的真实评价再决定，这个面膜虽然宣称温和，但作为理性消费者我需要更多真实反馈",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "想问一下这款面膜长期使用效果怎么样？有没有副作用？",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_2f5b2f71",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "我已经看了这个氨基酸面膜笔记，也评论互动了3次。作为理性消费者，我需要看更多真实用户的使用体验，特别是长期使用的反馈，才能判断是否值得购买。现在购买意向只有0.15，还不够。",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "查看评论区真实用户反馈",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "我之前已经对这个产品评论了3次询问细节，现在想看看是否有其他用户的真实使用体验分享，或者搜索其他同类产品进行对比。作为理性消费者，我需要更多真实测评和对比信息。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "平价氨基酸面膜 推荐 测评"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "平价氨基酸面膜 推荐 测评",
+          "results": [],
+          "effect": "搜索'平价氨基酸面膜 推荐 测评'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "这篇笔记提到了两周使用体验，但我想看更多测评和长期使用报告，搜索更具体的测评信息来帮助决策",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸温和面膜 测评 长期使用"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和面膜 测评 长期使用",
+          "results": [],
+          "effect": "搜索'氨基酸温和面膜 测评 长期使用'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "我需要更多关于产品的信息来做出理性决策。看到润颜氨基酸面膜价格适中，评分4.6，想查看详细成分和用户评价，特别是长期使用的反馈。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情和评价",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 232,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "这个帖子推荐的氨基酸面膜看起来不错，但没有说具体是什么品牌。我作为理性消费者需要了解更多细节才能判断是否值得购买，应该评论问一下具体产品和价格信息。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "请问博主推荐的是哪个品牌的氨基酸面膜呀？价格大概多少一片？适合学生党吗？感谢分享~",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_a0581758",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "我需要看看其他用户的真实评价，特别是长期使用的反馈，这样才能做出理性判断",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "查看评论区其他用户的使用体验和评价"
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "这个帖子有24条评论，可以看看其他用户的真实使用反馈。作为理性消费者，我更相信普通用户的体验分享，而不是纯粹的推广内容。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "想问一下这款面膜是哪个品牌的？用了两周效果明显吗？敏感肌会不会有刺痛感？",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_1253a631",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "我之前搜索氨基酸面膜测评没有结果，现在看到三个选项。某大牌价格高但评分高，润颜氨基酸面膜中等价位。我需要更多信息来做决定，想再搜索一下相关产品的用户评价和使用体验。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "润颜氨基酸面膜 真实评价 好不好用"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'润颜氨基酸面膜 真实评价 好不好用',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.25
+        }
+      }
+    ]
+  },
+  "impulsive_buyer_02": {
+    "id": "impulsive_buyer_02",
+    "persona_name": "冲动消费者小林",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "那个平价玻尿酸面膜销量23万+也太火了吧！20片才39块，感觉超划算，先点进去看看效果怎么样",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_b"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_b",
+            "name": "平价玻尿酸补水面膜（20片装）",
+            "price": 39,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230000,
+            "rating": 4.5,
+            "review_count": 8900,
+            "reviews": []
+          },
+          "effect": "查看了商品 平价玻尿酸补水面膜（20片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "这个面膜看起来不错，也是玻尿酸的！但是只有5个赞好像不是很火...让我搜索看看有没有更多推荐",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "玻尿酸补水面膜平价"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "玻尿酸补水面膜平价",
+          "results": [],
+          "effect": "搜索'玻尿酸补水面膜平价'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "这个面膜看起来好棒！氨基酸+玻尿酸+烟酰胺，敏感肌也能用，还能提亮肤色。正好我想买补水面膜，这个效果描述太心动了！先收藏看看能不能找到同款。",
+        "action": {
+          "type": "collect",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": null,
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "collect",
+          "target_id": "post_dcd7ffa2",
+          "effect": "收藏了 post_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.7,
+          "purchase_intent": 0.5
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "这个氨基酸面膜看起来好适合我！敏感肌可用，还有烟酰胺能美白，评论区也好多人互动说好用。我得搜一下看看有没有同款在卖，冲动消费一把！",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸温和面膜 烟酰胺 补水"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和面膜 烟酰胺 补水",
+          "results": [],
+          "effect": "搜索'氨基酸温和面膜 烟酰胺 补水'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.75,
+          "purchase_intent": 0.6
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "这个平价玻尿酸面膜好便宜啊，20片装才39块，销量23万肯定很多人买过。评分4.5也不错，想看看实物图和使用效果怎么样",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_b",
+          "content": "查看平价玻尿酸补水面膜详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_b",
+            "name": "平价玻尿酸补水面膜（20片装）",
+            "price": 39,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230000,
+            "rating": 4.5,
+            "review_count": 8900,
+            "reviews": []
+          },
+          "effect": "查看了商品 平价玻尿酸补水面膜（20片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.7,
+          "purchase_intent": 0.65
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "这款平价玻尿酸面膜真的超划算！39块20片，销量23万肯定没问题。之前看了两次，这次直接加购物车准备下单算了，省得纠结！",
+        "action": {
+          "type": "add_cart",
+          "platform": "taobao",
+          "target_id": "competitor_b",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "add_cart",
+          "target_id": "competitor_b",
+          "effect": "加购了 平价玻尿酸补水面膜（20片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.85,
+          "purchase_intent": 0.75
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "我已经加购了这个平价玻尿酸面膜好几次了，购买意向也到0.75了，不能再犹豫了！这个20片装真的很划算，直接下单吧！",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "competitor_b",
+          "content": "直接购买已加购的平价玻尿酸补水面膜（20片装）"
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_945cccc2",
+          "effect": "购买了 平价玻尿酸补水面膜（20片装）（¥39）"
+        },
+        "internal_state": {
+          "interest_level": 0.9,
+          "purchase_intent": 0.95
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "我已经加了购物车那款平价的玻尿酸面膜，39块20片超划算！虽然刚才搜索结果里看到有个89块的大牌看起来很厉害，但我已经买了平价的了，不想再纠结了。购买意向很强，直接下单吧！",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "competitor_b",
+          "content": "平价玻尿酸补水面膜（20片装）",
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_6091a246",
+          "effect": "购买了 平价玻尿酸补水面膜（20片装）（¥39）"
+        },
+        "internal_state": {
+          "interest_level": 0.9,
+          "purchase_intent": 0.95
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "我已经买了平价玻尿酸面膜了，不需要再重复购买了。虽然润颜氨基酸面膜看起来也不错，但我已经买好了，就不纠结了。",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "competitor_b",
+          "content": "已购买平价玻尿酸补水面膜"
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_9b4dc9ea",
+          "effect": "购买了 平价玻尿酸补水面膜（20片装）（¥39）"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.95
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "我之前已经买了3次平价玻尿酸面膜了，但还是想买！这个润颜氨基酸面膜看起来也很好看，10片装59元性价比也不错，评分4.6挺高的。干脆再买一单算了！",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "润颜氨基酸面膜（10片装）"
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_44adf8c4",
+          "effect": "购买了 润颜氨基酸面膜（10片装）（¥59）"
+        },
+        "internal_state": {
+          "interest_level": 0.95,
+          "purchase_intent": 0.95
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "这个平价玻尿酸面膜我已经买过3次了，真的很好用！正好家里快用完了，看到有活动再买一波算了，省得下次再找",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "competitor_b",
+          "content": "平价玻尿酸补水面膜（20片装）¥39"
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_02d2842c",
+          "effect": "购买了 平价玻尿酸补水面膜（20片装）（¥39）"
+        },
+        "internal_state": {
+          "interest_level": 0.95,
+          "purchase_intent": 0.95
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "这款氨基酸面膜看起来好棒啊！敏感肌专用，还有烟酰胺可以美白，我已经买了很多面膜但还是想买。购买意向已经达到0.95，必须做个决定了。",
+        "action": {
+          "type": "browse",
+          "platform": "taobao",
+          "target_id": "competitor_b",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.95,
+          "purchase_intent": 0.95
+        }
+      }
+    ]
+  },
+  "price_hunter_01": {
+    "id": "price_hunter_01",
+    "persona_name": "比价达人小强",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "这个面膜推荐看起来还行，但我不会盲目相信。我需要先搜索对比一下这个品类的产品，了解市场价格区间和不同品牌的性价比，不能只看一个推荐就下单。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸面膜 性价比 对比 测评"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 性价比 对比 测评",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 性价比 对比 测评'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "这篇笔记只推荐了产品，但没有价格信息，也没有性价比分析。我需要找有价格对比和测评的内容，不能只看推荐就下决定。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": null,
+          "content": null,
+          "query": "氨基酸面膜 价格对比 测评 性价比"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 价格对比 测评 性价比",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 价格对比 测评 性价比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "我需要仔细看看这几个产品的具体成分和功效，不能只看价格和销量。之前搜索没找到合适的测评，现在看到这几个选项，应该先深入了解产品详情再做判断。59元10片的润颜氨基酸面膜看起来中等价位，先看看具体成分功效是否符合需求。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情",
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "这个笔记没有价格信息，也没有对比测评，不够全面。我需要继续搜索更详细的性价比对比内容，或者去淘宝看价格。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸面膜 测评 性价比 平价 推荐"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 测评 性价比 平价 推荐",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 测评 性价比 平价 推荐'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "在淘宝搜不到合适的氨基酸面膜测评和性价比分析。之前的搜索都无功而返。作为比价达人，我需要更多真实用户评价来判断这个平价产品的实际效果。应该去小红书看看有没有相关的测评笔记或用户反馈，这样能更好地判断润颜氨基酸面膜的真正性价比。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": null,
+          "content": null,
+          "query": "润颜氨基酸面膜 测评 真实评价"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'润颜氨基酸面膜 测评 真实评价',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "这篇笔记没有提到具体价格，信任KOL是false，不太可信。之前搜索测评结果都是0，不如去淘宝看看这个润颜氨基酸面膜的实际价格和用户评价，做个真实的价格对比。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "润颜氨基酸面膜 价格"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 价格",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 价格'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "这篇笔记推的是氨基酸面膜，但没提具体品牌和价格。我需要找到真正平价的产品，光种草不够，得看实际价格和测评。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "平价氨基酸面膜 学生党 性价比 真实测评"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "平价氨基酸面膜 学生党 性价比 真实测评",
+          "results": [],
+          "effect": "搜索'平价氨基酸面膜 学生党 性价比 真实测评'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "我已经搜索了这个润颜氨基酸面膜多次，但没有仔细看过详情。作为比价达人，我应该先仔细查看这个商品的详情、成分和买家评价，确认是否真的值得买。同时也可以对比一下更便宜的玻尿酸面膜，毕竟我价格敏感度很高。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 232,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.45,
+          "purchase_intent": 0.35
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "我需要更多了解润颜氨基酸面膜的具体价格和用户评价，之前搜索价格没找到，现在去淘宝看看这个产品的详细价格信息。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "润颜氨基酸面膜 价格 优惠券"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 价格 优惠券",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 价格 优惠券'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.35
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "我需要更多了解这款面膜的实际效果和价格，虽然看到一篇测评笔记，但还没看到具体价格信息。作为比价达人，我应该先在小红书搜索更多真实评价和价格信息，然后再去淘宝比价。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "润颜氨基酸面膜 真实评价 性价比"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 真实评价 性价比",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 真实评价 性价比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.35
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "润颜面膜59元10片，单片5.9元，价格中等。大牌17.8元/片太贵，玻尿酸1.95元/片最便宜。我需要看看这个润颜面膜的真实评价和成分，确认是否值得买。还没看过详情，先看详情再决定。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情和用户评价"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 234,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.45,
+          "purchase_intent": 0.35
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "这个产品已经查了3次，搜索相关评价和价格都没结果。购买意向只有0.35，不够高。作为理性消费者，既然找不到足够的比价信息支撑决策，应该放弃这款，去淘宝搜索更低价或同类产品。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "氨基酸面膜 平价 学生党 性价比"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 平价 学生党 性价比",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 平价 学生党 性价比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.2
+        }
+      }
+    ]
+  },
+  "impulsive_buyer_04": {
+    "id": "impulsive_buyer_04",
+    "persona_name": "冲动消费者小林",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "这个面膜看起来好棒！敏感肌可用，还有玻尿酸和烟酰胺，用了两周效果这么好，我也想买来试试看！先点个赞收藏一下",
+        "action": {
+          "type": "like",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "like",
+          "target_id": "post_dcd7ffa2",
+          "effect": "点赞了 post_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.6,
+          "purchase_intent": 0.4
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "这款面膜看起来好好用！敏感肌福音，氨基酸+玻尿酸+烟酰胺成分感觉很靠谱。用了两周效果这么好，我也想试试。先收藏起来~",
+        "action": {
+          "type": "collect",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2"
+        },
+        "result": {
+          "success": true,
+          "action_type": "collect",
+          "target_id": "post_dcd7ffa2",
+          "effect": "收藏了 post_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.7,
+          "purchase_intent": 0.5
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "刚在小红书被种草了面膜，来淘宝看看。那款大牌修护面膜销量12万肯定很多人买，评分4.8也很高，想点进去看看具体效果怎么样",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_a",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_a",
+            "name": "某大牌氨基酸修护面膜（5片装）",
+            "price": 89,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 120000,
+            "rating": 4.8,
+            "review_count": 5600,
+            "reviews": []
+          },
+          "effect": "查看了商品 某大牌氨基酸修护面膜（5片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.7,
+          "purchase_intent": 0.75
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "我之前已经被种草了这款某大牌氨基酸修护面膜，销量12万+评分4.8很高，虽然89元5片有点小贵但品质应该有保障。购买意向已经0.75了，不能再犹豫了，直接买！",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "competitor_a",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_1a75435d",
+          "effect": "购买了 某大牌氨基酸修护面膜（5片装）（¥89）"
+        },
+        "internal_state": {
+          "interest_level": 0.85,
+          "purchase_intent": 1.0
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "哎呀我都已经买了那个¥89的面膜了！但是看到旁边那个¥39的平价玻尿酸面膜好便宜啊...不过算了，买都买了。让我看看还有没有其他想买的~",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "精华液"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'精华液',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.6,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "我之前买了那个大牌面膜，但现在看到更便宜的选项，有点后悔...算了算了，买都买了。还是看看精华液吧，之前搜索过但没下单，看看有没有被种草的",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "精华液"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'精华液',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "这个面膜看起来不错，我已经买过类似的面膜了，但还是想看看这个怎么样。烟酰胺我之前没用过，有点担心适不适合敏感肌使用。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "请问敏感肌可以用吗？烟酰胺会不会刺激呀？",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_cab239d0",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.4
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "这个面膜推荐看起来和我之前买的好像差不多，但是这个帖子写得真的很心动！氨基酸+玻尿酸+烟酰胺，敏感肌亲测有效...不过我之前已经买过了，先点个赞收藏一下，以后再用完了可以回购这个！",
+        "action": {
+          "type": "like",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "like",
+          "target_id": "post_dcd7ffa2",
+          "effect": "点赞了 post_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.7,
+          "purchase_intent": 0.5
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "刚买了89的5片装，现在看到59的10片装更划算！片数多一半价格还便宜30块，是不是我买亏了？好想再买这个啊...",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 232,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.8,
+          "purchase_intent": 0.75
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "这个润颜氨基酸面膜我之前看过，59块10片装性价比不错，评分也有4.6。大牌那款虽然评分高但5片装要89太贵了。平价的那款虽然便宜但感觉品质一般。我就买这个吧！",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "购买 润颜氨基酸面膜（10片装）",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_96fae629",
+          "effect": "购买了 润颜氨基酸面膜（10片装）（¥59）"
+        },
+        "internal_state": {
+          "interest_level": 0.85,
+          "purchase_intent": 0.95
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "那个大牌面膜销量12万+评分4.8！肯定很多人推荐过，我想买来试试，反正也不贵太多",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "competitor_a",
+          "content": "购买 某大牌氨基酸修护面膜（5片装）¥89"
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_37d90a1c",
+          "effect": "购买了 某大牌氨基酸修护面膜（5片装）（¥89）"
+        },
+        "internal_state": {
+          "interest_level": 0.95,
+          "purchase_intent": 0.95
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "等等，我已经买了面膜了！上周才买了润颜氨基酸面膜和大牌修护面膜，不用再买了。虽然这篇文章推荐的看起来很好，但我现在不需要再买面膜啦～看看别的吧",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": null,
+          "content": null,
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      }
+    ]
+  },
+  "kol_beauty_01": {
+    "id": "kol_beauty_01",
+    "persona_name": "美妆KOL小雅",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "作为美妆KOL，我需要做面膜测评和对比，应该先多看几款产品了解市场行情，收集素材后再决定买哪款进行深度测评。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "补水面膜 测评 2024"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'补水面膜 测评 2024',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "这款氨基酸面膜主打敏感肌温和配方，成分包含氨基酸+玻尿酸+烟酰胺，作为KOL需要对比测评多个同类产品后再做专业判断，先收藏作为备选",
+        "action": {
+          "type": "collect",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": null,
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "collect",
+          "target_id": "post_dcd7ffa2",
+          "effect": "收藏了 post_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "这篇氨基酸面膜的成分搭配让我感兴趣，氨基酸+玻尿酸+烟酰胺的组合确实少见。作为理性消费者，我需要去淘宝搜索同款产品，看看价格和更多真实评价，不能只依赖单一KOL的推荐。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "氨基酸温和面膜 敏感肌 补水",
+          "target_id": null,
+          "content": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和面膜 敏感肌 补水",
+          "results": [],
+          "effect": "搜索'氨基酸温和面膜 敏感肌 补水'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.6,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "作为美妆KOL，我需要更全面了解这款产品。已经在小红书看到推荐，现在去淘宝看看实际价格和更多用户评价，方便后续做专业测评对比",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸温和面膜 敏感肌 补水 烟酰胺"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和面膜 敏感肌 补水 烟酰胺",
+          "results": [],
+          "effect": "搜索'氨基酸温和面膜 敏感肌 补水 烟酰胺'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "作为美妆KOL，我需要做更多的产品对比测评。这篇氨基酸面膜笔记我已经收藏了，现在搜索一些平价补水面膜做对比，为后续创作积累素材",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "平价补水面膜 对比测评 2024"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "平价补水面膜 对比测评 2024",
+          "results": [],
+          "effect": "搜索'平价补水面膜 对比测评 2024'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "这篇氨基酸面膜笔记正好符合我关注的成分解读和新品种草内容，但作为专业KOL需要了解更多细节。我会先评论询问产品详细信息，验证成分真实性，为后续是否深度测评做参考。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "感谢分享！想请问这款面膜的氨基酸具体是哪种表活？烟酰胺浓度是多少呀？另外和同价位其他敏感肌面膜相比，这款的核心优势是什么？"
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_4d8df856",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "作为美妆KOL，我已经收藏和评论过这篇笔记了，但还需要找更多专业测评内容来验证。之前搜索平价补面膜没找到结果，应该换个更精准的搜索词，比如具体的品牌或者对比测评",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 对比测评 成分分析"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 对比测评 成分分析",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 对比测评 成分分析'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "这条笔记营销感较强，作为专业KOL我更想找专业测评和成分分析内容。我可以看看笔记详情或者其他用户的专业评论。",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "查看笔记详情和评论区",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "作为美妆KOL，我需要查看产品的成分和功效介绍。润颜氨基酸面膜看起来是我在找的氨基酸面膜类型，先查看详情了解成分。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 232,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "这个氨基酸面膜笔记内容不错，我已经评论过了，现在点个赞表示认可。作为专业KOL需要多关注这类产品信息，为后续测评内容积累素材。",
+        "action": {
+          "type": "like",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2"
+        },
+        "result": {
+          "success": true,
+          "action_type": "like",
+          "target_id": "post_dcd7ffa2",
+          "effect": "点赞了 post_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "作为美妆KOL，我需要了解产品的具体成分才能做专业测评。已经查看过润颜氨基酸面膜的基本信息，现在需要深入看它的成分表和功效描述，以便判断是否值得推荐给粉丝。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情，了解成分和功效"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 234,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "作为美妆KOL，我需要更专业的成分分析。目前购买意向只有0.3，我应该搜索更多成分相关的笔记来辅助决策，而不是急于下单。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "润颜氨基酸面膜 成分分析 真实测评"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 成分分析 真实测评",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 成分分析 真实测评'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.3
+        }
+      }
+    ]
+  },
+  "price_hunter_04": {
+    "id": "price_hunter_04",
+    "persona_name": "比价达人小强",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "一篇种草笔记而已，说得再好听也不能全信。我得找找有没有客观的测评和对比分析，看看这个产品到底值不值，还要去淘宝搜同款比价。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 测评 对比 性价比"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 测评 对比 性价比",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 测评 对比 性价比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.1,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "看到种草笔记但我需要理性比价，先搜索产品具体信息，然后去淘宝对比价格",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸面膜 性价比 推荐"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 性价比 推荐",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 性价比 推荐'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "这三个选项价格差好多！20片39元 vs 5片89元，价格差了将近6倍。我得看看详细参数和评价，了解为什么差价这么大，到底有什么区别值不值。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "淘宝上没看到靠谱的测评和详细对比，润颜氨基酸面膜销量太低不敢轻易下手。我需要去小红书看看其他用户的真实使用反馈和性价比分析，这样决策更理性。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸面膜 测评 性价比 使用反馈"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'氨基酸面膜 测评 性价比 使用反馈',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "这篇笔记主要是推荐，但没有价格和详细性价比分析。我是价格敏感型消费者，需要了解实际价格和更多用户反馈才能做决定。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸面膜 真实测评 优缺点"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 真实测评 优缺点",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 真实测评 优缺点'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "这种KOL推荐笔记看看就好，我更相信实际用户的客观评价。继续找找有没有真正做测评对比的笔记，或者去淘宝看看实际价格。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸面膜 真实测评 优缺点 避雷"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 真实测评 优缺点 避雷",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 真实测评 优缺点 避雷'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.15
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "我之前搜索了氨基酸面膜的测评但没找到太多有用信息。现在看到三款产品，我需要深入了解润颜氨基酸面膜（10片装）的真实用户评价，虽然之前看过但没有仔细研究评价区。玻尿酸面膜虽然便宜但不是氨基酸的，我需要确认润颜这款是否值得买。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜的商品详情和用户评价",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 231,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.25,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "我需要找到更多真实测评和不同品牌的对比，面膜我已经看了2次，但还没有充分比较。让我搜索更多测评内容。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": null,
+          "content": null,
+          "query": "氨基酸面膜 测评 对比 性价比 真实反馈"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 测评 对比 性价比 真实反馈",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 测评 对比 性价比 真实反馈'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "这篇笔记点赞只有8，比较少，可能不够真实或热门。我是比价达人，不能只看一篇笔记就做决定。我需要去淘宝搜索同款产品进行比价，看看价格和评价如何。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "润颜氨基酸面膜 10片装 价格 对比"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 10片装 价格 对比",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 10片装 价格 对比'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "我已经看了润颜氨基酸面膜2次了，¥59/10片的单价是5.9元，比那个¥89/5片的大牌（17.8元/片）便宜很多。但我需要看看具体详情和用户评价，确认这个产品是否真的性价比高。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜10片装详情和用户评价"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 232,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.35,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "我已经查看这个润颜氨基酸面膜3次了，购买意向只有0.25，说明我并不真的想下单。搜索测评也没搜到，缺乏真实反馈支撑。三个选择里，竞品b虽然便宜但不是氨基酸面膜，我需要的是氨基酸的。与其勉强买，不如直接放弃这个，去找其他真正有性价比的替代品。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸面膜 性价比 测评"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'氨基酸面膜 性价比 测评',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.1,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "我已经查看这个润颜氨基酸面膜3次了，购买意向还是只有0.1，说明我并不太想买。作为价格敏感者，我应该再去淘宝比价看看实际价格，如果价格不合适就直接放弃。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "润颜氨基酸面膜 10片装 价格"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "润颜氨基酸面膜 10片装 价格",
+          "results": [],
+          "effect": "搜索'润颜氨基酸面膜 10片装 价格'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.2,
+          "purchase_intent": 0.1
+        }
+      }
+    ]
+  },
+  "impulsive_buyer_03": {
+    "id": "impulsive_buyer_03",
+    "persona_name": "冲动消费者小林",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "这个面膜看起来好棒！氨基酸+玻尿酸+烟酰胺，听起来就很专业，而且说是敏感肌救星，正好我皮肤比较敏感。用了两周就能看到效果，好心动啊！想先收藏起来，或者去淘宝搜搜看有没有同款。",
+        "action": {
+          "type": "collect",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": null,
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "collect",
+          "target_id": "post_dcd7ffa2",
+          "effect": "收藏了 post_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.7,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "我刚在小红书被种草了面膜，现在在淘宝看到有面膜在卖。那个大牌的面膜评分好高4.8分，看起来很专业的样子，我想点进去看看详情，被KOL推荐的东西应该不错",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_a"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_a",
+            "name": "某大牌氨基酸修护面膜（5片装）",
+            "price": 89,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 120000,
+            "rating": 4.8,
+            "review_count": 5600,
+            "reviews": []
+          },
+          "effect": "查看了商品 某大牌氨基酸修护面膜（5片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.4
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "这篇面膜笔记好种草！氨基酸+玻尿酸+烟酰胺听起来就很全能，敏感肌姐妹推荐得很真诚。我之前不是也看过大牌氨基酸面膜吗？正好可以搜索对比看看有没有同款平替。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸温和面膜 敏感肌 补水"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和面膜 敏感肌 补水",
+          "results": [],
+          "effect": "搜索'氨基酸温和面膜 敏感肌 补水'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.6,
+          "purchase_intent": 0.5
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "这篇笔记好种草啊！之前搜索氨基酸面膜没找到，这款看起来就是我在找的。想知道更多使用感受，或者直接去淘宝搜同款",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "求链接！这款面膜叫什么名字呀？",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_d57ed056",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.65,
+          "purchase_intent": 0.55
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "我之前搜了氨基酸温和面膜但没找到，现在看到这几个选择。那个大牌的我之前看过但还没决定要不要买。另外两个也是面膜，我得详细看看哪个更适合我敏感肌用。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 230,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.6,
+          "purchase_intent": 0.55
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "这个博主推荐的氨基酸面膜看起来好棒！已经收藏了，顺便给她点个赞支持下~",
+        "action": {
+          "type": "like",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": null,
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "like",
+          "target_id": "post_dcd7ffa2",
+          "effect": "点赞了 post_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.75,
+          "purchase_intent": 0.65
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "之前已经看过润颜氨基酸面膜了，59元10片价格挺划算的，而且我之前还点赞评论过那个种草笔记，应该挺靠谱的。购买意向已经0.65了差不多了，直接买吧！",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "润颜氨基酸面膜（10片装）",
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_cf8fb7a4",
+          "effect": "购买了 润颜氨基酸面膜（10片装）（¥59）"
+        },
+        "internal_state": {
+          "interest_level": 0.75,
+          "purchase_intent": 0.9
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "咦，这个大牌面膜销量12万，评分4.8好高啊！才89块5片，虽然比我买的贵，但好多人买啊...好奇看看对比一下",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_a",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_a",
+            "name": "某大牌氨基酸修护面膜（5片装）",
+            "price": 89,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 120002,
+            "rating": 4.8,
+            "review_count": 5600,
+            "reviews": []
+          },
+          "effect": "查看了商品 某大牌氨基酸修护面膜（5片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.7,
+          "purchase_intent": 0.4
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "这个面膜笔记我之前已经点赞评论过了，产品也看了但还没决定买。购买意向才0.4，还没到非买不可的程度。让我再看看有没有其他产品，或者先把感兴趣的收藏一下。",
+        "action": {
+          "type": "collect",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "collect",
+          "target_id": "post_dcd7ffa2",
+          "effect": "收藏了 post_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.4
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "这个博主推荐的氨基酸面膜好棒啊！不过我已经买了润颜的了...但还是想关注她，以后看更多种草内容！",
+        "action": {
+          "type": "follow",
+          "platform": "xiaohongshu",
+          "target_id": "user_dcd7ffa2",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "follow",
+          "target_id": "user_dcd7ffa2",
+          "effect": "关注了 user_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "这款面膜看起来真的很不错，成分有氨基酸+玻尿酸+烟酰胺，敏感肌友好。之前买的润颜面膜还没用完，但这个看起来更专业。不过我得再看看是不是同款，先搜索一下比较比较。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸温和面膜 敏感肌 玻尿酸 烟酰胺"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和面膜 敏感肌 玻尿酸 烟酰胺",
+          "results": [],
+          "effect": "搜索'氨基酸温和面膜 敏感肌 玻尿酸 烟酰胺'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.45
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "这个大牌面膜我看了2次了，评分4.8好高，销量12万肯定好用。虽然我已经有润颜面膜了，但这个看起来更专业...想再仔细看看详情",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_a",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_a",
+            "name": "某大牌氨基酸修护面膜（5片装）",
+            "price": 89,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 120004,
+            "rating": 4.8,
+            "review_count": 5600,
+            "reviews": []
+          },
+          "effect": "查看了商品 某大牌氨基酸修护面膜（5片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.7,
+          "purchase_intent": 0.55
+        }
+      }
+    ]
+  },
+  "kol_beauty_02": {
+    "id": "kol_beauty_02",
+    "persona_name": "美妆KOL小雅",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "作为美妆KOL，我需要找有测评价值的产品。那款润颜氨基酸面膜销量较低但评分不错，可能是新品牌，有测评潜力。我先搜索看看有没有更多选择，特别是新品或成分有特色的产品。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "query": "氨基酸面膜 新品 测评",
+          "target_id": "",
+          "content": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "results": [
+            {
+              "product_id": "competitor_a",
+              "name": "某大牌氨基酸修护面膜（5片装）",
+              "price": 89,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 120004,
+              "rating": 4.8,
+              "review_count": 5600
+            },
+            {
+              "product_id": "competitor_b",
+              "name": "平价玻尿酸补水面膜（20片装）",
+              "price": 39,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 230005,
+              "rating": 4.5,
+              "review_count": 8900
+            },
+            {
+              "product_id": "product_main",
+              "name": "润颜氨基酸面膜（10片装）",
+              "price": 59,
+              "category": "面膜",
+              "description": "温和不刺激 成分干净 敏感肌可用",
+              "key_ingredients": [
+                "氨基酸",
+                "玻尿酸",
+                "烟酰胺"
+              ],
+              "selling_points": [
+                "温和不刺激",
+                "成分干净",
+                "敏感肌可用"
+              ],
+              "sales": 236,
+              "rating": 4.6,
+              "review_count": 12
+            }
+          ],
+          "effect": "搜索'氨基酸面膜 新品 测评',找到3件商品"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.0
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "这篇氨基酸面膜笔记看起来不错，适合敏感肌人群，作为KOL我需要了解更多信息。作为理性决策者，我应该先互动获取更多细节，而不是冲动购买。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "这款氨基酸面膜的氨基酸具体是什么来源呀？烟酰胺的浓度是多少呢？用完两周是早晚都敷吗？",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_522d9c37",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "这条氨基酸面膜笔记我之前已经评论过了，作为美妆KOL我需要持续关注新品。我应该去淘宝查看之前搜索到的3件氨基酸面膜商品，进行更专业的对比分析。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸面膜 新品 测评"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 新品 测评",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 新品 测评'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "这篇氨基酸面膜测评内容不错，我已经评论过了。现在想进一步了解这个产品的实际效果和更多用户反馈，可以搜索相关笔记或查看博主其他内容。",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "这条氨基酸面膜笔记我之前已经评论过了，作为专业测评角度，可以点赞支持一下同行的内容，然后搜索更多同类产品做对比测评，这是我一直关注的方向",
+        "action": {
+          "type": "like",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "like",
+          "target_id": "post_dcd7ffa2",
+          "effect": "点赞了 post_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "这是一款新品氨基酸面膜，作为KOL我需要了解更多信息。虽然已经点赞评论过，但需要看看其他测评和对比，才能判断是否值得推荐给粉丝。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "氨基酸面膜 对比测评 敏感肌"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸面膜 对比测评 敏感肌",
+          "results": [],
+          "effect": "搜索'氨基酸面膜 对比测评 敏感肌'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "这篇氨基酸面膜笔记提到了氨基酸+玻尿酸+烟酰胺的成分组合，作为专业测评需要进一步了解产品详情。我已经点赞评论过，可以先收藏这篇笔记方便后续参考，同时搜索更多同类产品做对比。",
+        "action": {
+          "type": "collect",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "collect",
+          "target_id": "post_dcd7ffa2",
+          "effect": "收藏了 post_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.2
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "之前搜索氨基酸面膜没找到合适的，今天在淘宝看到这款润颜氨基酸面膜，10片装¥59，正好符合我的需求。作为美妆KOL，我需要先查看产品详情和成分，再做判断。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 232,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.25
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "作为美妆KOL，我需要做更多产品调研。刚才搜索结果为0，我应该换个关键词搜索，看看其他博主的面膜测评，对比成分和价格后再决定是否推荐给粉丝。",
+        "action": {
+          "type": "search",
+          "platform": "xiaohongshu",
+          "query": "平价氨基酸面膜 真实测评 成分分析",
+          "target_id": null,
+          "content": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "平价氨基酸面膜 真实测评 成分分析",
+          "results": [],
+          "effect": "搜索'平价氨基酸面膜 真实测评 成分分析'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "作为美妆KOL，我需要了解更详细的成分信息再做判断。这篇笔记提到氨基酸+玻尿酸+烟酰胺，但我需要知道具体浓度和配方体系，可以在评论区追问一下。",
+        "action": {
+          "type": "comment",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "感谢分享！想请教一下这款面膜的氨基酸具体是哪种型号呀？烟酰胺的浓度是多少呢？配方里有没有香精或防腐剂？对于成分党来说这些信息很重要～",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "comment",
+          "comment_id": "cmt_790f8832",
+          "effect": "在 post_dcd7ffa2 下评论了"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "这篇氨基酸面膜笔记正好符合我的专业关注点——新品测评和成分分析。博主提到的氨基酸+玻尿酸+烟酰胺配方确实有专业度，我应该点赞支持这类专业内容，同时也可以搜索更多同类产品做对比测评。",
+        "action": {
+          "type": "like",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "like",
+          "target_id": "post_dcd7ffa2",
+          "effect": "点赞了 post_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.5,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "作为美妆KOL，我需要深入了解润颜氨基酸面膜的成分和功效，为后续测评做准备。查看商品详情获取成分信息。",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "查看润颜氨基酸面膜商品详情，获取成分表和功效说明",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "product_main",
+            "name": "润颜氨基酸面膜（10片装）",
+            "price": 59,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 235,
+            "rating": 4.6,
+            "review_count": 12,
+            "reviews": []
+          },
+          "effect": "查看了商品 润颜氨基酸面膜（10片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.35
+        }
+      }
+    ]
+  },
+  "impulsive_buyer_01": {
+    "id": "impulsive_buyer_01",
+    "persona_name": "冲动消费者小林",
+    "memories_count": 12,
+    "actions_count": 12,
+    "internal_state": {
+      "interest_level": 0.0,
+      "purchase_intent": 0.0
+    },
+    "action_log": [
+      {
+        "step": 0,
+        "thinking": "那个大牌面膜评分最高4.8，销量也12万了，应该很多人买。让我点进去看看有没有网红推荐和使用效果图",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_a",
+          "content": "查看某大牌氨基酸修护面膜详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_a",
+            "name": "某大牌氨基酸修护面膜（5片装）",
+            "price": 89,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 120000,
+            "rating": 4.8,
+            "review_count": 5600,
+            "reviews": []
+          },
+          "effect": "查看了商品 某大牌氨基酸修护面膜（5片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.3
+        }
+      },
+      {
+        "step": 1,
+        "thinking": "看到之前看过的大牌面膜在列表里，正好看看详情，5片装89元虽然有点贵但评分很高，冲动想买来试试",
+        "action": {
+          "type": "view",
+          "platform": "taobao",
+          "target_id": "competitor_a",
+          "content": "查看某大牌氨基酸修护面膜（5片装）详情"
+        },
+        "result": {
+          "success": true,
+          "action_type": "view",
+          "product": {
+            "product_id": "competitor_a",
+            "name": "某大牌氨基酸修护面膜（5片装）",
+            "price": 89,
+            "category": "面膜",
+            "description": "温和不刺激 成分干净 敏感肌可用",
+            "key_ingredients": [
+              "氨基酸",
+              "玻尿酸",
+              "烟酰胺"
+            ],
+            "selling_points": [
+              "温和不刺激",
+              "成分干净",
+              "敏感肌可用"
+            ],
+            "sales": 120000,
+            "rating": 4.8,
+            "review_count": 5600,
+            "reviews": []
+          },
+          "effect": "查看了商品 某大牌氨基酸修护面膜（5片装）"
+        },
+        "internal_state": {
+          "interest_level": 0.6,
+          "purchase_intent": 0.5
+        }
+      },
+      {
+        "step": 2,
+        "thinking": "这篇氨基酸面膜笔记好戳我！敏感肌救星+补水效果好+网红推荐，我之前看的大牌面膜也可以对比看看。有点想收藏这个笔记，也想再搜搜看有没有更多选择。",
+        "action": {
+          "type": "collect",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": null,
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "collect",
+          "target_id": "post_dcd7ffa2",
+          "effect": "收藏了 post_dcd7ffa2"
+        },
+        "internal_state": {
+          "interest_level": 0.7,
+          "purchase_intent": 0.6
+        }
+      },
+      {
+        "step": 3,
+        "thinking": "这篇笔记推荐的氨基酸面膜看起来好棒啊！成分有氨基酸+玻尿酸+烟酰胺，正好是我想要的。之前看的那款大牌面膜也可以对比一下，看看这个推荐的怎么样。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸温和面膜 玻尿酸 烟酰胺"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和面膜 玻尿酸 烟酰胺",
+          "results": [],
+          "effect": "搜索'氨基酸温和面膜 玻尿酸 烟酰胺'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.75,
+          "purchase_intent": 0.8
+        }
+      },
+      {
+        "step": 4,
+        "thinking": "这款大牌氨基酸面膜我已经看了2次了，确实很喜欢！89元买大牌不贵，而且购买意向已经很高了，不再犹豫直接下单！",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "competitor_a",
+          "content": "购买 某大牌氨基酸修护面膜（5片装）"
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_8103c871",
+          "effect": "购买了 某大牌氨基酸修护面膜（5片装）（¥89）"
+        },
+        "internal_state": {
+          "interest_level": 0.9,
+          "purchase_intent": 0.95
+        }
+      },
+      {
+        "step": 5,
+        "thinking": "之前已经买过这个大牌面膜了，用着还不错，今天看到又在推荐，刚好有活动可以再囤一点。59块的10片装也很划算，但还是喜欢之前买的那个89的！",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "润颜氨基酸面膜（10片装）¥59"
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_cc822366",
+          "effect": "购买了 润颜氨基酸面膜（10片装）（¥59）"
+        },
+        "internal_state": {
+          "interest_level": 0.9,
+          "purchase_intent": 0.95
+        }
+      },
+      {
+        "step": 6,
+        "thinking": "这个平价玻尿酸面膜好便宜啊！20片才¥39，容量大价格低，看销量23万评分4.5也不错，正好可以日常敷一敷，买了反正不亏！",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "competitor_b",
+          "content": "平价玻尿酸补水面膜（20片装）",
+          "query": null
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_f5670111",
+          "effect": "购买了 平价玻尿酸补水面膜（20片装）（¥39）"
+        },
+        "internal_state": {
+          "interest_level": 0.9,
+          "purchase_intent": 0.95
+        }
+      },
+      {
+        "step": 7,
+        "thinking": "这个帖子我之前收藏过，内容写得很心动，但回顾一下我已经买了3款面膜了！两款氨基酸的一款玻尿酸的，根本用不完。购买意向虽然很高，但我得冷静一下，不能再冲动了。",
+        "action": {
+          "type": "browse",
+          "platform": "xiaohongshu",
+          "target_id": "post_dcd7ffa2",
+          "content": "再次查看笔记内容"
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.7,
+          "purchase_intent": 0.6
+        }
+      },
+      {
+        "step": 8,
+        "thinking": "这款氨基酸面膜看起来好棒啊！敏感肌救星，氨基酸+玻尿酸+烟酰胺三大成分，而且评论区好多人说好用。我已经买了3款面膜了，但这个看起来更专业...不过我得先看看淘宝有没有同款，了解一下价格再决定。",
+        "action": {
+          "type": "search",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "",
+          "query": "氨基酸温和面膜 敏感肌 玻尿酸烟酰胺"
+        },
+        "result": {
+          "success": true,
+          "action_type": "search",
+          "query": "氨基酸温和面膜 敏感肌 玻尿酸烟酰胺",
+          "results": [],
+          "effect": "搜索'氨基酸温和面膜 敏感肌 玻尿酸烟酰胺'，找到0条结果"
+        },
+        "internal_state": {
+          "interest_level": 0.75,
+          "purchase_intent": 0.7
+        }
+      },
+      {
+        "step": 9,
+        "thinking": "我已经买了3种面膜了！但是这个大牌氨基酸面膜我之前买过用着不错，现在看到了又想买。购买意向0.7已经超过阈值了，而且这个已经看了2次，不能再犹豫了。",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "competitor_a",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "purchase",
+          "order_id": "order_01f66e05",
+          "effect": "购买了 某大牌氨基酸修护面膜（5片装）（¥89）"
+        },
+        "internal_state": {
+          "interest_level": 0.85,
+          "purchase_intent": 0.95
+        }
+      },
+      {
+        "step": 10,
+        "thinking": "这个大牌面膜我之前买过了，查看过2次，虽然很想再买一件，但家里已经有很多面膜了，而且这个要89元。算了，不冲动了。",
+        "action": {
+          "type": "purchase",
+          "platform": "taobao",
+          "target_id": "",
+          "content": "决定不买",
+          "query": ""
+        },
+        "result": {
+          "success": false,
+          "error": "商品  不存在"
+        },
+        "internal_state": {
+          "interest_level": 0.4,
+          "purchase_intent": 0.1
+        }
+      },
+      {
+        "step": 11,
+        "thinking": "已经买了平价和大牌面膜，暂时不需要再买。润颜氨基酸面膜虽然也好看，但刚才已经买了两款，先看看再说，不急着买。",
+        "action": {
+          "type": "browse",
+          "platform": "taobao",
+          "target_id": "product_main",
+          "content": "",
+          "query": ""
+        },
+        "result": {
+          "success": true,
+          "action_type": "browse",
+          "effect": "无"
+        },
+        "internal_state": {
+          "interest_level": 0.3,
+          "purchase_intent": 0.1
+        }
+      }
+    ]
+  }
+}
