@@ -26,4 +26,5 @@ wheels/
 # 运行时数据
 .chroma_data/
 outputs/
+materials/
 .providers.json

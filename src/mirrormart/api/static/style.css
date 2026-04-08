@@ -142,10 +142,31 @@ tr:hover { background: #f7fafc; }
 .mini-stat .lbl { font-size: 11px; color: #a0aec0; }
 
 /* Tags */
-.tag { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 12px; font-weight: 500; margin: 2px; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 12px; font-weight: 500; margin: 2px; background: #edf2f7; color: #4a5568; }
+
+/* Material list */
+#mat-list table { font-size: 12px; }
+#mat-list td { vertical-align: middle; }
 
 /* Network graph */
-#network-graph svg { width: 100%; height: 100%; }
+#network-graph { border-radius: 8px; overflow: hidden; position: relative; }
+#network-graph svg { width: 100%; height: 100%; display: block; }
 #network-detail .agent-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
 #network-detail .recent-actions { max-height: 200px; overflow-y: auto; font-size: 13px; }
 #network-detail .recent-actions li { padding: 4px 0; border-bottom: 1px solid #f0f0f0; list-style: none; }
+
+/* Text nodes — hover glow */
+.node-label { transition: fill 0.2s; }
+g:hover > .node-label { fill: #fff !important; text-shadow: 0 0 16px rgba(255,255,255,0.6); }
+
+/* Analysis flow nav */
+.flow-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; padding-top: 16px; border-top: 1px solid #edf2f7; }
+.flow-nav .flow-btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;
+  background: linear-gradient(135deg, #f7fafc, #edf2f7); border: 1px solid #e2e8f0;
+  border-radius: 8px; font-size: 13px; font-weight: 500; color: #4a5568;
+  cursor: pointer; transition: all 0.2s; text-decoration: none;
+}
+.flow-nav .flow-btn:hover { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border-color: transparent; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102,126,234,0.3); }
+.flow-btn .flow-icon { font-size: 16px; }
+.flow-btn .flow-arrow { font-size: 11px; opacity: 0.5; }

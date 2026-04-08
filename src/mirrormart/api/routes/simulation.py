@@ -26,7 +26,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from fastapi import APIRouter, BackgroundTasks, HTTPException, Query, UploadFile
+from fastapi import APIRouter, BackgroundTasks, File, HTTPException, Query, UploadFile
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
@@ -40,6 +40,7 @@ router = APIRouter(prefix="/simulations", tags=["simulations"])
 # 内存状态存储
 _run_status: dict[str, str] = {}
 _run_results: dict[str, dict[str, Any]] = {}
+_run_engines: dict[str, SimulationEngine] = {}  # 引擎实例（暂停/恢复用）
 
 
 class SimulationRequest(BaseModel):
@@ -77,16 +78,55 @@ def _load_branch(run_id: str, branch_id: int) -> dict[str, Any] | None:
     return None
 
 
+def _inject_materials(engine: SimulationEngine) -> None:
+    """将已上传物料注入引擎的场景配置。"""
+    materials_file = Path("materials") / "materials.json"
+    if not materials_file.exists():
+        return
+    materials = json.loads(materials_file.read_text(encoding="utf-8"))
+    if not materials:
+        return
+
+    platforms = engine.scenario.setdefault("platforms", [])
+    platform_map: dict[str, dict] = {}
+    for p in platforms:
+        platform_map[p["type"]] = p
+
+    for mat in materials:
+        ptype = mat["platform"]
+        if ptype not in platform_map:
+            platform_map[ptype] = {"type": ptype, "initial_content": []}
+            platforms.append(platform_map[ptype])
+
+        entry = {
+            "title": mat.get("title", ""),
+            "content": mat.get("content", ""),
+            "tags": mat.get("tags", []),
+            "author_id": "brand_official",
+        }
+        if ptype in ("xiaohongshu", "douyin", "weibo"):
+            key = "initial_content"
+        else:
+            continue
+
+        platform_map[ptype].setdefault(key, []).append(entry)
+
+    logger.info("已注入 %d 条物料到场景", len(materials))
+
+
 # ──────────────── 后台任务 ────────────────
 
 async def _run_simulation(run_id: str, config: SimulationConfig) -> None:
-    """后台异步执行模拟（含 WebSocket 事件推送）。"""
+    """后台异���执行模拟（含 WebSocket 事���推送）。"""
     _run_status[run_id] = "running"
     event_queue = EventQueue(run_id)
     event_queue.start()
 
     try:
         engine = SimulationEngine(config, event_callback=event_queue.put)
+        # 注入已上传的物料到场景
+        _inject_materials(engine)
+        _run_engines[run_id] = engine
         result = await engine.run_monte_carlo()
         result["run_id"] = run_id
         _run_results[run_id] = result
@@ -98,6 +138,7 @@ async def _run_simulation(run_id: str, config: SimulationConfig) -> None:
         _run_status[run_id] = "failed"
         _run_results[run_id] = {"error": str(e)}
     finally:
+        _run_engines.pop(run_id, None)
         await event_queue.finish()
 
 
@@ -124,6 +165,108 @@ async def create_simulation(
         "status": "queued",
         "message": f"模拟已排队，使用 GET /simulations/{run_id}/status 查看进度",
     }
+
+
+@router.post("/{run_id}/pause")
+async def pause_simulation(run_id: str) -> dict[str, str]:
+    """暂停正在运行的模拟。"""
+    engine = _run_engines.get(run_id)
+    if not engine:
+        raise HTTPException(404, f"运行 {run_id} 不存在或已结束")
+    if engine.is_paused:
+        return {"status": "already_paused", "run_id": run_id}
+    engine.pause()
+    _run_status[run_id] = "paused"
+    return {"status": "paused", "run_id": run_id}
+
+
+@router.post("/{run_id}/resume")
+async def resume_simulation(run_id: str) -> dict[str, str]:
+    """恢复暂停的模拟。"""
+    engine = _run_engines.get(run_id)
+    if not engine:
+        raise HTTPException(404, f"运行 {run_id} 不存在或已结束")
+    if not engine.is_paused:
+        return {"status": "already_running", "run_id": run_id}
+    engine.resume()
+    _run_status[run_id] = "running"
+    return {"status": "running", "run_id": run_id}
+
+
+# ──────────────── 物料上传 ────────────────
+
+MATERIALS_DIR = Path("materials")
+
+
+@router.post("/materials/upload")
+async def upload_material(
+    platform: str = Query(..., description="目标平台: xiaohongshu/douyin/weibo"),
+    title: str = Query("", description="内容标题"),
+    content: str = Query("", description="文案内容"),
+    tags: str = Query("", description="标签，逗号分隔"),
+    file: UploadFile | None = File(default=None, description="图片/视频文件"),
+) -> dict[str, Any]:
+    """上传营销物料（图文/视频），用于注入模拟初始内容。"""
+    MATERIALS_DIR.mkdir(exist_ok=True)
+    material_id = f"mat_{int(time.time() * 1000)}"
+
+    # 保存上传的文件
+    file_path = None
+    if file and file.filename:
+        ext = Path(file.filename).suffix
+        file_path = str(MATERIALS_DIR / f"{material_id}{ext}")
+        file_data = await file.read()
+        Path(file_path).write_bytes(file_data)
+
+    tag_list = [t.strip() for t in tags.split(",") if t.strip()] if tags else []
+
+    material = {
+        "id": material_id,
+        "platform": platform,
+        "title": title,
+        "content": content,
+        "tags": tag_list,
+        "file_path": file_path,
+        "created_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+    }
+
+    # 追加到物料列表
+    materials_file = MATERIALS_DIR / "materials.json"
+    materials: list[dict] = []
+    if materials_file.exists():
+        materials = json.loads(materials_file.read_text(encoding="utf-8"))
+    materials.append(material)
+    materials_file.write_text(json.dumps(materials, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    return {"status": "ok", "material": material}
+
+
+@router.get("/materials")
+async def list_materials() -> list[dict[str, Any]]:
+    """列出已上传的物料。"""
+    materials_file = MATERIALS_DIR / "materials.json"
+    if not materials_file.exists():
+        return []
+    return json.loads(materials_file.read_text(encoding="utf-8"))
+
+
+@router.delete("/materials/{material_id}")
+async def delete_material(material_id: str) -> dict[str, str]:
+    """删除物料。"""
+    materials_file = MATERIALS_DIR / "materials.json"
+    if not materials_file.exists():
+        raise HTTPException(404, "物料不存在")
+    materials = json.loads(materials_file.read_text(encoding="utf-8"))
+    new_materials = [m for m in materials if m["id"] != material_id]
+    if len(new_materials) == len(materials):
+        raise HTTPException(404, f"物料 {material_id} 不存在")
+    # 删除关联文件
+    removed = [m for m in materials if m["id"] == material_id]
+    for m in removed:
+        if m.get("file_path") and Path(m["file_path"]).exists():
+            Path(m["file_path"]).unlink()
+    materials_file.write_text(json.dumps(new_materials, ensure_ascii=False, indent=2), encoding="utf-8")
+    return {"status": "deleted", "material_id": material_id}
 
 
 @router.get("/compare")

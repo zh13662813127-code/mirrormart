@@ -68,6 +68,10 @@
     <!-- 个体旅程 -->
     <div id="tab-journey" class="tab-panel">
       <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <a class="flow-btn" onclick="navigateTo('detail')" style="padding:4px 10px;font-size:12px">&larr; 返回详情</a>
+          <a class="flow-btn" onclick="navigateTo('sentiment', loadSentiment)" style="padding:4px 10px;font-size:12px">舆情分析 &rarr;</a>
+        </div>
         <h3>Agent 决策旅程
           <select id="journey-run" style="margin-left:12px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0"></select>
           <select id="journey-branch" style="margin-left:8px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0">
@@ -86,6 +90,11 @@
     <!-- 舆情分析 -->
     <div id="tab-sentiment" class="tab-panel">
       <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <a class="flow-btn" onclick="navigateTo('journey', loadJourneys)" style="padding:4px 10px;font-size:12px">&larr; 个体旅程</a>
+          <a class="flow-btn" onclick="navigateTo('detail')" style="padding:4px 10px;font-size:12px">返回详情</a>
+          <a class="flow-btn" onclick="navigateTo('kol', loadKOL)" style="padding:4px 10px;font-size:12px">KOL 分析 &rarr;</a>
+        </div>
         <h3>舆情趋势分析
           <select id="sentiment-run" style="margin-left:12px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0"></select>
           <select id="sentiment-branch" style="margin-left:8px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0">
@@ -101,6 +110,11 @@
     <!-- KOL 分析 -->
     <div id="tab-kol" class="tab-panel">
       <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <a class="flow-btn" onclick="navigateTo('sentiment', loadSentiment)" style="padding:4px 10px;font-size:12px">&larr; 舆情分析</a>
+          <a class="flow-btn" onclick="navigateTo('detail')" style="padding:4px 10px;font-size:12px">返回详情</a>
+          <a class="flow-btn" onclick="navigateTo('temporal', loadTemporal)" style="padding:4px 10px;font-size:12px">时间维度 &rarr;</a>
+        </div>
         <h3>KOL 影响力分析
           <select id="kol-run" style="margin-left:12px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0"></select>
           <select id="kol-branch" style="margin-left:8px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0">
@@ -116,6 +130,11 @@
     <!-- Agent 网络图谱 -->
     <div id="tab-network" class="tab-panel">
       <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <a class="flow-btn" onclick="navigateTo('temporal', loadTemporal)" style="padding:4px 10px;font-size:12px">&larr; 时间维度</a>
+          <a class="flow-btn" onclick="navigateTo('detail')" style="padding:4px 10px;font-size:12px">返回详情</a>
+          <a class="flow-btn" onclick="navigateTo('ab')" style="padding:4px 10px;font-size:12px">A/B 对比 &rarr;</a>
+        </div>
         <h3>Agent 关系网络
           <select id="network-run" style="margin-left:12px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0"></select>
           <select id="network-branch" style="margin-left:8px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0">
@@ -139,6 +158,11 @@
     <!-- 时间维度分析 -->
     <div id="tab-temporal" class="tab-panel">
       <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <a class="flow-btn" onclick="navigateTo('kol', loadKOL)" style="padding:4px 10px;font-size:12px">&larr; KOL 分析</a>
+          <a class="flow-btn" onclick="navigateTo('detail')" style="padding:4px 10px;font-size:12px">返回详情</a>
+          <a class="flow-btn" onclick="navigateTo('network', loadNetwork)" style="padding:4px 10px;font-size:12px">网络图谱 &rarr;</a>
+        </div>
         <h3>时间维度分析
           <select id="temporal-run" style="margin-left:12px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0"></select>
           <button class="btn btn-primary" style="margin-left:12px" onclick="loadTemporal()">加载</button>
@@ -149,6 +173,44 @@
 
     <!-- 新建模拟 -->
     <div id="tab-create" class="tab-panel">
+      <!-- 营销物料上传 -->
+      <div class="card">
+        <h3>营销物料</h3>
+        <p style="font-size:13px;color:#718096;margin-bottom:12px">上传投放素材（图文/视频），模拟启动时自动注入为平台初始内容</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>目标平台</label>
+            <select id="mat-platform">
+              <option value="xiaohongshu">小红书</option>
+              <option value="douyin">抖音</option>
+              <option value="weibo">微博</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>标题</label>
+            <input type="text" id="mat-title" placeholder="帖子/视频标题">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>文案内容</label>
+          <textarea id="mat-content" rows="3" style="width:100%;padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;resize:vertical" placeholder="输入投放文案..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>标签（逗号分隔）</label>
+            <input type="text" id="mat-tags" placeholder="面膜, 护肤, 敏感肌">
+          </div>
+          <div class="form-group">
+            <label>附件（图片/视频）</label>
+            <input type="file" id="mat-file" accept="image/*,video/*">
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="uploadMaterial()">添加物料</button>
+        <div id="mat-status" style="margin-top:8px"></div>
+        <div id="mat-list" style="margin-top:12px"></div>
+      </div>
+
+      <!-- 模拟配置 -->
       <div class="card">
         <h3>创建新模拟</h3>
         <div class="form-row">
@@ -177,7 +239,13 @@
 
       <!-- WebSocket 实时进度 -->
       <div id="live-panel" class="card" style="display:none">
-        <h3>实时进度</h3>
+        <h3 style="display:flex;align-items:center;justify-content:space-between">
+          实时进度
+          <span>
+            <button class="btn btn-secondary" id="pause-btn" onclick="pauseSimulation()" style="display:none">暂停</button>
+            <button class="btn btn-primary" id="resume-btn" onclick="resumeSimulation()" style="display:none">恢复</button>
+          </span>
+        </h3>
         <div class="progress-bar-container">
           <div class="progress-bar" id="progress-bar"><span id="progress-text">0%</span></div>
         </div>

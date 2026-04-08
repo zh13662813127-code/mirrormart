@@ -28,6 +28,7 @@ async function init() {
     loadScenarios();
     loadProfiles();
     loadConfig();
+    loadMaterials();
   } catch (e) {
     document.getElementById('run-list').innerHTML = '<p>无法连接 API，请确认服务已启动</p>';
   }
@@ -43,8 +44,15 @@ function populateSelects() {
   document.getElementById('kol-run').innerHTML = opts;
   document.getElementById('temporal-run').innerHTML = opts;
   document.getElementById('network-run').innerHTML = opts;
-  document.getElementById('detail-select').onchange = () => loadDetail(document.getElementById('detail-select').value);
-  if (allRuns.length) loadDetail(allRuns[0].run_id);
+  document.getElementById('detail-select').onchange = () => {
+    const v = document.getElementById('detail-select').value;
+    syncRunId(v);
+    loadDetail(v);
+  };
+  if (allRuns.length) {
+    syncRunId(allRuns[0].run_id);
+    loadDetail(allRuns[0].run_id);
+  }
 }
 
 // ──────────────── 运行列表 ────────────────
@@ -67,13 +75,36 @@ function renderRunList() {
   document.getElementById('run-list').innerHTML = html;
 }
 
-function viewRun(runId) {
+// 当前选中的 run_id（全局同步）
+let currentRunId = '';
+
+function switchTab(tabName) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelector('[data-tab="detail"]').classList.add('active');
-  document.getElementById('tab-detail').classList.add('active');
-  document.getElementById('detail-select').value = runId;
+  const tabEl = document.querySelector(`[data-tab="${tabName}"]`);
+  if (tabEl) tabEl.classList.add('active');
+  document.getElementById('tab-' + tabName).classList.add('active');
+}
+
+function syncRunId(runId) {
+  currentRunId = runId;
+  ['detail-select', 'journey-run', 'sentiment-run', 'kol-run', 'temporal-run', 'network-run'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = runId;
+  });
+}
+
+function viewRun(runId) {
+  syncRunId(runId);
+  switchTab('detail');
   loadDetail(runId);
+}
+
+// 从详情页跳转到分析模块（自动同步 run_id 并加载）
+function navigateTo(tabName, loadFn) {
+  if (currentRunId) syncRunId(currentRunId);
+  switchTab(tabName);
+  if (loadFn) loadFn();
 }
 
 // ──────────────── 运行详情 ────────────────
@@ -124,6 +155,19 @@ function renderDetail(data) {
       <h3>产品竞争分析</h3>
       <div class="chart-container"><canvas id="chart-competition"></canvas></div>
     </div>` : ''}
+
+    <div class="card">
+      <h3>深入分析</h3>
+      <p style="font-size:13px;color:#718096;margin-bottom:8px">选择一个维度，深入分析当前运行的数据：</p>
+      <div class="flow-nav">
+        <a class="flow-btn" onclick="navigateTo('journey', loadJourneys)"><span class="flow-icon">🧭</span>个体旅程<span class="flow-arrow">&rarr;</span></a>
+        <a class="flow-btn" onclick="navigateTo('sentiment', loadSentiment)"><span class="flow-icon">💬</span>舆情分析<span class="flow-arrow">&rarr;</span></a>
+        <a class="flow-btn" onclick="navigateTo('kol', loadKOL)"><span class="flow-icon">📣</span>KOL 分析<span class="flow-arrow">&rarr;</span></a>
+        <a class="flow-btn" onclick="navigateTo('temporal', loadTemporal)"><span class="flow-icon">📈</span>时间维度<span class="flow-arrow">&rarr;</span></a>
+        <a class="flow-btn" onclick="navigateTo('network', loadNetwork)"><span class="flow-icon">🔗</span>网络图谱<span class="flow-arrow">&rarr;</span></a>
+        <a class="flow-btn" onclick="navigateTo('ab')"><span class="flow-icon">⚖️</span>A/B 对比<span class="flow-arrow">&rarr;</span></a>
+      </div>
+    </div>
   `;
   document.getElementById('detail-content').innerHTML = html;
 
@@ -318,6 +362,7 @@ async function createSimulation() {
     });
     const data = await res.json();
     status.innerHTML = `<p>已创建: <strong>${data.run_id}</strong></p>`;
+    currentLiveRunId = data.run_id;
     connectWebSocket(data.run_id);
   } catch (e) {
     status.innerHTML = `<p style="color:#e53e3e">创建失败: ${e.message}</p>`;
@@ -335,6 +380,10 @@ function connectWebSocket(runId) {
   const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
   const wsUrl = `${proto}//${location.host}/ws/${runId}`;
   liveWs = new WebSocket(wsUrl);
+
+  // 显示暂停按钮
+  document.getElementById('pause-btn').style.display = 'inline-block';
+  document.getElementById('resume-btn').style.display = 'none';
 
   liveWs.onopen = () => {
     addTimelineItem('system', '', '', '已连接 WebSocket，等待事件...');
@@ -393,6 +442,9 @@ function handleLiveEvent(event, runId) {
     document.getElementById('create-status').innerHTML =
       `<p style="color:#48bb78">完成! <button class="btn btn-primary" onclick="viewRun('${runId}');init()">查看结果</button></p>`;
     document.getElementById('create-btn').disabled = false;
+    document.getElementById('pause-btn').style.display = 'none';
+    document.getElementById('resume-btn').style.display = 'none';
+    currentLiveRunId = null;
     if (liveWs) { liveWs.close(); liveWs = null; }
   }
 }
@@ -458,6 +510,100 @@ async function pollStatus(runId, statusEl) {
     } catch { setTimeout(check, 3000); }
   };
   setTimeout(check, 2000);
+}
+
+// ──────────────── 物料管理 ────────────────
+
+async function uploadMaterial() {
+  const platform = document.getElementById('mat-platform').value;
+  const title = document.getElementById('mat-title').value.trim();
+  const content = document.getElementById('mat-content').value.trim();
+  const tags = document.getElementById('mat-tags').value.trim();
+  const fileInput = document.getElementById('mat-file');
+  const status = document.getElementById('mat-status');
+
+  if (!content && !title) {
+    status.innerHTML = '<span style="color:#e53e3e">请至少填写标题或文案</span>';
+    return;
+  }
+
+  const formData = new FormData();
+  if (fileInput.files.length > 0) formData.append('file', fileInput.files[0]);
+
+  const params = new URLSearchParams({ platform, title, content, tags });
+
+  try {
+    const res = await fetch(`/simulations/materials/upload?${params}`, { method: 'POST', body: formData });
+    const data = await res.json();
+    if (res.ok) {
+      status.innerHTML = '<span style="color:#48bb78">物料已添加</span>';
+      document.getElementById('mat-title').value = '';
+      document.getElementById('mat-content').value = '';
+      document.getElementById('mat-tags').value = '';
+      fileInput.value = '';
+      loadMaterials();
+    } else {
+      status.innerHTML = `<span style="color:#e53e3e">上传失败: ${data.detail || '未知错误'}</span>`;
+    }
+  } catch (e) {
+    status.innerHTML = `<span style="color:#e53e3e">上传失败: ${e.message}</span>`;
+  }
+}
+
+async function loadMaterials() {
+  try {
+    const materials = await api('/simulations/materials');
+    const el = document.getElementById('mat-list');
+    if (!materials.length) { el.innerHTML = ''; return; }
+    const platformName = { xiaohongshu: '小红书', douyin: '抖音', weibo: '微博' };
+    el.innerHTML = `
+      <table><thead><tr><th>平台</th><th>标题</th><th>文案</th><th>标签</th><th>附件</th><th>操作</th></tr></thead><tbody>
+      ${materials.map(m => `<tr>
+        <td><span class="tag platform-${m.platform === 'xiaohongshu' ? 'xhs' : m.platform}">${platformName[m.platform] || m.platform}</span></td>
+        <td>${m.title || '-'}</td>
+        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.content || '-'}</td>
+        <td>${(m.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}</td>
+        <td>${m.file_path ? '有' : '-'}</td>
+        <td><button class="btn btn-sm btn-danger" onclick="deleteMaterial('${m.id}')">删除</button></td>
+      </tr>`).join('')}
+      </tbody></table>`;
+  } catch { /* ignore */ }
+}
+
+async function deleteMaterial(id) {
+  if (!confirm('确定删除此物料？')) return;
+  try {
+    await fetch(`/simulations/materials/${id}`, { method: 'DELETE' });
+    loadMaterials();
+  } catch { /* ignore */ }
+}
+
+// ──────────────── 暂停 / 恢复 ────────────────
+
+let currentLiveRunId = null;
+
+async function pauseSimulation() {
+  if (!currentLiveRunId) return;
+  try {
+    await fetch(`/simulations/${currentLiveRunId}/pause`, { method: 'POST' });
+    document.getElementById('pause-btn').style.display = 'none';
+    document.getElementById('resume-btn').style.display = 'inline-block';
+    addTimelineItem('system', '', '', '模拟已暂停');
+  } catch (e) {
+    addTimelineItem('system', '', '', '暂停失败: ' + e.message);
+  }
+}
+
+async function resumeSimulation() {
+  if (!currentLiveRunId) return;
+  try {
+    await fetch(`/simulations/${currentLiveRunId}/resume`, { method: 'POST' });
+    document.getElementById('resume-btn').style.display = 'none';
+    document.getElementById('pause-btn').style.display = 'inline-block';
+    addTimelineItem('system', '', '', '模拟已恢复');
+  } catch (e) {
+    addTimelineItem('system', '', '', '恢复失败: ' + e.message);
+  }
 }
 
 // ──────────────── CSV 导出 ────────────────
@@ -886,7 +1032,6 @@ function buildNetworkGraph(journeys, container) {
   const width = container.clientWidth || 700;
   const height = 500;
 
-  // 构建节点和边
   const agentIds = Object.keys(journeys);
   const nodes = agentIds.map(id => {
     const j = journeys[id];
@@ -900,7 +1045,7 @@ function buildNetworkGraph(journeys, container) {
     };
   });
 
-  // 从行为日志推断 Agent 间互动边（同一 target_id 上有互动 = 间接连接）
+  // 推断 Agent 间互动边
   const targetMap = {};
   agentIds.forEach(id => {
     (journeys[id].steps || []).forEach(s => {
@@ -910,82 +1055,117 @@ function buildNetworkGraph(journeys, container) {
       }
     });
   });
-
   const edgeWeights = {};
   Object.values(targetMap).forEach(agents => {
     const unique = [...new Set(agents)];
-    for (let i = 0; i < unique.length; i++) {
+    for (let i = 0; i < unique.length; i++)
       for (let j = i + 1; j < unique.length; j++) {
         const key = [unique[i], unique[j]].sort().join('|');
         edgeWeights[key] = (edgeWeights[key] || 0) + 1;
       }
-    }
   });
-
   const links = Object.entries(edgeWeights).map(([key, weight]) => {
     const [source, target] = key.split('|');
-    return {source, target, weight};
+    return { source, target, weight };
   });
 
-  // D3 力导向图
   if (networkSim) networkSim.stop();
 
-  const svg = d3.select(container).append('svg').attr('width', width).attr('height', height);
+  const svg = d3.select(container).append('svg')
+    .attr('width', width).attr('height', height)
+    .style('background', '#0b0f1a');
 
-  // 箭头定义
-  svg.append('defs').append('marker').attr('id', 'arrow').attr('viewBox', '0 -5 10 10')
-    .attr('refX', 20).attr('refY', 0).attr('markerWidth', 6).attr('markerHeight', 6)
-    .attr('orient', 'auto').append('path').attr('d', 'M0,-5L10,0L0,5').attr('fill', '#cbd5e0');
+  // 缩放容器
+  const g = svg.append('g');
+  let currentZoom = 1;
+
+  const zoom = d3.zoom()
+    .scaleExtent([0.3, 5])
+    .on('zoom', (event) => {
+      g.attr('transform', event.transform);
+      currentZoom = event.transform.k;
+      // 缩小时隐藏文字显示圆点，放大时显示文字隐藏圆点
+      node.selectAll('.node-label').attr('opacity', currentZoom > 0.7 ? 1 : 0);
+      node.selectAll('.node-dot').attr('opacity', currentZoom > 0.7 ? 0 : 1);
+      // 放大时显示更多细节
+      node.selectAll('.node-sub').attr('opacity', currentZoom > 1.5 ? 0.7 : 0);
+    });
+  svg.call(zoom);
+
+  // 背景网格（在 g 内，跟随缩放）
+  const gridSize = 50;
+  const gridG = g.append('g').attr('class', 'grid-layer');
+  for (let x = -500; x < width + 500; x += gridSize)
+    gridG.append('line').attr('x1', x).attr('y1', -500).attr('x2', x).attr('y2', height + 500)
+      .attr('stroke', 'rgba(102,126,234,0.06)').attr('stroke-width', 0.5);
+  for (let y = -500; y < height + 500; y += gridSize)
+    gridG.append('line').attr('x1', -500).attr('y1', y).attr('x2', width + 500).attr('y2', y)
+      .attr('stroke', 'rgba(102,126,234,0.06)').attr('stroke-width', 0.5);
 
   const simulation = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink(links).id(d => d.id).distance(120).strength(d => Math.min(d.weight * 0.15, 0.8)))
-    .force('charge', d3.forceManyBody().strength(-300))
+    .force('link', d3.forceLink(links).id(d => d.id).distance(140).strength(d => Math.min(d.weight * 0.12, 0.6)))
+    .force('charge', d3.forceManyBody().strength(-400))
     .force('center', d3.forceCenter(width / 2, height / 2))
-    .force('collision', d3.forceCollide().radius(35));
+    .force('collision', d3.forceCollide().radius(50));
   networkSim = simulation;
 
-  // 边
-  const link = svg.append('g').selectAll('line').data(links).join('line')
-    .attr('stroke', '#cbd5e0').attr('stroke-width', d => Math.min(d.weight, 5))
-    .attr('stroke-opacity', 0.6);
+  // 连线
+  const link = g.append('g').selectAll('line').data(links).join('line')
+    .attr('stroke', '#4a5568')
+    .attr('stroke-width', d => Math.max(0.5, Math.min(d.weight * 0.8, 3)))
+    .attr('stroke-opacity', d => Math.min(0.15 + d.weight * 0.1, 0.6));
 
   // 节点组
-  const node = svg.append('g').selectAll('g').data(nodes).join('g')
-    .call(d3.drag().on('start', dragStart).on('drag', dragging).on('end', dragEnd));
+  const node = g.append('g').selectAll('g').data(nodes).join('g')
+    .style('cursor', 'pointer')
+    .call(d3.drag()
+      .on('start', (event, d) => { if (!event.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+      .on('drag', (event, d) => { d.fx = event.x; d.fy = event.y; })
+      .on('end', (event, d) => { if (!event.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; })
+    );
 
-  // 节点圆
-  node.append('circle')
-    .attr('r', d => 12 + d.total_actions * 0.8)
-    .attr('fill', d => d.purchased ? '#48bb78' : d.intent > 0.5 ? '#ed8936' : '#4299e1')
-    .attr('stroke', d => d.purchased ? '#276749' : '#2b6cb0')
-    .attr('stroke-width', 2)
-    .style('cursor', 'pointer');
+  // 缩小时的圆点（初始隐藏）
+  node.append('circle').attr('class', 'node-dot')
+    .attr('r', d => 4 + d.total_actions * 0.3)
+    .attr('fill', d => d.purchased ? '#fff' : d.intent > 0.5 ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.4)')
+    .attr('opacity', 0);
 
-  // 节点标签
-  node.append('text').text(d => d.name.slice(0, 4))
+  // 主文字标签 — 这就是节点本身
+  node.append('text').attr('class', 'node-label')
+    .text(d => d.name)
     .attr('text-anchor', 'middle').attr('dy', '0.35em')
-    .attr('font-size', '10px').attr('fill', '#fff').attr('font-weight', '600')
-    .style('pointer-events', 'none');
+    .attr('font-size', d => `${11 + d.total_actions * 0.3}px`)
+    .attr('font-weight', d => d.purchased ? '700' : '400')
+    .attr('fill', d => d.purchased ? '#fff' : d.intent > 0.5 ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.5)')
+    .attr('letter-spacing', '1px')
+    .style('text-shadow', d => d.purchased ? '0 0 12px rgba(255,255,255,0.4)' : 'none');
 
-  // 点击节点显示详情
+  // 副标签（放大才看到）：行为数 + 状态
+  node.append('text').attr('class', 'node-sub')
+    .text(d => `${d.total_actions}次 · ${d.purchased ? '已购买' : Math.round(d.intent * 100) + '%意向'}`)
+    .attr('text-anchor', 'middle').attr('dy', '1.8em')
+    .attr('font-size', '8px')
+    .attr('fill', d => d.purchased ? 'rgba(104,211,145,0.7)' : 'rgba(255,255,255,0.3)')
+    .attr('opacity', 0);
+
   node.on('click', (event, d) => showNodeDetail(d));
 
   // 图例
-  const legend = svg.append('g').attr('transform', `translate(12,${height - 70})`);
-  [{color: '#48bb78', text: '已购买'}, {color: '#ed8936', text: '高意向'}, {color: '#4299e1', text: '一般'}].forEach((item, i) => {
-    legend.append('circle').attr('cx', 0).attr('cy', i * 20).attr('r', 6).attr('fill', item.color);
-    legend.append('text').attr('x', 14).attr('y', i * 20 + 4).text(item.text).attr('font-size', '11px').attr('fill', '#4a5568');
+  const legend = svg.append('g').attr('transform', `translate(16,${height - 60})`);
+  legend.append('rect').attr('x', -8).attr('y', -10).attr('width', 140).attr('height', 56)
+    .attr('fill', 'rgba(10,14,26,0.85)').attr('rx', 4);
+  [{text: '已购买（粗体白）', fill: '#fff'}, {text: '高意向（亮灰）', fill: 'rgba(255,255,255,0.85)'}, {text: '一般（暗灰）', fill: 'rgba(255,255,255,0.5)'}].forEach((item, i) => {
+    legend.append('text').attr('x', 4).attr('y', i * 16 + 4).text(item.text)
+      .attr('font-size', '10px').attr('fill', item.fill);
   });
+  legend.append('text').attr('x', width - 30).attr('y', 4).text('滚轮缩放')
+    .attr('font-size', '9px').attr('fill', 'rgba(255,255,255,0.25)').attr('text-anchor', 'end');
 
   simulation.on('tick', () => {
     link.attr('x1', d => d.source.x).attr('y1', d => d.source.y)
         .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
     node.attr('transform', d => `translate(${d.x},${d.y})`);
   });
-
-  function dragStart(event, d) { if (!event.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; }
-  function dragging(event, d) { d.fx = event.x; d.fy = event.y; }
-  function dragEnd(event, d) { if (!event.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; }
 }
 
 function showNodeDetail(d) {

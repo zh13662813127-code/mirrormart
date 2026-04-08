@@ -62,7 +62,28 @@ class SimulationEngine:
         self._diffusion = DiffusionEngine()
         # 并发限速：限制同时调用 LLM 的 Agent 数量
         self._semaphore = asyncio.Semaphore(config.concurrency or 5)
+        # 暂停/恢复控制
+        self._pause_event = asyncio.Event()
+        self._pause_event.set()  # 默认不暂停
+        self._paused = False
         self._load_scenario()
+
+    def pause(self) -> None:
+        """暂停模拟（当前步骤完成后生效）。"""
+        self._pause_event.clear()
+        self._paused = True
+        logger.info("模拟已暂停")
+
+    def resume(self) -> None:
+        """恢复模拟。"""
+        self._pause_event.set()
+        self._paused = False
+        logger.info("模拟已恢���")
+
+    @property
+    def is_paused(self) -> bool:
+        """是否处于暂停状态。"""
+        return self._paused
 
     def _load_scenario(self) -> None:
         """加载场景配置。"""
@@ -255,6 +276,9 @@ class SimulationEngine:
         run_id = output_dir.parent.name
 
         for step in range(num_steps):
+            # 暂停检查：如果暂停了，等待恢复
+            await self._pause_event.wait()
+
             # 更新平台时间步（用于热度时间衰减）
             xhs.current_step = step
             douyin.current_step = step
