@@ -1007,9 +1007,9 @@ async function deleteProvider(id, name) {
   } catch {}
 }
 
-// ──────────────── Agent 网络图谱（D3.js 力导向图） ────────────────
+// ──────────────── Agent 网络图谱（3D 力导向图） ────────────────
 
-let networkSim = null;
+let graph3d = null;
 
 async function loadNetwork() {
   const runId = document.getElementById('network-run').value;
@@ -1045,23 +1045,28 @@ function buildNetworkGraph(journeys, container) {
     };
   });
 
-  // 推断 Agent 间互动边
-  const targetMap = {};
+  // 推断边：共同 target_id（强）+ 同步同平台（弱）
+  const coMap = {};
   agentIds.forEach(id => {
     (journeys[id].steps || []).forEach(s => {
       if (s.target_id) {
-        if (!targetMap[s.target_id]) targetMap[s.target_id] = [];
-        targetMap[s.target_id].push(id);
+        const k = `t:${s.target_id}`;
+        (coMap[k] = coMap[k] || []).push(id);
+      }
+      if (s.platform && s.step !== undefined) {
+        const k = `sp:${s.step}:${s.platform}`;
+        (coMap[k] = coMap[k] || []).push(id);
       }
     });
   });
   const edgeWeights = {};
-  Object.values(targetMap).forEach(agents => {
+  Object.entries(coMap).forEach(([key, agents]) => {
     const unique = [...new Set(agents)];
+    const w = key.startsWith('t:') ? 1 : 0.3;
     for (let i = 0; i < unique.length; i++)
       for (let j = i + 1; j < unique.length; j++) {
-        const key = [unique[i], unique[j]].sort().join('|');
-        edgeWeights[key] = (edgeWeights[key] || 0) + 1;
+        const ek = [unique[i], unique[j]].sort().join('|');
+        edgeWeights[ek] = (edgeWeights[ek] || 0) + w;
       }
   });
   const links = Object.entries(edgeWeights).map(([key, weight]) => {
@@ -1069,103 +1074,48 @@ function buildNetworkGraph(journeys, container) {
     return { source, target, weight };
   });
 
-  if (networkSim) networkSim.stop();
+  if (nodes.every(n => n.total_actions === 0)) {
+    container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:500px;background:#0b0f1a;border-radius:8px;color:rgba(255,255,255,0.4);font-size:14px">该运行无行为数据，请选择其他运行</div>';
+    return;
+  }
 
-  const svg = d3.select(container).append('svg')
-    .attr('width', width).attr('height', height)
-    .style('background', '#0b0f1a');
+  // 清理旧图
+  if (graph3d) { graph3d._destructor && graph3d._destructor(); graph3d = null; }
 
-  // 缩放容器
-  const g = svg.append('g');
-  let currentZoom = 1;
+  // 3D 力导向图
+  const maxActions = Math.max(...nodes.map(n => n.total_actions), 1);
 
-  const zoom = d3.zoom()
-    .scaleExtent([0.3, 5])
-    .on('zoom', (event) => {
-      g.attr('transform', event.transform);
-      currentZoom = event.transform.k;
-      // 缩小时隐藏文字显示圆点，放大时显示文字隐藏圆点
-      node.selectAll('.node-label').attr('opacity', currentZoom > 0.7 ? 1 : 0);
-      node.selectAll('.node-dot').attr('opacity', currentZoom > 0.7 ? 0 : 1);
-      // 放大时显示更多细节
-      node.selectAll('.node-sub').attr('opacity', currentZoom > 1.5 ? 0.7 : 0);
-    });
-  svg.call(zoom);
+  graph3d = ForceGraph3D()(container)
+    .width(width)
+    .height(height)
+    .backgroundColor('#0b0f1a')
+    .graphData({ nodes, links })
+    // 节点：用 sprite 文字，大小和亮度区分状态
+    .nodeThreeObject(node => {
+      const sprite = new SpriteText(node.name);
+      const size = 3 + (node.total_actions / maxActions) * 5;
+      sprite.textHeight = size;
+      sprite.fontWeight = node.purchased ? '700' : '400';
+      sprite.color = node.purchased ? '#ffffff'
+        : node.intent > 0.5 ? 'rgba(255,255,255,0.85)'
+        : 'rgba(255,255,255,0.5)';
+      sprite.backgroundColor = false;
+      sprite.padding = 1;
+      return sprite;
+    })
+    .nodeLabel(node => `${node.name} | ${node.total_actions}次行为 | ${node.purchased ? '已购买' : Math.round(node.intent * 100) + '%意向'}`)
+    // 连线
+    .linkWidth(link => Math.max(0.2, Math.min(link.weight * 0.4, 2)))
+    .linkOpacity(0.3)
+    .linkColor(() => '#667eea')
+    // 点击节点
+    .onNodeClick(node => showNodeDetail(node))
+    // 力参数
+    .d3Force('charge', d3.forceManyBody().strength(-120))
+    .d3Force('link', d3.forceLink().distance(60).strength(l => Math.min(l.weight * 0.05, 0.3)));
 
-  // 背景网格（在 g 内，跟随缩放）
-  const gridSize = 50;
-  const gridG = g.append('g').attr('class', 'grid-layer');
-  for (let x = -500; x < width + 500; x += gridSize)
-    gridG.append('line').attr('x1', x).attr('y1', -500).attr('x2', x).attr('y2', height + 500)
-      .attr('stroke', 'rgba(102,126,234,0.06)').attr('stroke-width', 0.5);
-  for (let y = -500; y < height + 500; y += gridSize)
-    gridG.append('line').attr('x1', -500).attr('y1', y).attr('x2', width + 500).attr('y2', y)
-      .attr('stroke', 'rgba(102,126,234,0.06)').attr('stroke-width', 0.5);
-
-  const simulation = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink(links).id(d => d.id).distance(140).strength(d => Math.min(d.weight * 0.12, 0.6)))
-    .force('charge', d3.forceManyBody().strength(-400))
-    .force('center', d3.forceCenter(width / 2, height / 2))
-    .force('collision', d3.forceCollide().radius(50));
-  networkSim = simulation;
-
-  // 连线
-  const link = g.append('g').selectAll('line').data(links).join('line')
-    .attr('stroke', '#4a5568')
-    .attr('stroke-width', d => Math.max(0.5, Math.min(d.weight * 0.8, 3)))
-    .attr('stroke-opacity', d => Math.min(0.15 + d.weight * 0.1, 0.6));
-
-  // 节点组
-  const node = g.append('g').selectAll('g').data(nodes).join('g')
-    .style('cursor', 'pointer')
-    .call(d3.drag()
-      .on('start', (event, d) => { if (!event.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
-      .on('drag', (event, d) => { d.fx = event.x; d.fy = event.y; })
-      .on('end', (event, d) => { if (!event.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; })
-    );
-
-  // 缩小时的圆点（初始隐藏）
-  node.append('circle').attr('class', 'node-dot')
-    .attr('r', d => 4 + d.total_actions * 0.3)
-    .attr('fill', d => d.purchased ? '#fff' : d.intent > 0.5 ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.4)')
-    .attr('opacity', 0);
-
-  // 主文字标签 — 这就是节点本身
-  node.append('text').attr('class', 'node-label')
-    .text(d => d.name)
-    .attr('text-anchor', 'middle').attr('dy', '0.35em')
-    .attr('font-size', d => `${11 + d.total_actions * 0.3}px`)
-    .attr('font-weight', d => d.purchased ? '700' : '400')
-    .attr('fill', d => d.purchased ? '#fff' : d.intent > 0.5 ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.5)')
-    .attr('letter-spacing', '1px')
-    .style('text-shadow', d => d.purchased ? '0 0 12px rgba(255,255,255,0.4)' : 'none');
-
-  // 副标签（放大才看到）：行为数 + 状态
-  node.append('text').attr('class', 'node-sub')
-    .text(d => `${d.total_actions}次 · ${d.purchased ? '已购买' : Math.round(d.intent * 100) + '%意向'}`)
-    .attr('text-anchor', 'middle').attr('dy', '1.8em')
-    .attr('font-size', '8px')
-    .attr('fill', d => d.purchased ? 'rgba(104,211,145,0.7)' : 'rgba(255,255,255,0.3)')
-    .attr('opacity', 0);
-
-  node.on('click', (event, d) => showNodeDetail(d));
-
-  // 图例
-  const legend = svg.append('g').attr('transform', `translate(16,${height - 60})`);
-  legend.append('rect').attr('x', -8).attr('y', -10).attr('width', 140).attr('height', 56)
-    .attr('fill', 'rgba(10,14,26,0.85)').attr('rx', 4);
-  [{text: '已购买（粗体白）', fill: '#fff'}, {text: '高意向（亮灰）', fill: 'rgba(255,255,255,0.85)'}, {text: '一般（暗灰）', fill: 'rgba(255,255,255,0.5)'}].forEach((item, i) => {
-    legend.append('text').attr('x', 4).attr('y', i * 16 + 4).text(item.text)
-      .attr('font-size', '10px').attr('fill', item.fill);
-  });
-  legend.append('text').attr('x', width - 30).attr('y', 4).text('滚轮缩放')
-    .attr('font-size', '9px').attr('fill', 'rgba(255,255,255,0.25)').attr('text-anchor', 'end');
-
-  simulation.on('tick', () => {
-    link.attr('x1', d => d.source.x).attr('y1', d => d.source.y)
-        .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
-    node.attr('transform', d => `translate(${d.x},${d.y})`);
-  });
+  // 初始视角稍微拉远
+  graph3d.cameraPosition({ z: 300 });
 }
 
 function showNodeDetail(d) {
