@@ -10,6 +10,8 @@
   GET  /scenarios                  — 列出可用场景
   POST /scenarios/upload           — 上传自定义场景 YAML
   GET  /profiles                   — 列出可用人设
+  GET  /config                     — 获取系统配置
+  PUT  /config                     — 更新系统配置
 """
 
 from __future__ import annotations
@@ -18,6 +20,7 @@ import csv
 import io
 import json
 import logging
+import os
 import time
 from pathlib import Path
 from typing import Any
@@ -443,3 +446,194 @@ async def list_profiles() -> list[dict[str, Any]]:
         except Exception:
             profiles.append({"id": yml_file.stem, "name": yml_file.stem, "description": "解析失败"})
     return profiles
+
+
+# ──────────────── 系统配置 + 模型提供商管理 ────────────────
+
+config_router = APIRouter(tags=["config"])
+ENV_FILE = Path(".env")
+PROVIDERS_FILE = Path(".providers.json")
+
+# 预设模型提供商模板
+_PROVIDER_PRESETS: list[dict[str, Any]] = [
+    {"id": "minimax-m2", "name": "MiniMax M2", "model": "openai/MiniMax-M2",
+     "api_base": "https://api.minimaxi.com/v1", "max_tokens": 1024, "temperature": 0.8,
+     "icon": "M", "color": "#6366f1"},
+    {"id": "deepseek-v3", "name": "DeepSeek V3", "model": "openai/deepseek-chat",
+     "api_base": "https://api.deepseek.com/v1", "max_tokens": 2048, "temperature": 0.7,
+     "icon": "D", "color": "#3b82f6"},
+    {"id": "deepseek-r1", "name": "DeepSeek R1", "model": "openai/deepseek-reasoner",
+     "api_base": "https://api.deepseek.com/v1", "max_tokens": 4096, "temperature": 0.6,
+     "icon": "R", "color": "#2563eb"},
+    {"id": "qwen-max", "name": "Qwen Max", "model": "openai/qwen-max",
+     "api_base": "https://dashscope.aliyuncs.com/compatible-mode/v1", "max_tokens": 2048, "temperature": 0.8,
+     "icon": "Q", "color": "#8b5cf6"},
+    {"id": "glm-4-plus", "name": "GLM-4-Plus", "model": "openai/glm-4-plus",
+     "api_base": "https://open.bigmodel.cn/api/paas/v4", "max_tokens": 2048, "temperature": 0.7,
+     "icon": "G", "color": "#10b981"},
+    {"id": "openai-gpt4o", "name": "GPT-4o", "model": "gpt-4o",
+     "api_base": "https://api.openai.com/v1", "max_tokens": 4096, "temperature": 0.7,
+     "icon": "O", "color": "#000000"},
+]
+
+
+def _read_env() -> dict[str, str]:
+    """读取 .env 文件为 dict。"""
+    result: dict[str, str] = {}
+    if not ENV_FILE.exists():
+        return result
+    for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if "=" in line:
+            key, _, value = line.partition("=")
+            result[key.strip()] = value.strip()
+    return result
+
+
+def _write_env(data: dict[str, str]) -> None:
+    """将配置写回 .env 文件，保留注释行。"""
+    lines: list[str] = []
+    existing_keys: set[str] = set()
+    if ENV_FILE.exists():
+        for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
+            stripped = line.strip()
+            if stripped and not stripped.startswith("#") and "=" in stripped:
+                key = stripped.partition("=")[0].strip()
+                if key in data:
+                    lines.append(f"{key}={data[key]}")
+                    existing_keys.add(key)
+                else:
+                    lines.append(line)
+            else:
+                lines.append(line)
+    for key, value in data.items():
+        if key not in existing_keys:
+            lines.append(f"{key}={value}")
+    ENV_FILE.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _load_providers() -> list[dict[str, Any]]:
+    if PROVIDERS_FILE.exists():
+        return json.loads(PROVIDERS_FILE.read_text(encoding="utf-8"))
+    return []
+
+
+def _save_providers(providers: list[dict[str, Any]]) -> None:
+    PROVIDERS_FILE.write_text(json.dumps(providers, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _mask_provider(p: dict[str, Any]) -> dict[str, Any]:
+    result = dict(p)
+    key = result.get("api_key", "")
+    if key and len(key) > 12:
+        result["api_key_display"] = key[:6] + "..." + key[-4:]
+    elif key:
+        result["api_key_display"] = "***"
+    else:
+        result["api_key_display"] = ""
+    result.pop("api_key", None)
+    return result
+
+
+@config_router.get("/config")
+async def get_config() -> dict[str, Any]:
+    """获取系统配置 + 当前激活的 provider。"""
+    env = _read_env()
+    providers = _load_providers()
+    active_id = env.get("MM_ACTIVE_PROVIDER", "")
+    active_provider = None
+    for p in providers:
+        if p["id"] == active_id:
+            active_provider = _mask_provider(p)
+            break
+    return {
+        "active_provider_id": active_id,
+        "active_provider": active_provider,
+        "model": env.get("MM_LLM_MODEL", os.getenv("MM_LLM_MODEL", "")),
+        "api_base": env.get("MINIMAX_API_BASE", os.getenv("MINIMAX_API_BASE", "")),
+        "max_tokens": env.get("MM_MAX_TOKENS", os.getenv("MM_MAX_TOKENS", "1024")),
+        "temperature": env.get("MM_TEMPERATURE", os.getenv("MM_TEMPERATURE", "0.8")),
+        "num_branches": env.get("MM_NUM_BRANCHES", os.getenv("MM_NUM_BRANCHES", "5")),
+        "num_steps": env.get("MM_NUM_STEPS", os.getenv("MM_NUM_STEPS", "20")),
+    }
+
+
+@config_router.get("/config/presets")
+async def get_presets() -> list[dict[str, Any]]:
+    """获取预设模型提供商列表。"""
+    return _PROVIDER_PRESETS
+
+
+@config_router.get("/config/providers")
+async def list_providers() -> list[dict[str, Any]]:
+    """获取已保存的 provider 列表（key 脱敏）。"""
+    env = _read_env()
+    active_id = env.get("MM_ACTIVE_PROVIDER", "")
+    result = []
+    for p in _load_providers():
+        masked = _mask_provider(p)
+        masked["active"] = (p["id"] == active_id)
+        result.append(masked)
+    return result
+
+
+class ProviderCreateRequest(BaseModel):
+    id: str = Field(..., min_length=1)
+    name: str = Field(..., min_length=1)
+    model: str = Field(..., min_length=1)
+    api_base: str = Field(default="")
+    api_key: str = Field(default="")
+    max_tokens: int = Field(default=1024)
+    temperature: float = Field(default=0.8)
+    icon: str = Field(default="+")
+    color: str = Field(default="#94a3b8")
+
+
+@config_router.post("/config/providers")
+async def add_provider(request: ProviderCreateRequest) -> dict[str, Any]:
+    """添加或更新一个 provider。"""
+    providers = _load_providers()
+    data = request.model_dump()
+    for i, p in enumerate(providers):
+        if p["id"] == data["id"]:
+            if not data["api_key"] and p.get("api_key"):
+                data["api_key"] = p["api_key"]
+            providers[i] = data
+            _save_providers(providers)
+            return {"message": f"已更新 {data['name']}", "provider": _mask_provider(data)}
+    providers.append(data)
+    _save_providers(providers)
+    return {"message": f"已添加 {data['name']}", "provider": _mask_provider(data)}
+
+
+@config_router.delete("/config/providers/{provider_id}")
+async def delete_provider(provider_id: str) -> dict[str, Any]:
+    """删除一个 provider。"""
+    providers = [p for p in _load_providers() if p["id"] != provider_id]
+    _save_providers(providers)
+    return {"message": f"已删除 {provider_id}"}
+
+
+@config_router.post("/config/providers/{provider_id}/activate")
+async def activate_provider(provider_id: str) -> dict[str, Any]:
+    """激活一个 provider（写入 .env 并更新环境变量）。"""
+    provider = None
+    for p in _load_providers():
+        if p["id"] == provider_id:
+            provider = p
+            break
+    if not provider:
+        raise HTTPException(404, f"Provider {provider_id} 不存在")
+    env = _read_env()
+    env["MM_ACTIVE_PROVIDER"] = provider_id
+    env["MM_LLM_MODEL"] = provider["model"]
+    env["MINIMAX_API_BASE"] = provider.get("api_base", "")
+    env["MINIMAX_API_KEY"] = provider.get("api_key", "")
+    env["MM_MAX_TOKENS"] = str(provider.get("max_tokens", 1024))
+    env["MM_TEMPERATURE"] = str(provider.get("temperature", 0.8))
+    _write_env(env)
+    for k, v in env.items():
+        os.environ[k] = v
+    return {"message": f"已切换到 {provider['name']}", "active": _mask_provider(provider)}

@@ -20,6 +20,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from mirrormart.api.routes.simulation import (
+    config_router,
     profile_router,
     router as simulation_router,
     scenario_router,
@@ -61,6 +62,7 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 app.include_router(simulation_router)
 app.include_router(scenario_router)
 app.include_router(profile_router)
+app.include_router(config_router)
 
 
 @app.get("/")

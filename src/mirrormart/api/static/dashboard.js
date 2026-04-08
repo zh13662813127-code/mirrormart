@@ -27,6 +27,7 @@ async function init() {
     populateSelects();
     loadScenarios();
     loadProfiles();
+    loadConfig();
   } catch (e) {
     document.getElementById('run-list').innerHTML = '<p>无法连接 API，请确认服务已启动</p>';
   }
@@ -41,6 +42,7 @@ function populateSelects() {
   document.getElementById('sentiment-run').innerHTML = opts;
   document.getElementById('kol-run').innerHTML = opts;
   document.getElementById('temporal-run').innerHTML = opts;
+  document.getElementById('network-run').innerHTML = opts;
   document.getElementById('detail-select').onchange = () => loadDetail(document.getElementById('detail-select').value);
   if (allRuns.length) loadDetail(allRuns[0].run_id);
 }
@@ -696,6 +698,332 @@ async function uploadScenario() {
   } catch (e) {
     statusEl.innerHTML = `<p style="color:#e53e3e">${e.message}</p>`;
   }
+}
+
+// ──────────────── 模型提供商管理（cc-switch 风格） ────────────────
+
+async function loadConfig() {
+  try {
+    const [config, providers] = await Promise.all([api('/config'), api('/config/providers')]);
+    const badge = document.getElementById('active-model-badge');
+    if (config.active_provider) {
+      badge.textContent = `${config.active_provider.name} (${config.model})`;
+      badge.style.background = config.active_provider.color + '22';
+      badge.style.color = config.active_provider.color;
+    } else if (config.model) {
+      badge.textContent = config.model;
+    }
+    renderProviders(providers);
+  } catch (e) {
+    document.getElementById('provider-list').innerHTML = '<p>加载失败</p>';
+  }
+}
+
+function renderProviders(providers) {
+  const el = document.getElementById('provider-list');
+  if (!providers.length) {
+    el.innerHTML = '<p style="color:#a0aec0;grid-column:1/-1">暂无提供商，点击下方按钮添加</p>';
+    return;
+  }
+  el.innerHTML = providers.map(p => `
+    <div class="provider-card ${p.active ? 'provider-active' : ''}" style="border-left:4px solid ${p.color}">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <div class="provider-icon" style="background:${p.color}">${p.icon}</div>
+        <div>
+          <div style="font-weight:600;font-size:14px">${p.name}</div>
+          <div style="font-size:11px;color:#718096">${p.model}</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#a0aec0;margin-bottom:8px">
+        ${p.api_key_display ? 'Key: ' + p.api_key_display : '<span style="color:#e53e3e">未设置 Key</span>'}
+      </div>
+      <div style="display:flex;gap:6px">
+        ${p.active
+          ? '<span style="font-size:11px;color:#48bb78;font-weight:600">已激活</span>'
+          : `<button class="btn-sm btn-primary" onclick="activateProvider('${p.id}')">启用</button>`}
+        <button class="btn-sm btn-secondary" onclick="editProvider('${p.id}')">编辑</button>
+        <button class="btn-sm btn-danger" onclick="deleteProvider('${p.id}','${p.name}')">删除</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function showPresets() {
+  const panel = document.getElementById('preset-panel');
+  panel.style.display = 'block';
+  try {
+    const presets = await api('/config/presets');
+    document.getElementById('preset-grid').innerHTML = presets.map(p => `
+      <div class="provider-card" style="border-left:4px solid ${p.color};cursor:pointer"
+           onclick="addFromPreset(${JSON.stringify(p).replace(/"/g,'&quot;')})">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="provider-icon" style="background:${p.color}">${p.icon}</div>
+          <div>
+            <div style="font-weight:600">${p.name}</div>
+            <div style="font-size:11px;color:#718096">${p.model}</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:#a0aec0;margin-top:6px">${p.api_base}</div>
+      </div>
+    `).join('');
+  } catch {}
+}
+
+function addFromPreset(preset) {
+  document.getElementById('preset-panel').style.display = 'none';
+  document.getElementById('provider-form').style.display = 'block';
+  document.getElementById('provider-form-title').textContent = `添加 ${preset.name}`;
+  document.getElementById('pf-id').value = preset.id;
+  document.getElementById('pf-name').value = preset.name;
+  document.getElementById('pf-model').value = preset.model;
+  document.getElementById('pf-api-base').value = preset.api_base || '';
+  document.getElementById('pf-api-key').value = '';
+  document.getElementById('pf-max-tokens').value = preset.max_tokens || 1024;
+  document.getElementById('pf-temperature').value = preset.temperature || 0.8;
+  document.getElementById('pf-icon').value = preset.icon || '+';
+  document.getElementById('pf-color').value = preset.color || '#94a3b8';
+}
+
+function showCustomProvider() {
+  document.getElementById('provider-form').style.display = 'block';
+  document.getElementById('provider-form-title').textContent = '添加自定义提供商';
+  ['pf-id','pf-name','pf-model','pf-api-base','pf-api-key'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('pf-max-tokens').value = 1024;
+  document.getElementById('pf-temperature').value = 0.8;
+  document.getElementById('pf-icon').value = '+';
+  document.getElementById('pf-color').value = '#94a3b8';
+}
+
+async function editProvider(id) {
+  try {
+    const providers = await api('/config/providers');
+    const p = providers.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('provider-form').style.display = 'block';
+    document.getElementById('provider-form-title').textContent = `编辑 ${p.name}`;
+    document.getElementById('pf-id').value = p.id;
+    document.getElementById('pf-name').value = p.name;
+    document.getElementById('pf-model').value = p.model;
+    document.getElementById('pf-api-base').value = p.api_base || '';
+    document.getElementById('pf-api-key').value = '';
+    document.getElementById('pf-api-key').placeholder = p.api_key_display || 'sk-...';
+    document.getElementById('pf-max-tokens').value = p.max_tokens || 1024;
+    document.getElementById('pf-temperature').value = p.temperature || 0.8;
+    document.getElementById('pf-icon').value = p.icon || '+';
+    document.getElementById('pf-color').value = p.color || '#94a3b8';
+  } catch {}
+}
+
+async function saveProvider() {
+  const body = {
+    id: document.getElementById('pf-id').value.trim(),
+    name: document.getElementById('pf-name').value.trim(),
+    model: document.getElementById('pf-model').value.trim(),
+    api_base: document.getElementById('pf-api-base').value.trim(),
+    api_key: document.getElementById('pf-api-key').value.trim(),
+    max_tokens: parseInt(document.getElementById('pf-max-tokens').value) || 1024,
+    temperature: parseFloat(document.getElementById('pf-temperature').value) || 0.8,
+    icon: document.getElementById('pf-icon').value.trim() || '+',
+    color: document.getElementById('pf-color').value,
+  };
+  if (!body.id || !body.name || !body.model) {
+    document.getElementById('provider-form-status').textContent = '请填写必填项';
+    return;
+  }
+  try {
+    const res = await fetch(API + '/config/providers', {
+      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || '保存失败');
+    document.getElementById('provider-form-status').textContent = data.message;
+    document.getElementById('provider-form').style.display = 'none';
+    loadConfig();
+  } catch (e) {
+    document.getElementById('provider-form-status').textContent = e.message;
+  }
+}
+
+async function activateProvider(id) {
+  try {
+    const res = await fetch(API + `/config/providers/${id}/activate`, {method: 'POST'});
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail);
+    loadConfig();
+  } catch (e) { alert(e.message); }
+}
+
+async function deleteProvider(id, name) {
+  if (!confirm(`确定删除 ${name}?`)) return;
+  try {
+    await fetch(API + `/config/providers/${id}`, {method: 'DELETE'});
+    loadConfig();
+  } catch {}
+}
+
+// ──────────────── Agent 网络图谱（D3.js 力导向图） ────────────────
+
+let networkSim = null;
+
+async function loadNetwork() {
+  const runId = document.getElementById('network-run').value;
+  const branchId = document.getElementById('network-branch').value;
+  if (!runId) return;
+
+  const graphEl = document.getElementById('network-graph');
+  graphEl.innerHTML = '<div class="loading"><div class="spinner"></div><p>构建网络图...</p></div>';
+
+  try {
+    const data = await api(`/simulations/${runId}/journeys?branch_id=${branchId}`);
+    buildNetworkGraph(data.journeys, graphEl);
+  } catch (e) {
+    graphEl.innerHTML = `<p style="color:#e53e3e">加载失败: ${e.message}</p>`;
+  }
+}
+
+function buildNetworkGraph(journeys, container) {
+  container.innerHTML = '';
+  const width = container.clientWidth || 700;
+  const height = 500;
+
+  // 构建节点和边
+  const agentIds = Object.keys(journeys);
+  const nodes = agentIds.map(id => {
+    const j = journeys[id];
+    const purchased = j.steps.some(s => s.action_type === 'purchase');
+    const intent = j.final_state?.purchase_intent || 0;
+    return {
+      id, name: j.persona_name, purchased, intent,
+      total_actions: j.total_actions,
+      interest: j.final_state?.interest_level || 0,
+      steps: j.steps,
+    };
+  });
+
+  // 从行为日志推断 Agent 间互动边（同一 target_id 上有互动 = 间接连接）
+  const targetMap = {};
+  agentIds.forEach(id => {
+    (journeys[id].steps || []).forEach(s => {
+      if (s.target_id) {
+        if (!targetMap[s.target_id]) targetMap[s.target_id] = [];
+        targetMap[s.target_id].push(id);
+      }
+    });
+  });
+
+  const edgeWeights = {};
+  Object.values(targetMap).forEach(agents => {
+    const unique = [...new Set(agents)];
+    for (let i = 0; i < unique.length; i++) {
+      for (let j = i + 1; j < unique.length; j++) {
+        const key = [unique[i], unique[j]].sort().join('|');
+        edgeWeights[key] = (edgeWeights[key] || 0) + 1;
+      }
+    }
+  });
+
+  const links = Object.entries(edgeWeights).map(([key, weight]) => {
+    const [source, target] = key.split('|');
+    return {source, target, weight};
+  });
+
+  // D3 力导向图
+  if (networkSim) networkSim.stop();
+
+  const svg = d3.select(container).append('svg').attr('width', width).attr('height', height);
+
+  // 箭头定义
+  svg.append('defs').append('marker').attr('id', 'arrow').attr('viewBox', '0 -5 10 10')
+    .attr('refX', 20).attr('refY', 0).attr('markerWidth', 6).attr('markerHeight', 6)
+    .attr('orient', 'auto').append('path').attr('d', 'M0,-5L10,0L0,5').attr('fill', '#cbd5e0');
+
+  const simulation = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(d => d.id).distance(120).strength(d => Math.min(d.weight * 0.15, 0.8)))
+    .force('charge', d3.forceManyBody().strength(-300))
+    .force('center', d3.forceCenter(width / 2, height / 2))
+    .force('collision', d3.forceCollide().radius(35));
+  networkSim = simulation;
+
+  // 边
+  const link = svg.append('g').selectAll('line').data(links).join('line')
+    .attr('stroke', '#cbd5e0').attr('stroke-width', d => Math.min(d.weight, 5))
+    .attr('stroke-opacity', 0.6);
+
+  // 节点组
+  const node = svg.append('g').selectAll('g').data(nodes).join('g')
+    .call(d3.drag().on('start', dragStart).on('drag', dragging).on('end', dragEnd));
+
+  // 节点圆
+  node.append('circle')
+    .attr('r', d => 12 + d.total_actions * 0.8)
+    .attr('fill', d => d.purchased ? '#48bb78' : d.intent > 0.5 ? '#ed8936' : '#4299e1')
+    .attr('stroke', d => d.purchased ? '#276749' : '#2b6cb0')
+    .attr('stroke-width', 2)
+    .style('cursor', 'pointer');
+
+  // 节点标签
+  node.append('text').text(d => d.name.slice(0, 4))
+    .attr('text-anchor', 'middle').attr('dy', '0.35em')
+    .attr('font-size', '10px').attr('fill', '#fff').attr('font-weight', '600')
+    .style('pointer-events', 'none');
+
+  // 点击节点显示详情
+  node.on('click', (event, d) => showNodeDetail(d));
+
+  // 图例
+  const legend = svg.append('g').attr('transform', `translate(12,${height - 70})`);
+  [{color: '#48bb78', text: '已购买'}, {color: '#ed8936', text: '高意向'}, {color: '#4299e1', text: '一般'}].forEach((item, i) => {
+    legend.append('circle').attr('cx', 0).attr('cy', i * 20).attr('r', 6).attr('fill', item.color);
+    legend.append('text').attr('x', 14).attr('y', i * 20 + 4).text(item.text).attr('font-size', '11px').attr('fill', '#4a5568');
+  });
+
+  simulation.on('tick', () => {
+    link.attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+        .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+    node.attr('transform', d => `translate(${d.x},${d.y})`);
+  });
+
+  function dragStart(event, d) { if (!event.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; }
+  function dragging(event, d) { d.fx = event.x; d.fy = event.y; }
+  function dragEnd(event, d) { if (!event.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; }
+}
+
+function showNodeDetail(d) {
+  const el = document.getElementById('network-detail');
+  const platformCounts = {};
+  const actionCounts = {};
+  (d.steps || []).forEach(s => {
+    platformCounts[s.platform] = (platformCounts[s.platform] || 0) + 1;
+    actionCounts[s.action_type] = (actionCounts[s.action_type] || 0) + 1;
+  });
+
+  el.innerHTML = `
+    <h3 style="margin-bottom:4px">${d.name}</h3>
+    <div style="font-size:12px;color:#718096;margin-bottom:12px">${d.id}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+      <div class="mini-stat"><div class="stat-value" style="color:${d.purchased ? '#48bb78' : '#4299e1'}">${d.purchased ? '已购买' : '未购买'}</div></div>
+      <div class="mini-stat"><div class="stat-value">${d.total_actions}</div><div class="stat-label">总行为</div></div>
+      <div class="mini-stat"><div class="stat-value">${(d.intent * 100).toFixed(0)}%</div><div class="stat-label">购买意向</div></div>
+      <div class="mini-stat"><div class="stat-value">${(d.interest * 100).toFixed(0)}%</div><div class="stat-label">兴趣度</div></div>
+    </div>
+    <h4 style="font-size:13px;margin-bottom:6px">平台分布</h4>
+    <div style="margin-bottom:12px">${Object.entries(platformCounts).map(([p,c]) =>
+      `<span class="tag platform-${p === 'xiaohongshu' ? 'xhs' : p}">${p} ${c}</span>`
+    ).join(' ')}</div>
+    <h4 style="font-size:13px;margin-bottom:6px">行为分布</h4>
+    <div style="margin-bottom:12px">${Object.entries(actionCounts).sort((a,b) => b[1]-a[1]).slice(0,6).map(([a,c]) =>
+      `<span class="tag">${a} ${c}</span>`
+    ).join(' ')}</div>
+    <h4 style="font-size:13px;margin-bottom:6px">最近行为</h4>
+    <div style="max-height:180px;overflow-y:auto">${(d.steps || []).slice(-8).reverse().map(s =>
+      `<div style="font-size:11px;padding:4px 0;border-bottom:1px solid #edf2f7">
+        <span style="color:#718096">Step ${s.step}</span>
+        <span class="tag platform-${s.platform === 'xiaohongshu' ? 'xhs' : s.platform}" style="font-size:10px">${s.platform}</span>
+        <strong>${s.action_type}</strong>
+        <div style="color:#a0aec0;margin-top:2px">${(s.effect || '').slice(0, 60)}</div>
+      </div>`
+    ).join('')}</div>
+  `;
 }
 
 // ──────────────── 舆情分析 ────────────────

@@ -6,6 +6,7 @@
   <title>镜市 MirrorMart — 模拟仪表盘</title>
   <link rel="stylesheet" href="/static/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
 </head>
 <body>
   <div class="header">
@@ -22,8 +23,9 @@
       <div class="tab" data-tab="sentiment">舆情分析</div>
       <div class="tab" data-tab="kol">KOL 分析</div>
       <div class="tab" data-tab="temporal">时间维度</div>
+      <div class="tab" data-tab="network">网络图谱</div>
       <div class="tab" data-tab="create">新建模拟</div>
-      <div class="tab" data-tab="config">场景/人设</div>
+      <div class="tab" data-tab="config">系统配置</div>
     </div>
 
     <!-- 模拟总览 -->
@@ -111,6 +113,29 @@
       <div id="kol-content"></div>
     </div>
 
+    <!-- Agent 网络图谱 -->
+    <div id="tab-network" class="tab-panel">
+      <div class="card">
+        <h3>Agent 关系网络
+          <select id="network-run" style="margin-left:12px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0"></select>
+          <select id="network-branch" style="margin-left:8px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0">
+            <option value="0">Branch 0</option><option value="1">Branch 1</option>
+            <option value="2">Branch 2</option><option value="3">Branch 3</option><option value="4">Branch 4</option>
+          </select>
+          <button class="btn btn-primary" style="margin-left:12px" onclick="loadNetwork()">加载</button>
+        </h3>
+      </div>
+      <div class="card-row" style="grid-template-columns:2fr 1fr">
+        <div class="card" style="min-height:500px;position:relative">
+          <div id="network-graph" style="width:100%;height:500px"></div>
+        </div>
+        <div class="card" id="network-detail" style="min-height:500px">
+          <h3>节点详情</h3>
+          <p style="color:#a0aec0">点击图中节点查看 Agent 详情</p>
+        </div>
+      </div>
+    </div>
+
     <!-- 时间维度分析 -->
     <div id="tab-temporal" class="tab-panel">
       <div class="card">
@@ -163,8 +188,54 @@
         </div>
       </div>
     </div>
-    <!-- 场景/人设管理 -->
+    <!-- 系统配置 -->
     <div id="tab-config" class="tab-panel">
+      <!-- 模型提供商管理（cc-switch 风格） -->
+      <div class="card">
+        <h3 style="display:flex;align-items:center;justify-content:space-between">
+          模型提供商
+          <span id="active-model-badge" style="font-size:13px;font-weight:400;padding:4px 12px;border-radius:20px;background:#edf2f7;color:#4a5568"></span>
+        </h3>
+        <div id="provider-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:12px"></div>
+        <div style="margin-top:16px">
+          <button class="btn btn-secondary" onclick="showPresets()">+ 从预设添加</button>
+          <button class="btn btn-secondary" style="margin-left:8px" onclick="showCustomProvider()">+ 自定义</button>
+        </div>
+      </div>
+
+      <!-- 预设选择弹窗 -->
+      <div id="preset-panel" class="card" style="display:none">
+        <h3>选择预设模型 <button class="btn btn-secondary" style="float:right;font-size:12px" onclick="document.getElementById('preset-panel').style.display='none'">关闭</button></h3>
+        <div id="preset-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:12px"></div>
+      </div>
+
+      <!-- 自定义/编辑表单 -->
+      <div id="provider-form" class="card" style="display:none">
+        <h3 id="provider-form-title">添加自定义提供商 <button class="btn btn-secondary" style="float:right;font-size:12px" onclick="document.getElementById('provider-form').style.display='none'">关闭</button></h3>
+        <div class="form-row">
+          <div class="form-group"><label>名称</label><input type="text" id="pf-name" placeholder="My Provider"></div>
+          <div class="form-group"><label>ID（唯一标识）</label><input type="text" id="pf-id" placeholder="my-provider"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>模型名</label><input type="text" id="pf-model" placeholder="openai/model-name"></div>
+          <div class="form-group"><label>API Base</label><input type="text" id="pf-api-base" placeholder="https://api.example.com/v1"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>API Key</label><input type="password" id="pf-api-key" placeholder="sk-..."></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Max Tokens</label><input type="number" id="pf-max-tokens" value="1024"></div>
+          <div class="form-group"><label>温度</label><input type="number" id="pf-temperature" value="0.8" step="0.1" min="0" max="1"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>图标字母</label><input type="text" id="pf-icon" value="+" maxlength="2" style="width:60px"></div>
+          <div class="form-group"><label>颜色</label><input type="color" id="pf-color" value="#94a3b8" style="width:60px;height:36px;padding:2px"></div>
+        </div>
+        <button class="btn btn-primary" onclick="saveProvider()">保存</button>
+        <span id="provider-form-status" style="margin-left:12px;color:#48bb78"></span>
+      </div>
+
+      <!-- 场景/人设管理 -->
       <div class="card-row" style="grid-template-columns:1fr 1fr">
         <div class="card">
           <h3>可用场景</h3>
