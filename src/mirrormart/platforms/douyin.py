@@ -29,6 +29,8 @@ class DouyinEnvironment(PlatformBase):
         self.following: dict[str, set[str]] = {}       # agent_id → {agent_ids}
         self.watch_history: dict[str, list[str]] = {}  # agent_id → [video_ids]
         self.current_step: int = 0
+        # 个性化推荐：记录每个 Agent 互动过的标签偏好
+        self._agent_tag_weights: dict[str, dict[str, float]] = {}  # agent_id → {tag → weight}
 
     # ──────────────── 初始化方法 ────────────────
 
@@ -189,6 +191,7 @@ class DouyinEnvironment(PlatformBase):
             "following": {k: set(v) for k, v in self.following.items()},
             "watch_history": copy.deepcopy(self.watch_history),
             "current_step": self.current_step,
+            "agent_tag_weights": copy.deepcopy(self._agent_tag_weights),
         }
 
     def restore_state(self, snapshot: dict[str, Any]) -> None:
@@ -201,6 +204,7 @@ class DouyinEnvironment(PlatformBase):
         self.following = {k: set(v) for k, v in snapshot["following"].items()}
         self.watch_history = copy.deepcopy(snapshot.get("watch_history", {}))
         self.current_step = snapshot.get("current_step", 0)
+        self._agent_tag_weights = copy.deepcopy(snapshot.get("agent_tag_weights", {}))
 
     def get_metrics(self) -> dict[str, Any]:
         """返回平台关键指标。"""
@@ -231,29 +235,31 @@ class DouyinEnvironment(PlatformBase):
     ) -> float:
         """计算推荐分数。
 
-        公式: 完播率*3 + log10(互动分+1) + 标签匹配*0.5 + 时间衰减
+        公式: 完播率*3 + log10(互动分+1) + 标签匹配*0.5 + 个性化*1.0 + 时间衰减
+        个性化基于 Agent 历史互动的标签偏好。
         """
         completion = video.get("completion_rate", 0.5) * 3.0
 
         views = max(video["views"], 1)
-        like_rate = video["likes"] / views
-        comment_rate = video["comments_count"] / views
         interaction = math.log10(
             video["likes"] * 2 + video["comments_count"] * 3 + video["shares"] * 4 + 1
         )
 
-        # 标签匹配
+        # 人设标签匹配
         tag_match = 0.0
         if interest_tags:
             video_tags = {t.lower() for t in video.get("tags", [])}
             if interest_tags & video_tags:
                 tag_match = 0.5
 
+        # 个性化：基于历史互动标签偏好
+        personal_boost = self._personalized_score(video, agent_id)
+
         # 时间衰减
         age = max(0, self.current_step - video.get("step", 0))
         time_decay = max(0.0, 1.0 - age * 0.02)  # 抖音衰减更快
 
-        return completion + interaction + tag_match + time_decay
+        return completion + interaction + tag_match + personal_boost + time_decay
 
     def _action_post(self, agent_id: str, action: dict[str, Any]) -> dict[str, Any]:
         video_id = self.add_video(
@@ -299,6 +305,7 @@ class DouyinEnvironment(PlatformBase):
         if agent_id not in self.likes.get(target_id, set()):
             self.likes.setdefault(target_id, set()).add(agent_id)
             video["likes"] += 1
+        self._update_tag_preference(agent_id, video, weight=1.0)
         return {"success": True, "action_type": "like", "target_id": target_id,
                 "effect": f"点赞了 {target_id}"}
 
@@ -314,6 +321,7 @@ class DouyinEnvironment(PlatformBase):
         }
         self.comments.setdefault(target_id, []).append(comment)
         video["comments_count"] += 1
+        self._update_tag_preference(agent_id, video, weight=1.5)
         return {"success": True, "action_type": "comment",
                 "comment_id": comment["comment_id"],
                 "effect": f"在 {target_id} 下评论了"}
@@ -331,6 +339,7 @@ class DouyinEnvironment(PlatformBase):
         }
         self.shares.setdefault(target_id, []).append(record)
         video["shares"] += 1
+        self._update_tag_preference(agent_id, video, weight=2.0)
         return {"success": True, "action_type": "share", "target_id": target_id,
                 "effect": f"分享了 {target_id}"}
 
@@ -355,6 +364,30 @@ class DouyinEnvironment(PlatformBase):
         self.following.setdefault(agent_id, set()).add(target_id)
         return {"success": True, "action_type": "follow", "target_id": target_id,
                 "effect": f"关注了 {target_id}"}
+
+    def _update_tag_preference(
+        self, agent_id: str, video: dict[str, Any], weight: float = 1.0,
+    ) -> None:
+        """根据互动更新 Agent 的标签偏好权重。"""
+        tags = video.get("tags", [])
+        if not tags:
+            return
+        prefs = self._agent_tag_weights.setdefault(agent_id, {})
+        for tag in tags:
+            tag_lower = tag.lower()
+            prefs[tag_lower] = prefs.get(tag_lower, 0) + weight
+
+    def _personalized_score(self, video: dict[str, Any], agent_id: str) -> float:
+        """计算视频对特定 Agent 的个性化加分（0~1）。"""
+        prefs = self._agent_tag_weights.get(agent_id, {})
+        if not prefs:
+            return 0.0
+        video_tags = {t.lower() for t in video.get("tags", [])}
+        if not video_tags:
+            return 0.0
+        matched_weight = sum(prefs.get(t, 0) for t in video_tags)
+        max_weight = max(prefs.values()) if prefs else 1
+        return min(matched_weight / (max_weight * 2 + 1), 1.0)
 
     def _find_video(self, video_id: str) -> dict[str, Any] | None:
         for v in self.videos:

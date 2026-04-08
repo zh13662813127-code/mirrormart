@@ -18,7 +18,12 @@
       <div class="tab active" data-tab="overview">模拟总览</div>
       <div class="tab" data-tab="detail">运行详情</div>
       <div class="tab" data-tab="ab">A/B 对比</div>
+      <div class="tab" data-tab="journey">个体旅程</div>
+      <div class="tab" data-tab="sentiment">舆情分析</div>
+      <div class="tab" data-tab="kol">KOL 分析</div>
+      <div class="tab" data-tab="temporal">时间维度</div>
       <div class="tab" data-tab="create">新建模拟</div>
+      <div class="tab" data-tab="config">场景/人设</div>
     </div>
 
     <!-- 模拟总览 -->
@@ -32,7 +37,9 @@
     <!-- 运行详情 -->
     <div id="tab-detail" class="tab-panel">
       <div class="card">
-        <h3>选择运行 <select id="detail-select" style="margin-left:12px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0"></select></h3>
+        <h3>选择运行 <select id="detail-select" style="margin-left:12px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0"></select>
+        <button class="btn btn-secondary" style="margin-left:12px" onclick="exportCSV()">导出 CSV</button>
+        <button class="btn btn-secondary" style="margin-left:8px" onclick="showReport()">查看报告</button></h3>
       </div>
       <div id="detail-content"></div>
     </div>
@@ -56,6 +63,65 @@
       <div id="ab-result"></div>
     </div>
 
+    <!-- 个体旅程 -->
+    <div id="tab-journey" class="tab-panel">
+      <div class="card">
+        <h3>Agent 决策旅程
+          <select id="journey-run" style="margin-left:12px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0"></select>
+          <select id="journey-branch" style="margin-left:8px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0">
+            <option value="0">Branch 0</option>
+            <option value="1">Branch 1</option>
+            <option value="2">Branch 2</option>
+            <option value="3">Branch 3</option>
+            <option value="4">Branch 4</option>
+          </select>
+          <button class="btn btn-primary" style="margin-left:12px" onclick="loadJourneys()">加载</button>
+        </h3>
+      </div>
+      <div id="journey-content"></div>
+    </div>
+
+    <!-- 舆情分析 -->
+    <div id="tab-sentiment" class="tab-panel">
+      <div class="card">
+        <h3>舆情趋势分析
+          <select id="sentiment-run" style="margin-left:12px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0"></select>
+          <select id="sentiment-branch" style="margin-left:8px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0">
+            <option value="0">Branch 0</option><option value="1">Branch 1</option>
+            <option value="2">Branch 2</option><option value="3">Branch 3</option><option value="4">Branch 4</option>
+          </select>
+          <button class="btn btn-primary" style="margin-left:12px" onclick="loadSentiment()">加载</button>
+        </h3>
+      </div>
+      <div id="sentiment-content"></div>
+    </div>
+
+    <!-- KOL 分析 -->
+    <div id="tab-kol" class="tab-panel">
+      <div class="card">
+        <h3>KOL 影响力分析
+          <select id="kol-run" style="margin-left:12px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0"></select>
+          <select id="kol-branch" style="margin-left:8px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0">
+            <option value="0">Branch 0</option><option value="1">Branch 1</option>
+            <option value="2">Branch 2</option><option value="3">Branch 3</option><option value="4">Branch 4</option>
+          </select>
+          <button class="btn btn-primary" style="margin-left:12px" onclick="loadKOL()">加载</button>
+        </h3>
+      </div>
+      <div id="kol-content"></div>
+    </div>
+
+    <!-- 时间维度分析 -->
+    <div id="tab-temporal" class="tab-panel">
+      <div class="card">
+        <h3>时间维度分析
+          <select id="temporal-run" style="margin-left:12px;padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0"></select>
+          <button class="btn btn-primary" style="margin-left:12px" onclick="loadTemporal()">加载</button>
+        </h3>
+      </div>
+      <div id="temporal-content"></div>
+    </div>
+
     <!-- 新建模拟 -->
     <div id="tab-create" class="tab-panel">
       <div class="card">
@@ -63,10 +129,7 @@
         <div class="form-row">
           <div class="form-group">
             <label>场景文件</label>
-            <select id="create-scenario">
-              <option value="scenarios/facemask_launch.yml">氨基酸面膜四平台推广（完整）</option>
-              <option value="scenarios/facemask_quick.yml">氨基酸面膜快速验证（5×5×5）</option>
-            </select>
+            <select id="create-scenario"></select>
           </div>
           <div class="form-group">
             <label>分支数</label>
@@ -85,6 +148,45 @@
         </div>
         <button class="btn btn-primary" id="create-btn" onclick="createSimulation()">启动模拟</button>
         <div id="create-status" style="margin-top:12px"></div>
+      </div>
+
+      <!-- WebSocket 实时进度 -->
+      <div id="live-panel" class="card" style="display:none">
+        <h3>实时进度</h3>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progress-bar"><span id="progress-text">0%</span></div>
+        </div>
+        <div class="live-stats" id="live-stats"></div>
+        <div class="card" style="margin-top:12px">
+          <h3>事件时间线</h3>
+          <div class="timeline" id="live-timeline"></div>
+        </div>
+      </div>
+    </div>
+    <!-- 场景/人设管理 -->
+    <div id="tab-config" class="tab-panel">
+      <div class="card-row" style="grid-template-columns:1fr 1fr">
+        <div class="card">
+          <h3>可用场景</h3>
+          <div id="scenario-list" class="loading"><div class="spinner"></div></div>
+        </div>
+        <div class="card">
+          <h3>可用人设</h3>
+          <div id="profile-list" class="loading"><div class="spinner"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>上传自定义场景</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>选择 YAML 文件</label>
+            <input type="file" id="scenario-file" accept=".yml,.yaml">
+          </div>
+          <div class="form-group" style="display:flex;align-items:flex-end">
+            <button class="btn btn-primary" onclick="uploadScenario()">上传</button>
+          </div>
+        </div>
+        <div id="upload-status" style="margin-top:8px"></div>
       </div>
     </div>
   </div>

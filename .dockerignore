@@ -1,0 +1,14 @@
+.git
+.gitignore
+.env
+.chroma_data
+.mypy_cache
+.pytest_cache
+.ruff_cache
+__pycache__
+*.pyc
+outputs/
+notebooks/
+docs/
+*.md
+!CLAUDE.md

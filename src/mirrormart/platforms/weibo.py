@@ -30,6 +30,9 @@ class WeiboEnvironment(PlatformBase):
         self.following: dict[str, set[str]] = {}        # agent_id → {agent_ids}
         self.topics: dict[str, list[str]] = {}          # topic_name → [post_ids]
         self.current_step: int = 0
+        # 个性化推荐：记录每个 Agent 互动过的话题和作者偏好
+        self._agent_topic_weights: dict[str, dict[str, float]] = {}   # agent_id → {topic → weight}
+        self._agent_author_weights: dict[str, dict[str, float]] = {}  # agent_id → {author ��� weight}
 
     # ──────────────── 初始化方法 ────────────────
 
@@ -102,7 +105,8 @@ class WeiboEnvironment(PlatformBase):
     ) -> list[dict[str, Any]]:
         """获取微博信息流。
 
-        关注(50%) + 热门推荐(50%)
+        关注(40%) + 热门推荐(35%) + 个性化推荐(25%)
+        个性化推荐基于 Agent 历史互动的话题和作者偏好。
         """
         if not self.posts:
             return []
@@ -110,9 +114,16 @@ class WeiboEnvironment(PlatformBase):
         followed = self.following.get(agent_id, set())
         followed_posts = [p for p in self.posts if p["author_id"] in followed]
         hot_posts = sorted(self.posts, key=self._hot_score, reverse=True)
+        # 个性化排序：综合话题偏好 + 作者偏好
+        personalized_posts = sorted(
+            self.posts,
+            key=lambda p: self._personalized_score(p, agent_id),
+            reverse=True,
+        )
 
-        n_follow = max(1, int(limit * 0.5))
-        n_hot = limit - n_follow
+        n_follow = max(1, int(limit * 0.4))
+        n_hot = max(1, int(limit * 0.35))
+        n_personal = max(1, limit - n_follow - n_hot)
 
         selected: list[dict] = []
         seen: set[str] = set()
@@ -123,7 +134,23 @@ class WeiboEnvironment(PlatformBase):
             selected.append(p)
             seen.add(p["post_id"])
 
-        # 热门微博补充
+        # 热门微博
+        for p in hot_posts:
+            if len(selected) - n_follow >= n_hot:
+                break
+            if p["post_id"] not in seen:
+                selected.append(p)
+                seen.add(p["post_id"])
+
+        # 个性化推荐
+        for p in personalized_posts:
+            if len(selected) >= n_follow + n_hot + n_personal:
+                break
+            if p["post_id"] not in seen:
+                selected.append(p)
+                seen.add(p["post_id"])
+
+        # 补齐
         for p in hot_posts:
             if len(selected) >= limit:
                 break
@@ -187,6 +214,8 @@ class WeiboEnvironment(PlatformBase):
             "following": {k: set(v) for k, v in self.following.items()},
             "topics": copy.deepcopy(self.topics),
             "current_step": self.current_step,
+            "agent_topic_weights": copy.deepcopy(self._agent_topic_weights),
+            "agent_author_weights": copy.deepcopy(self._agent_author_weights),
         }
 
     def restore_state(self, snapshot: dict[str, Any]) -> None:
@@ -199,6 +228,8 @@ class WeiboEnvironment(PlatformBase):
         self.following = {k: set(v) for k, v in snapshot["following"].items()}
         self.topics = copy.deepcopy(snapshot.get("topics", {}))
         self.current_step = snapshot.get("current_step", 0)
+        self._agent_topic_weights = copy.deepcopy(snapshot.get("agent_topic_weights", {}))
+        self._agent_author_weights = copy.deepcopy(snapshot.get("agent_author_weights", {}))
 
     def get_metrics(self) -> dict[str, Any]:
         """返回平台关键指标。"""
@@ -249,6 +280,7 @@ class WeiboEnvironment(PlatformBase):
         if agent_id not in self.likes.get(target_id, set()):
             self.likes.setdefault(target_id, set()).add(agent_id)
             post["likes"] += 1
+        self._update_preference(agent_id, post, weight=1.0)
         return {"success": True, "action_type": "like", "target_id": target_id,
                 "effect": f"点赞了 {target_id}"}
 
@@ -264,6 +296,7 @@ class WeiboEnvironment(PlatformBase):
         }
         self.comments.setdefault(target_id, []).append(comment)
         post["comments_count"] += 1
+        self._update_preference(agent_id, post, weight=1.5)
         return {"success": True, "action_type": "comment",
                 "comment_id": comment["comment_id"],
                 "effect": f"在 {target_id} 下评论了"}
@@ -283,8 +316,9 @@ class WeiboEnvironment(PlatformBase):
         }
         self.reposts.setdefault(target_id, []).append(record)
         post["reposts"] += 1
+        self._update_preference(agent_id, post, weight=2.0)
 
-        # 转发也生成一条新微博（带原文引用）
+        # 转发��生成一条新微博（带原文引用）
         new_content = f"转发@{post['author_id']}: {post['content'][:50]}"
         if repost_content:
             new_content = f"{repost_content} //{new_content}"
@@ -334,6 +368,46 @@ class WeiboEnvironment(PlatformBase):
         self.following.setdefault(agent_id, set()).add(target_id)
         return {"success": True, "action_type": "follow", "target_id": target_id,
                 "effect": f"关注了 {target_id}"}
+
+    def _update_preference(
+        self, agent_id: str, post: dict[str, Any], weight: float = 1.0,
+    ) -> None:
+        """根据互动更新 Agent 的话题和作者偏好。"""
+        # 话题偏好
+        for topic in post.get("topics", []):
+            topic_lower = topic.lower()
+            prefs = self._agent_topic_weights.setdefault(agent_id, {})
+            prefs[topic_lower] = prefs.get(topic_lower, 0) + weight
+        # 作者偏好
+        author = post.get("author_id", "")
+        if author:
+            aprefs = self._agent_author_weights.setdefault(agent_id, {})
+            aprefs[author] = aprefs.get(author, 0) + weight
+
+    def _personalized_score(self, post: dict[str, Any], agent_id: str) -> float:
+        """计算微博对特定 Agent 的个性化分数（0~1）。"""
+        topic_prefs = self._agent_topic_weights.get(agent_id, {})
+        author_prefs = self._agent_author_weights.get(agent_id, {})
+        if not topic_prefs and not author_prefs:
+            return 0.0
+
+        # 话题匹配
+        topic_score = 0.0
+        post_topics = [t.lower() for t in post.get("topics", [])]
+        if topic_prefs and post_topics:
+            matched = sum(topic_prefs.get(t, 0) for t in post_topics)
+            max_w = max(topic_prefs.values()) if topic_prefs else 1
+            topic_score = min(matched / (max_w * 2 + 1), 1.0)
+
+        # 作者匹配
+        author_score = 0.0
+        author = post.get("author_id", "")
+        if author_prefs and author:
+            author_w = author_prefs.get(author, 0)
+            max_aw = max(author_prefs.values()) if author_prefs else 1
+            author_score = min(author_w / (max_aw + 1), 1.0)
+
+        return topic_score * 0.6 + author_score * 0.4
 
     def _find_post(self, post_id: str) -> dict[str, Any] | None:
         for p in self.posts:

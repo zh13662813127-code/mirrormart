@@ -1,0 +1,113 @@
+id: kol_seeding
+name: KOL 种草策略
+description: >
+  重投入小红书/抖音 KOL 种草内容，多篇高质量测评引流淘宝。
+  适合与 discount_promo 做 A/B 对比。
+
+product:
+  name: 润颜氨基酸面膜
+  price: 59
+  category: 面膜
+  key_ingredients: [氨基酸, 玻尿酸, 烟酰胺]
+  selling_points: [温和不刺激, 成分干净, 敏感肌可用]
+  brand_awareness: low
+
+platforms:
+  - type: xiaohongshu
+    initial_content:
+      - title: 成分党实测｜氨基酸面膜28天记录
+        content: >
+          作为一个成分党，氨基酸+玻尿酸+烟酰胺的组合让我直接下单。
+          用了28天，泛红减少了，毛孔也在收。59元10片，不心疼。
+        tags: [面膜, 氨基酸面膜, 成分党, 敏感肌]
+        initial_likes: 120
+        initial_comments: 35
+      - title: 油痘肌亲妈！这面膜我愿意囤10盒
+        content: >
+          油痘肌姐妹冲！氨基酸洁面级别的温和度，上脸不刺激。
+          搭配烟酰胺，控油提亮一步到位，回购第3盒了。
+        tags: [面膜, 油痘肌, 平价好物, 护肤]
+        initial_likes: 85
+        initial_comments: 22
+      - title: 全成分解析｜润颜面膜值不值得买？
+        content: >
+          今天来做个全成分解析。氨基酸表活温和清洁，玻尿酸锁水，
+          烟酰胺提亮。防腐体系也很安全，敏感肌放心用。
+        tags: [成分解析, 面膜测评, 敏感肌, 护肤干货]
+        initial_likes: 200
+        initial_comments: 50
+
+  - type: taobao
+    initial_products:
+      - id: product_main
+        name: 润颜氨基酸面膜（10片装）
+        price: 59
+        initial_reviews: 45
+        initial_rating: 4.7
+        initial_sales: 580
+      - id: competitor_a
+        name: 某大牌氨基酸修护面膜（5片装）
+        price: 89
+        initial_reviews: 5600
+        initial_rating: 4.8
+        initial_sales: 120000
+
+  - type: douyin
+    initial_content:
+      - title: 成分党博主深扒氨基酸面膜
+        content: 全成分深扒！氨基酸面膜到底值不值得买？答案在视频里
+        author_id: kol_skincare
+        tags: [面膜, 成分党, 护肤科普]
+        duration: 90
+        initial_views: 8000
+        initial_likes: 450
+        initial_comments: 60
+        completion_rate: 0.72
+      - title: 7天面膜挑战｜敏感肌真实反馈
+        content: 敏感肌用了一周，每天记录皮肤变化，最后一天的效果惊了
+        author_id: kol_beauty
+        tags: [面膜挑战, 敏感肌, 护肤日记]
+        duration: 60
+        initial_views: 5000
+        initial_likes: 300
+        initial_comments: 40
+        completion_rate: 0.68
+
+  - type: weibo
+    initial_content:
+      - content: "#氨基酸面膜# 被成分党博主安利了这款面膜，用了一周泛红真的好了！分享给敏感肌姐妹 #护肤好物# #敏感肌#"
+        author_id: kol_skincare
+        topics: [氨基酸面膜, 护肤好物, 敏感肌]
+        initial_likes: 80
+        initial_reposts: 25
+        initial_comments: 18
+      - content: "#面膜测评# 最近发现一个宝藏面膜，59块10片氨基酸面膜，成分干净到我想哭 #平价护肤#"
+        author_id: kol_beauty
+        topics: [面膜测评, 平价护肤]
+        initial_likes: 45
+        initial_reposts: 12
+        initial_comments: 8
+
+agents:
+  profiles:
+    - type: ingredient_nerd
+      count: 2
+    - type: impulsive_buyer
+      count: 1
+    - type: price_hunter
+      count: 1
+    - type: rational_buyer
+      count: 1
+    - type: kol_beauty
+      count: 1
+    - type: lurker
+      count: 1
+
+  relationships:
+    - type: random_follow
+      density: 0.25
+
+simulation:
+  num_steps: 10
+  step_duration_hours: 12
+  num_branches: 5

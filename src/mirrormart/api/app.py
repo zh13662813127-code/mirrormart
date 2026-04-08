@@ -19,7 +19,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from mirrormart.api.routes.simulation import router as simulation_router
+from mirrormart.api.routes.simulation import (
+    profile_router,
+    router as simulation_router,
+    scenario_router,
+)
 from mirrormart.api.websocket import manager
 
 logger = logging.getLogger(__name__)
@@ -55,6 +59,8 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 # 注册路由
 app.include_router(simulation_router)
+app.include_router(scenario_router)
+app.include_router(profile_router)
 
 
 @app.get("/")

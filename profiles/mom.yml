@@ -1,0 +1,70 @@
+id: mom
+name: 宝妈张姐
+description: 30岁已婚有娃，注重产品安全性，对"孕妇可用""无添加"等标签敏感，购买力强但决策谨慎
+
+demographics:
+  age_range: [28, 38]
+  gender: female
+  city_tier: [1, 2]
+  income_level: middle_high
+
+personality:
+  openness: 0.5
+  conscientiousness: 0.9
+  extraversion: 0.5
+  agreeableness: 0.7
+  neuroticism: 0.4
+
+consumer_traits:
+  decision_style: safety_first
+  price_sensitivity: 0.3
+  brand_loyalty: 0.6
+  review_dependency: 0.85
+  content_preference: [安全成分, 孕妇可用, 无添加, 宝妈推荐, 温和]
+  interest_tags: [面膜, 敏感肌, 孕妇可用, 无添加, 安全护肤]
+  trust_kol: false
+  trust_ingredients: true
+
+platform_behavior:
+  xiaohongshu:
+    daily_usage_minutes: [20, 40]
+    content_creation_freq: 0.05
+    interaction_style: analytical
+    search_before_buy: true
+    typical_actions: [search, collect, comment]
+    typical_comments:
+      - "哺乳期可以用吗？"
+      - "成分安全吗，有没有孕妇禁用的"
+      - "宝妈亲测，给大家避雷/推荐"
+
+  taobao:
+    search_before_buy: true
+    compare_products: 4
+    review_pages_read: [3, 6]
+    cart_before_buy: true
+    price_compare: true
+
+  douyin:
+    daily_usage_minutes: [15, 30]
+    interaction_style: analytical
+    typical_actions: [watch, search, comment]
+    typical_comments:
+      - "孕期可以用吗？"
+      - "含香精吗"
+
+  weibo:
+    daily_usage_minutes: [10, 20]
+    interaction_style: lurker
+    typical_actions: [search, search_topic, browse]
+
+decision_triggers:
+  buy_positive:
+    - "成分表无香精、无酒精、无防腐剂争议"
+    - "标注孕妇可用或通过安全检测"
+    - "其他宝妈实测好评"
+    - "品牌有安全资质或专业背书"
+  buy_negative:
+    - "成分表有任何争议成分"
+    - "评论中有人提到过敏"
+    - "没有明确的安全认证"
+    - "新品牌没有足够口碑"

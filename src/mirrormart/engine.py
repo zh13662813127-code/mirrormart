@@ -20,6 +20,10 @@ import yaml
 from mirrormart.agent import Agent
 from mirrormart.cache.redis_cache import RedisCache
 from mirrormart.config import SimulationConfig
+from mirrormart.diffusion import DiffusionEngine
+from mirrormart.kol_tracker import KOLTracker
+from mirrormart.sentiment import SentimentTracker
+from mirrormart.temporal import TemporalAnalyzer
 from mirrormart.memory.chroma_store import ChromaMemoryStore
 from mirrormart.platforms.douyin import DouyinEnvironment
 from mirrormart.platforms.taobao import TaobaoEnvironment
@@ -55,6 +59,7 @@ class SimulationEngine:
             max_tokens=min(config.max_tokens, 512),
         )
         self._redis: RedisCache = RedisCache()
+        self._diffusion = DiffusionEngine()
         # 并发限速：限制同时调用 LLM 的 Agent 数量
         self._semaphore = asyncio.Semaphore(config.concurrency or 5)
         self._load_scenario()
@@ -211,6 +216,15 @@ class SimulationEngine:
         douyin: DouyinEnvironment = platforms["douyin"]
         weibo: WeiboEnvironment = platforms["weibo"]
 
+        # 初始化情感追踪、KOL 追踪和时间维度分析
+        product_price = self.scenario.get("product", {}).get("price", 59)
+        sentiment_tracker = SentimentTracker()
+        kol_tracker = KOLTracker(product_price=product_price)
+        temporal_analyzer = TemporalAnalyzer(num_steps=self.config.num_steps)
+
+        # 注册 KOL 初始内容
+        self._register_kol_content(kol_tracker, platforms)
+
         # 为每个 Agent 创建 Chroma 记忆存储（分支隔离）
         chroma_dir = f".chroma_data/branch_{branch_id}"
         chroma_stores: dict[str, ChromaMemoryStore] = {}
@@ -259,6 +273,18 @@ class SimulationEngine:
             ]
             await asyncio.gather(*step_tasks)
 
+            # 社交网络扩散：本步事件影响关注者的购买意向
+            step_events = [e for e in events if e.get("branch_step") == step]
+            if step_events:
+                follow_graphs = DiffusionEngine.build_follow_graphs(platforms)
+                self._diffusion.propagate(agents, step_events, follow_graphs)
+
+                # 情感分析 + KOL 追踪 + 时间维度分析
+                for ev in step_events:
+                    sentiment_tracker.track_event(ev)
+                    kol_tracker.track_interaction(ev)
+                    temporal_analyzer.track_event(ev)
+
             if (step + 1) % 5 == 0:
                 xhs_metrics = xhs.get_metrics()
                 taobao_metrics = taobao.get_metrics()
@@ -287,7 +313,12 @@ class SimulationEngine:
                     })
 
         # 汇总分支结果
-        result = self._summarize_branch(branch_id, agents, platforms, events)
+        result = self._summarize_branch(
+            branch_id, agents, platforms, events,
+            sentiment_tracker=sentiment_tracker,
+            kol_tracker=kol_tracker,
+            temporal_analyzer=temporal_analyzer,
+        )
 
         # 写入文件
         branch_dir = output_dir / f"branch_{branch_id}"
@@ -324,8 +355,10 @@ class SimulationEngine:
         """选择本步使用的平台，返回 (platform, name, context, query)。"""
         purchase_intent = agent.internal_state.get("purchase_intent", 0)
 
-        # 基础概率：小红书35%、抖音25%、微博15%、淘宝25%
-        weights = {"xiaohongshu": 0.35, "douyin": 0.25, "weibo": 0.15, "taobao": 0.25}
+        # 基础概率：场景配置 > 默认值
+        default_weights = {"xiaohongshu": 0.35, "douyin": 0.25, "weibo": 0.15, "taobao": 0.25}
+        scenario_weights = self.scenario.get("simulation", {}).get("platform_weights", {})
+        weights = {k: scenario_weights.get(k, default_weights[k]) for k in default_weights}
 
         # 前半段偏向种草平台，后半段偏向转化
         if step < 10:
@@ -378,7 +411,8 @@ class SimulationEngine:
         }
 
         query = None
-        search_keywords = ["面膜", "氨基酸面膜", "敏感肌面膜", "温和护肤"]
+        default_keywords = ["面膜", "氨基酸面膜", "敏感肌面膜", "温和护肤"]
+        search_keywords = self.scenario.get("product", {}).get("search_keywords", default_keywords)
         if chosen in ("xiaohongshu", "douyin", "weibo"):
             if agent.rng.random() < 0.3:
                 query = agent.rng.choice(search_keywords)
@@ -477,6 +511,9 @@ class SimulationEngine:
         agents: list[Agent],
         platforms: dict[str, Any],
         events: list[dict],
+        sentiment_tracker: SentimentTracker | None = None,
+        kol_tracker: KOLTracker | None = None,
+        temporal_analyzer: TemporalAnalyzer | None = None,
     ) -> dict[str, Any]:
         """汇总单分支结果。"""
         xhs_metrics = platforms["xiaohongshu"].get_metrics()
@@ -486,8 +523,9 @@ class SimulationEngine:
         purchases = taobao_metrics["total_purchases"]
         num_agents = len(agents)
 
-        # 主产品购买数
-        main_product_purchases = taobao_metrics["conversion_by_product"].get("product_main", 0)
+        # 各产品购买数
+        conversion_by_product = taobao_metrics.get("conversion_by_product", {})
+        main_product_purchases = conversion_by_product.get("product_main", 0)
 
         # 最终购买意向分布
         high_intent = sum(
@@ -508,6 +546,7 @@ class SimulationEngine:
             "outcome": outcome,
             "conversion_rate": round(conversion_rate, 3),
             "main_product_purchases": main_product_purchases,
+            "conversion_by_product": conversion_by_product,
             "taobao_purchases": purchases,
             "taobao_revenue": taobao_metrics["total_revenue"],
             "taobao_wishlist": taobao_metrics.get("total_wishlist", 0),
@@ -525,6 +564,9 @@ class SimulationEngine:
             "weibo_comments": weibo_metrics["total_comments"],
             "high_intent_agents": high_intent,
             "total_events": len(events),
+            "sentiment": sentiment_tracker.get_summary() if sentiment_tracker else {},
+            "kol": kol_tracker.get_summary() if kol_tracker else {},
+            "temporal": temporal_analyzer.get_summary() if temporal_analyzer else {},
         }
 
     async def run_monte_carlo(self) -> dict[str, Any]:
@@ -599,6 +641,19 @@ class SimulationEngine:
             variance = sum((v - mean) ** 2 for v in vals) / len(vals) if vals else 0
             return round(variance ** 0.5, 3)
 
+        # 多产品竞争分析：汇总各产品的购买分布
+        all_product_ids: set[str] = set()
+        for r in branch_results:
+            all_product_ids.update(r.get("conversion_by_product", {}).keys())
+        product_stats: dict[str, dict[str, Any]] = {}
+        for pid in sorted(all_product_ids):
+            vals = [r.get("conversion_by_product", {}).get(pid, 0) for r in branch_results]
+            mean_val = sum(vals) / len(vals) if vals else 0
+            product_stats[pid] = {
+                "mean": round(mean_val, 2),
+                "values": vals,
+            }
+
         return {
             "num_branches": n,
             "outcome_distribution": outcome_distribution,
@@ -621,7 +676,11 @@ class SimulationEngine:
                     "mean": avg("xhs_likes"),
                     "std": std("xhs_likes"),
                 },
+                "product_competition": product_stats,
             },
+            "sentiment_overview": self._aggregate_sentiment(branch_results),
+            "kol_overview": self._aggregate_kol(branch_results),
+            "temporal_overview": self._aggregate_temporal(branch_results),
         }
 
     def _generate_report(
@@ -629,57 +688,432 @@ class SimulationEngine:
         aggregated: dict[str, Any],
         branch_results: list[dict[str, Any]],
     ) -> str:
-        """生成 Markdown 分析报告。"""
+        """生成增强版 Markdown 分析报告（含四平台指标 + Agent 行为分析）。"""
+        run_id = aggregated.get("run_id", "")
+        n = aggregated["num_branches"]
+        od = aggregated["outcome_distribution"]
+        metrics = aggregated.get("metrics", {})
+        cr = metrics.get("conversion_rate", {})
+        mp = metrics.get("main_product_purchases", {})
+
         lines = [
             f"# 模拟分析报告",
             f"",
-            f"**运行ID**: {aggregated.get('run_id', '')}  ",
-            f"**分支数**: {aggregated['num_branches']}  ",
+            f"**运行ID**: {run_id}  ",
+            f"**场景**: {self.scenario.get('name', '')}  ",
+            f"**分支数**: {n}  ",
+            f"**步数**: {self.config.num_steps}  ",
+            f"**模型**: {self.config.llm_model}  ",
             f"",
-            f"## 结局概率分布",
+            f"---",
+            f"",
+            f"## 1. 结局概率分布",
             f"",
         ]
-        for outcome, prob in aggregated["outcome_distribution"].items():
-            lines.append(f"- **{outcome}**: {prob * 100:.0f}%")
-
-        metrics = aggregated.get("metrics", {})
-        cr = metrics.get("conversion_rate", {})
-        lines += [
-            f"",
-            f"## 关键指标",
-            f"",
-            f"| 指标 | 均值 | 标准差 | 各分支值 |",
-            f"|------|------|--------|---------|",
-            f"| 主产品转化率 | {cr.get('mean', 0):.1%} | {cr.get('std', 0):.3f} | {cr.get('values', [])} |",
-        ]
-
-        mp = metrics.get("main_product_purchases", {})
-        lines.append(
-            f"| 主产品购买次数 | {mp.get('mean', 0):.1f} | {mp.get('std', 0):.1f} | {mp.get('values', [])} |"
-        )
+        for outcome, prob in od.items():
+            bar = "=" * int(prob * 30)
+            lines.append(f"- **{outcome}**: {prob * 100:.0f}% `{bar}`")
 
         lines += [
             f"",
-            f"## 各分支详情",
+            f"## 2. 核心转化指标",
             f"",
-            f"| 分支 | 结局 | 转化率 | 购买数 | XHS帖子 | XHS点赞 |",
-            f"|------|------|--------|--------|---------|---------|",
+            f"| 指标 | 均值 | 标准差 |",
+            f"|------|------|--------|",
+            f"| 主产品转化率 | {cr.get('mean', 0):.1%} | {cr.get('std', 0):.3f} |",
+            f"| 主产品购买次数 | {mp.get('mean', 0):.1f} | {mp.get('std', 0):.1f} |",
+            f"",
+            f"## 3. 四平台指标汇总",
+            f"",
+            f"| 分支 | 结局 | 转化率 | XHS帖/赞/评/转 | 抖音视频/播放/赞 | 微博帖/转发/评 | 淘宝购买/营收/收藏 |",
+            f"|------|------|--------|----------------|-----------------|---------------|-------------------|",
         ]
         for r in branch_results:
             lines.append(
-                f"| Branch {r['branch_id']} | {r['outcome']} | "
-                f"{r['conversion_rate']:.1%} | {r['main_product_purchases']} | "
-                f"{r['xhs_posts']} | {r['xhs_likes']} |"
+                f"| B{r['branch_id']} | {r['outcome']} | {r['conversion_rate']:.1%} "
+                f"| {r['xhs_posts']}/{r['xhs_likes']}/{r['xhs_comments']}/{r.get('xhs_reposts', 0)} "
+                f"| {r.get('douyin_videos', 0)}/{r.get('douyin_views', 0)}/{r.get('douyin_likes', 0)} "
+                f"| {r.get('weibo_posts', 0)}/{r.get('weibo_reposts', 0)}/{r.get('weibo_comments', 0)} "
+                f"| {r['taobao_purchases']}/{r.get('taobao_revenue', 0)}/{r.get('taobao_wishlist', 0)} |"
             )
+
+        # Agent 行为分析（从最近的运行数据统计）
+        lines += [
+            f"",
+            f"## 4. Agent 行为模式分析",
+            f"",
+        ]
+        # 统计各分支的行为分布
+        action_counts: dict[str, int] = {}
+        platform_counts: dict[str, int] = {}
+        total_events = sum(r.get("total_events", 0) for r in branch_results)
+        high_intent_total = sum(r.get("high_intent_agents", 0) for r in branch_results)
+
+        for r in branch_results:
+            events_file = (
+                Path(self.config.output_dir) / run_id / f"branch_{r['branch_id']}" / "events.jsonl"
+            )
+            if events_file.exists():
+                for line in events_file.read_text(encoding="utf-8").strip().split("\n"):
+                    if not line:
+                        continue
+                    ev = json.loads(line)
+                    at = ev.get("action", {}).get("type", "unknown")
+                    pf = ev.get("platform", "unknown")
+                    action_counts[at] = action_counts.get(at, 0) + 1
+                    platform_counts[pf] = platform_counts.get(pf, 0) + 1
+
+        if action_counts:
+            lines += [
+                f"**总事件数**: {total_events}  ",
+                f"**高购买意向 Agent 总数**: {high_intent_total}（跨{n}分支累计）  ",
+                f"",
+                f"### 行为类型分布",
+                f"",
+                f"| 行为 | 次数 | 占比 |",
+                f"|------|------|------|",
+            ]
+            total_actions = sum(action_counts.values())
+            for act, cnt in sorted(action_counts.items(), key=lambda x: x[1], reverse=True):
+                pct = cnt / total_actions * 100 if total_actions else 0
+                lines.append(f"| {act} | {cnt} | {pct:.1f}% |")
+
+            lines += [
+                f"",
+                f"### 平台使用分布",
+                f"",
+                f"| 平台 | 次数 | 占比 |",
+                f"|------|------|------|",
+            ]
+            for pf, cnt in sorted(platform_counts.items(), key=lambda x: x[1], reverse=True):
+                pct = cnt / total_actions * 100 if total_actions else 0
+                lines.append(f"| {pf} | {cnt} | {pct:.1f}% |")
+
+        # 关键发现与结论
+        lines += [
+            f"",
+            f"## 5. 关键发现",
+            f"",
+        ]
+
+        # 自动生成发现
+        best_branch = max(branch_results, key=lambda r: r["conversion_rate"])
+        worst_branch = min(branch_results, key=lambda r: r["conversion_rate"])
+        if best_branch["conversion_rate"] > 0:
+            lines.append(
+                f"- **最佳分支**: Branch {best_branch['branch_id']}，"
+                f"转化率 {best_branch['conversion_rate']:.1%}，"
+                f"购买 {best_branch['main_product_purchases']} 次"
+            )
+        if best_branch["branch_id"] != worst_branch["branch_id"]:
+            lines.append(
+                f"- **最差分支**: Branch {worst_branch['branch_id']}，"
+                f"转化率 {worst_branch['conversion_rate']:.1%}"
+            )
+        cr_std = cr.get("std", 0)
+        if cr_std > 0.05:
+            lines.append(f"- **分支差异显著**（标准差={cr_std:.3f}），概率分布分析有意义")
+        elif cr_std == 0:
+            lines.append(f"- **分支差异为零**，所有分支转化率相同，建议增加步数或 Agent 数量")
+        else:
+            lines.append(f"- **分支差异较小**（标准差={cr_std:.3f}），建议增加分支数以提高统计显著性")
+
+        # 平台贡献度
+        if platform_counts:
+            top_platform = max(platform_counts.items(), key=lambda x: x[1])
+            lines.append(f"- **最活跃平台**: {top_platform[0]}（{top_platform[1]}次行为）")
+
+        if action_counts.get("purchase", 0) == 0 and action_counts.get("add_cart", 0) > 0:
+            lines.append(f"- **存在加购未转化问题**：加购 {action_counts['add_cart']} 次但无购买，建议优化价格或促销策略")
+
+        # 多产品竞争分析
+        product_comp = metrics.get("product_competition", {})
+        if len(product_comp) > 1:
+            lines += [
+                f"",
+                f"## 6. 多产品竞争分析",
+                f"",
+                f"| 产品 | 平均购买次数 | 各分支购买 |",
+                f"|------|-------------|-----------|",
+            ]
+            for pid, stats in sorted(
+                product_comp.items(),
+                key=lambda x: x[1].get("mean", 0),
+                reverse=True,
+            ):
+                lines.append(
+                    f"| {pid} | {stats['mean']:.1f} | {stats.get('values', [])} |"
+                )
+
+            # 市场份额
+            total_mean = sum(s["mean"] for s in product_comp.values())
+            if total_mean > 0:
+                lines += [f"", f"**市场份额分布**:"]
+                for pid, stats in sorted(
+                    product_comp.items(),
+                    key=lambda x: x[1].get("mean", 0),
+                    reverse=True,
+                ):
+                    share = stats["mean"] / total_mean * 100
+                    bar = "=" * int(share / 3)
+                    lines.append(f"- {pid}: {share:.0f}% `{bar}`")
+
+        # 情感分析
+        sentiment = aggregated.get("sentiment_overview", {})
+        avg_pol = sentiment.get("avg_polarity", 0)
+        pol_label = "正面" if avg_pol > 0.2 else ("负面" if avg_pol < -0.2 else "中性")
+        lines += [
+            f"",
+            f"## 7. 舆情分析",
+            f"",
+            f"**整体情感极性**: {avg_pol:.3f}（{pol_label}）  ",
+            f"**各分支极性**: {sentiment.get('polarity_values', [])}  ",
+            f"",
+        ]
+        pf_sent = sentiment.get("platform_sentiment", {})
+        if pf_sent:
+            lines += [
+                f"| 平台 | 正面 | 负面 | 中性 |",
+                f"|------|------|------|------|",
+            ]
+            for pf, counts in pf_sent.items():
+                lines.append(
+                    f"| {pf} | {counts.get('positive', 0)} | {counts.get('negative', 0)} | {counts.get('neutral', 0)} |"
+                )
+
+        # KOL 分析
+        kol_overview = aggregated.get("kol_overview", {})
+        kol_list = kol_overview.get("kol_summary", [])
+        if kol_list:
+            lines += [
+                f"",
+                f"## 8. KOL 影响力分析",
+                f"",
+                f"| KOL | 内容数 | 平均互动 | 平均转化 |",
+                f"|-----|--------|---------|---------|",
+            ]
+            for kol in kol_list:
+                lines.append(
+                    f"| {kol['kol_id']} | {kol['content_count']} "
+                    f"| {kol['avg_engagement']:.0f} | {kol['avg_conversions']:.1f} |"
+                )
+
+        # 时间维度分析
+        temporal = aggregated.get("temporal_overview", {})
+        if temporal:
+            phases = temporal.get("phases", {})
+            lines += [
+                f"",
+                f"## 9. 时间维度分析",
+                f"",
+                f"### 阶段对比",
+                f"",
+                f"| 阶段 | 平均事件数 | 平均转化 | 平均购买意向 |",
+                f"|------|-----------|---------|-------------|",
+            ]
+            phase_labels = {"early": "早期（种草）", "mid": "中期（决策）", "late": "晚期（转化）"}
+            for phase in ("early", "mid", "late"):
+                p = phases.get(phase, {})
+                lines.append(
+                    f"| {phase_labels.get(phase, phase)} "
+                    f"| {p.get('avg_events', 0):.1f} "
+                    f"| {p.get('avg_conversions', 0):.1f} "
+                    f"| {p.get('avg_intent', 0):.3f} |"
+                )
+
+            # 转化高峰
+            conv_timeline = temporal.get("total_conversion_timeline", [])
+            if conv_timeline and max(conv_timeline) > 0:
+                peak_step = conv_timeline.index(max(conv_timeline))
+                lines += [
+                    f"",
+                    f"**转化高峰**: 第 {peak_step} 步（共 {max(conv_timeline)} 次购买）  ",
+                ]
 
         lines += [
             f"",
-            f"## 结论",
+            f"---",
             f"",
-            f"> 注意: 本模拟仅用于相对比较，不代表绝对预测。",
-            f"> 不同分支间的差异性是概率分布分析有意义的前提。",
+            f"> 本模拟仅用于相对比较，不代表绝对预测。",
         ]
         return "\n".join(lines)
+
+    def _aggregate_sentiment(
+        self, branch_results: list[dict[str, Any]],
+    ) -> dict[str, Any]:
+        """聚合多分支的情感分析数据。"""
+        polarities = []
+        platform_totals: dict[str, dict[str, int]] = {}
+        for r in branch_results:
+            s = r.get("sentiment", {})
+            if s.get("overall_polarity") is not None:
+                polarities.append(s["overall_polarity"])
+            for pf, counts in s.get("platform_sentiment", {}).items():
+                if pf not in platform_totals:
+                    platform_totals[pf] = {"positive": 0, "negative": 0, "neutral": 0}
+                for k in ("positive", "negative", "neutral"):
+                    platform_totals[pf][k] += counts.get(k, 0)
+
+        avg_polarity = round(sum(polarities) / len(polarities), 3) if polarities else 0.0
+        return {
+            "avg_polarity": avg_polarity,
+            "polarity_values": polarities,
+            "platform_sentiment": platform_totals,
+        }
+
+    def _aggregate_kol(
+        self, branch_results: list[dict[str, Any]],
+    ) -> dict[str, Any]:
+        """聚合多分支的 KOL 追踪数据。"""
+        kol_totals: dict[str, dict[str, float]] = {}
+        for r in branch_results:
+            kol_data = r.get("kol", {})
+            for perf in kol_data.get("kol_performance", []):
+                kid = perf["kol_id"]
+                if kid not in kol_totals:
+                    kol_totals[kid] = {
+                        "total_engagement": 0,
+                        "conversions": 0,
+                        "content_count": 0,
+                        "branches": 0,
+                    }
+                kol_totals[kid]["total_engagement"] += perf.get("total_engagement", 0)
+                kol_totals[kid]["conversions"] += perf.get("conversions", 0)
+                kol_totals[kid]["content_count"] = perf.get("content_count", 0)
+                kol_totals[kid]["branches"] += 1
+
+        kol_summary = []
+        for kid, totals in sorted(kol_totals.items(), key=lambda x: x[1]["total_engagement"], reverse=True):
+            n = totals["branches"] or 1
+            kol_summary.append({
+                "kol_id": kid,
+                "avg_engagement": round(totals["total_engagement"] / n, 1),
+                "avg_conversions": round(totals["conversions"] / n, 2),
+                "content_count": totals["content_count"],
+            })
+
+        return {"kol_summary": kol_summary}
+
+    def _aggregate_temporal(
+        self, branch_results: list[dict[str, Any]],
+    ) -> dict[str, Any]:
+        """聚合多分支的时间维度数据（取平均值）。"""
+        if not branch_results:
+            return {}
+        temporals = [r.get("temporal", {}) for r in branch_results if r.get("temporal")]
+        if not temporals:
+            return {}
+
+        num_steps = temporals[0].get("num_steps", 0)
+        n = len(temporals)
+
+        # 平均每步事件密度
+        avg_density = [
+            round(sum(t.get("step_density", [0] * num_steps)[s] for t in temporals) / n, 1)
+            for s in range(num_steps)
+        ]
+
+        # 平均每步购买意向
+        avg_intent = [
+            round(sum(t.get("intent_timeline", [0] * num_steps)[s] for t in temporals) / n, 3)
+            for s in range(num_steps)
+        ]
+
+        # 累计转化时间线
+        total_conversions = [
+            sum(t.get("conversion_timeline", [0] * num_steps)[s] for t in temporals)
+            for s in range(num_steps)
+        ]
+
+        # 平均平台时间线
+        all_platforms: set[str] = set()
+        for t in temporals:
+            all_platforms.update(t.get("platform_timeline", {}).keys())
+        avg_platform_timeline: dict[str, list[float]] = {}
+        for pf in sorted(all_platforms):
+            avg_platform_timeline[pf] = [
+                round(
+                    sum(
+                        t.get("platform_timeline", {}).get(pf, [0] * num_steps)[s]
+                        for t in temporals
+                    ) / n, 1
+                )
+                for s in range(num_steps)
+            ]
+
+        # 聚合阶段分析
+        phase_names = ["early", "mid", "late"]
+        avg_phases: dict[str, Any] = {}
+        for phase in phase_names:
+            events = round(sum(
+                t.get("phases", {}).get(phase, {}).get("total_events", 0)
+                for t in temporals
+            ) / n, 1)
+            conversions = round(sum(
+                t.get("phases", {}).get(phase, {}).get("conversions", 0)
+                for t in temporals
+            ) / n, 1)
+            intents = [
+                t.get("phases", {}).get(phase, {}).get("avg_purchase_intent", 0)
+                for t in temporals
+            ]
+            avg_phases[phase] = {
+                "avg_events": events,
+                "avg_conversions": conversions,
+                "avg_intent": round(sum(intents) / len(intents), 3) if intents else 0,
+            }
+
+        return {
+            "num_steps": num_steps,
+            "avg_step_density": avg_density,
+            "avg_intent_timeline": avg_intent,
+            "total_conversion_timeline": total_conversions,
+            "avg_platform_timeline": avg_platform_timeline,
+            "phases": avg_phases,
+        }
+
+    def _register_kol_content(
+        self,
+        kol_tracker: KOLTracker,
+        platforms: dict[str, Any],
+    ) -> None:
+        """从平台初始内容中注册 KOL 内容到追踪器。"""
+        # 小红书帖子
+        xhs = platforms.get("xiaohongshu")
+        if xhs:
+            for post in getattr(xhs, "posts", []):
+                author = post.get("author_id", "")
+                kol_tracker.register_content(
+                    content_id=post.get("post_id", ""),
+                    author_id=author,
+                    platform="xiaohongshu",
+                    title=post.get("title", ""),
+                    content_type="post",
+                )
+        # 抖音视频
+        douyin = platforms.get("douyin")
+        if douyin:
+            for video in getattr(douyin, "videos", []):
+                author = video.get("author_id", "")
+                kol_tracker.register_content(
+                    content_id=video.get("video_id", ""),
+                    author_id=author,
+                    platform="douyin",
+                    title=video.get("title", ""),
+                    content_type="video",
+                )
+        # 微博帖子
+        weibo = platforms.get("weibo")
+        if weibo:
+            for post in getattr(weibo, "posts", []):
+                author = post.get("author_id", "")
+                kol_tracker.register_content(
+                    content_id=post.get("post_id", ""),
+                    author_id=author,
+                    platform="weibo",
+                    title="",
+                    content_type="weibo",
+                )
 
     # ──────────────── 文件工具 ────────────────
 

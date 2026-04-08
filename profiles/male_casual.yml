@@ -1,0 +1,68 @@
+id: male_casual
+name: 直男小王
+description: 25岁男性，对护肤无研究但开始关注，被女友/同事安利后试水，决策简单粗暴，看销量和评分
+
+demographics:
+  age_range: [22, 30]
+  gender: male
+  city_tier: [1, 2]
+  income_level: middle
+
+personality:
+  openness: 0.4
+  conscientiousness: 0.5
+  extraversion: 0.5
+  agreeableness: 0.6
+  neuroticism: 0.2
+
+consumer_traits:
+  decision_style: simple
+  price_sensitivity: 0.5
+  brand_loyalty: 0.2
+  review_dependency: 0.5
+  content_preference: [男士护肤, 简单好用, 销量高, 评分高]
+  interest_tags: [面膜, 男士护肤, 入门护肤]
+  trust_kol: false
+  trust_ingredients: false
+
+platform_behavior:
+  xiaohongshu:
+    daily_usage_minutes: [5, 15]
+    content_creation_freq: 0.01
+    interaction_style: lurker
+    search_before_buy: false
+    typical_actions: [browse, search]
+    typical_comments:
+      - "男生能用吗"
+      - "女朋友让我买的"
+
+  taobao:
+    search_before_buy: true
+    compare_products: 2
+    review_pages_read: [1, 2]
+    cart_before_buy: false
+    price_compare: false
+
+  douyin:
+    daily_usage_minutes: [30, 60]
+    interaction_style: casual
+    typical_actions: [watch, like, browse]
+    typical_comments:
+      - "男生也能用？"
+      - "看起来还行，下单了"
+
+  weibo:
+    daily_usage_minutes: [15, 30]
+    interaction_style: lurker
+    typical_actions: [browse, search]
+
+decision_triggers:
+  buy_positive:
+    - "销量高（万人购买），说明靠谱"
+    - "评分4.5以上"
+    - "女友/朋友推荐"
+    - "使用方便不麻烦"
+  buy_negative:
+    - "看起来太女性化"
+    - "使用步骤太复杂"
+    - "价格超过100元不值得尝试"

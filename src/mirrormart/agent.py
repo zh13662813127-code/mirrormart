@@ -66,6 +66,11 @@ USER_MESSAGE_TEMPLATE = """【你的人设】
 【你最近的记忆】
 {memories}
 
+{reflection_context}
+
+【你的行为统计】
+{behavior_stats}
+
 【你当前看到的内容】
 平台: {current_platform}
 {perception}
@@ -78,6 +83,7 @@ USER_MESSAGE_TEMPLATE = """【你的人设】
 - 如果某个商品查看次数 > 3，本步骤必须做最终决定：购买或明确放弃
 - 如果 purchase_intent > 0.7，本步骤必须购买或明确说出"决定不买"的理由
 - 不要每步都做同样的事，要有真实的行为节奏
+- 参考你的行为统计和反思，避免重复无效行为
 
 【请决定你这一步要做什么】
 根据你的人设和当前看到的内容，决定下一步行动。"""
@@ -226,6 +232,13 @@ class Agent:
             "、".join(f"{k}（已看{v}次）" for k, v in repeated_views.items())
             if repeated_views else "无"
         )
+
+        # 提取最近反思摘要
+        reflection_context = self._get_reflection_context()
+
+        # 生成行为模式统计
+        behavior_stats = self._get_behavior_stats()
+
         user_message = USER_MESSAGE_TEMPLATE.format(
             name=self.persona.get("name", self.id),
             description=self.persona.get("description", ""),
@@ -234,6 +247,8 @@ class Agent:
             content_preference=consumer_traits.get("content_preference", []),
             trust_kol=consumer_traits.get("trust_kol", True),
             memories=memory_text,
+            reflection_context=reflection_context,
+            behavior_stats=behavior_stats,
             current_platform=platform_name,
             perception=perception,
             purchase_intent=round(self.internal_state.get("purchase_intent", 0.0), 2),
@@ -328,6 +343,59 @@ class Agent:
         if not result.get("success", True):
             return 0.3
         return 0.1
+
+    def _get_reflection_context(self) -> str:
+        """从记忆中提取最近的反思摘要，注入到 decide prompt。"""
+        reflections = [
+            m for m in self.memories
+            if m.get("action_type") == "reflect"
+        ]
+        if not reflections:
+            return ""
+        # 取最近两条反思
+        recent = reflections[-2:]
+        lines = ["【你最近的反思】"]
+        for r in recent:
+            lines.append(f"- {r.get('summary', '')}")
+            ds = r.get("decision_summary", "")
+            if ds:
+                lines.append(f"  决策意向: {ds}")
+            tags = r.get("interest_tags", [])
+            if tags:
+                lines.append(f"  兴趣标签: {', '.join(tags)}")
+        return "\n".join(lines)
+
+    def _get_behavior_stats(self) -> str:
+        """统计已有行为模式，帮助 Agent 避免重复无效行为。"""
+        if not self.action_log:
+            return "暂无历史行为"
+
+        action_counts: dict[str, int] = {}
+        platform_counts: dict[str, int] = {}
+        for log in self.action_log:
+            at = log["action"].get("type", "unknown")
+            pf = log["action"].get("platform", "unknown")
+            action_counts[at] = action_counts.get(at, 0) + 1
+            platform_counts[pf] = platform_counts.get(pf, 0) + 1
+
+        total = len(self.action_log)
+        parts = [f"已执行 {total} 步:"]
+
+        # 行为类型 top 5
+        top_actions = sorted(action_counts.items(), key=lambda x: x[1], reverse=True)[:5]
+        parts.append("行为分布: " + ", ".join(f"{a}×{c}" for a, c in top_actions))
+
+        # 平台分布
+        top_platforms = sorted(platform_counts.items(), key=lambda x: x[1], reverse=True)
+        parts.append("平台分布: " + ", ".join(f"{p}×{c}" for p, c in top_platforms))
+
+        # 连续相同行为警告
+        if len(self.action_log) >= 3:
+            last3 = [log["action"].get("type", "") for log in self.action_log[-3:]]
+            if len(set(last3)) == 1:
+                parts.append(f"注意: 你已连续3次执行 {last3[0]}，请尝试不同行为")
+
+        return " | ".join(parts)
 
     def get_journey_summary(self) -> list[dict[str, Any]]:
         """获取个体旅程摘要（用于分析报告）。"""

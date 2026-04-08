@@ -34,6 +34,8 @@ class XiaohongshuEnvironment(PlatformBase):
         self.following: dict[str, set[str]] = {}      # agent_id → {agent_ids}
         self.reposts: dict[str, list[dict]] = {}      # post_id → [repost records]
         self.current_step: int = 0
+        # 个性化推荐：记录每个 Agent 互动过的标签偏好
+        self._agent_tag_weights: dict[str, dict[str, float]] = {}  # agent_id → {tag → weight}
 
     # ──────────────── 初始化方法 ────────────────
 
@@ -112,7 +114,8 @@ class XiaohongshuEnvironment(PlatformBase):
     ) -> list[dict[str, Any]]:
         """获取信息流。
 
-        算法: 关注(40%) + 热度(40%) + 兴趣标签(20%)
+        算法: 关注(35%) + 热度(35%) + 兴趣标签(15%) + 个性化推荐(15%)
+        个性化推荐基于 Agent 历史互动的标签偏好。
         """
         if not self.posts:
             return []
@@ -121,7 +124,7 @@ class XiaohongshuEnvironment(PlatformBase):
         followed_posts = [p for p in self.posts if p["author_id"] in followed]
         hot_posts = sorted(self.posts, key=self._heat_score, reverse=True)
 
-        # 兴趣标签匹配
+        # 兴趣标签匹配（来自人设 YAML）
         interest_tags = interest_tags or []
         tag_set = {t.lower() for t in interest_tags}
         tag_posts = [
@@ -129,10 +132,18 @@ class XiaohongshuEnvironment(PlatformBase):
             if tag_set & {t.lower() for t in p.get("tags", [])}
         ] if tag_set else []
 
-        # 三路混合比例
-        n_followed = max(1, int(limit * 0.4))
-        n_hot = max(1, int(limit * 0.4))
-        n_tag = max(1, limit - n_followed - n_hot)
+        # 个性化推荐：基于历史互动标签偏好排序
+        personalized_posts = sorted(
+            self.posts,
+            key=lambda p: self._personalized_score(p, agent_id),
+            reverse=True,
+        )
+
+        # 四路混合比例
+        n_followed = max(1, int(limit * 0.35))
+        n_hot = max(1, int(limit * 0.35))
+        n_tag = max(1, int(limit * 0.15))
+        n_personal = max(1, limit - n_followed - n_hot - n_tag)
 
         selected: list[dict] = []
         seen: set[str] = set()
@@ -145,14 +156,21 @@ class XiaohongshuEnvironment(PlatformBase):
                     seen.add(p["post_id"])
 
         _pick(followed_posts, n_followed)
-        # 热度路：按排序取，不随机
+        # 热度路：按排序取
         for p in hot_posts:
-            if len([x for x in selected if x["post_id"] not in {x["post_id"] for x in followed_posts}]) >= n_hot:
+            if len(selected) - n_followed >= n_hot:
                 break
             if p["post_id"] not in seen:
                 selected.append(p)
                 seen.add(p["post_id"])
         _pick(tag_posts, n_tag)
+        # 个性化路：按偏好分排序取
+        for p in personalized_posts:
+            if len(selected) >= n_followed + n_hot + n_tag + n_personal:
+                break
+            if p["post_id"] not in seen:
+                selected.append(p)
+                seen.add(p["post_id"])
 
         # 补齐不足的部分
         for p in hot_posts:
@@ -203,6 +221,7 @@ class XiaohongshuEnvironment(PlatformBase):
             "following": {k: set(v) for k, v in self.following.items()},
             "reposts": copy.deepcopy(self.reposts),
             "current_step": self.current_step,
+            "agent_tag_weights": copy.deepcopy(self._agent_tag_weights),
         }
 
     def restore_state(self, snapshot: dict[str, Any]) -> None:
@@ -215,6 +234,7 @@ class XiaohongshuEnvironment(PlatformBase):
         self.following = {k: set(v) for k, v in snapshot["following"].items()}
         self.reposts = copy.deepcopy(snapshot.get("reposts", {}))
         self.current_step = snapshot.get("current_step", 0)
+        self._agent_tag_weights = copy.deepcopy(snapshot.get("agent_tag_weights", {}))
 
     def get_metrics(self) -> dict[str, Any]:
         """返回平台关键指标。"""
@@ -272,6 +292,7 @@ class XiaohongshuEnvironment(PlatformBase):
         if agent_id not in self.likes.get(target_id, set()):
             self.likes.setdefault(target_id, set()).add(agent_id)
             post["likes"] += 1
+        self._update_tag_preference(agent_id, post, weight=1.0)
         return {"success": True, "action_type": "like", "target_id": target_id,
                 "effect": f"点赞了 {target_id}"}
 
@@ -283,6 +304,7 @@ class XiaohongshuEnvironment(PlatformBase):
         if agent_id not in self.collections.get(target_id, set()):
             self.collections.setdefault(target_id, set()).add(agent_id)
             post["collections"] += 1
+        self._update_tag_preference(agent_id, post, weight=2.0)
         return {"success": True, "action_type": "collect", "target_id": target_id,
                 "effect": f"收藏了 {target_id}"}
 
@@ -298,6 +320,7 @@ class XiaohongshuEnvironment(PlatformBase):
         }
         self.comments.setdefault(target_id, []).append(comment)
         post["comments_count"] += 1
+        self._update_tag_preference(agent_id, post, weight=1.5)
         return {"success": True, "action_type": "comment", "comment_id": comment["comment_id"],
                 "effect": f"在 {target_id} 下评论了"}
 
@@ -364,6 +387,31 @@ class XiaohongshuEnvironment(PlatformBase):
         post["comments_count"] += 1
         return {"success": True, "action_type": "quote", "target_id": target_id,
                 "effect": f"引用转发了 {target_id}，附评论: {quote_content[:30]}"}
+
+    def _update_tag_preference(
+        self, agent_id: str, post: dict[str, Any], weight: float = 1.0,
+    ) -> None:
+        """根据互动更新 Agent 的标签偏好权重。"""
+        tags = post.get("tags", [])
+        if not tags:
+            return
+        prefs = self._agent_tag_weights.setdefault(agent_id, {})
+        for tag in tags:
+            tag_lower = tag.lower()
+            prefs[tag_lower] = prefs.get(tag_lower, 0) + weight
+
+    def _personalized_score(self, post: dict[str, Any], agent_id: str) -> float:
+        """计算帖子对特定 Agent 的个性化加分（0~1）。"""
+        prefs = self._agent_tag_weights.get(agent_id, {})
+        if not prefs:
+            return 0.0
+        post_tags = {t.lower() for t in post.get("tags", [])}
+        if not post_tags:
+            return 0.0
+        matched_weight = sum(prefs.get(t, 0) for t in post_tags)
+        # 归一化：用最高标签权重做 soft cap
+        max_weight = max(prefs.values()) if prefs else 1
+        return min(matched_weight / (max_weight * 2 + 1), 1.0)
 
     def _find_post(self, post_id: str) -> dict[str, Any] | None:
         for p in self.posts:

@@ -7,17 +7,24 @@
   GET  /simulations/{run_id}/status — 获取运行状态
   GET  /simulations/{run_id}/branch/{branch_id} — 获取分支详情
   GET  /simulations/compare        — A/B 对比两次运行
+  GET  /scenarios                  — 列出可用场景
+  POST /scenarios/upload           — 上传自定义场景 YAML
+  GET  /profiles                   — 列出可用人设
 """
 
 from __future__ import annotations
 
+import csv
+import io
 import json
 import logging
 import time
 from pathlib import Path
 from typing import Any
 
-from fastapi import APIRouter, BackgroundTasks, HTTPException, Query
+import yaml
+from fastapi import APIRouter, BackgroundTasks, HTTPException, Query, UploadFile
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 from mirrormart.api.websocket import EventQueue
@@ -210,6 +217,138 @@ async def get_branch_detail(run_id: str, branch_id: int) -> dict[str, Any]:
     return branch
 
 
+@router.get("/{run_id}/report")
+async def get_report(run_id: str) -> dict[str, Any]:
+    """获取模拟分析报告（Markdown 格式）。"""
+    report_path = Path("outputs") / run_id / "analysis.md"
+    if not report_path.exists():
+        raise HTTPException(404, f"报告 {run_id} 不存在")
+    content = report_path.read_text(encoding="utf-8")
+    return {"run_id": run_id, "report": content}
+
+
+@router.get("/{run_id}/export")
+async def export_csv(run_id: str) -> StreamingResponse:
+    """将模拟事件导出为 CSV 文件。"""
+    run_dir = Path("outputs") / run_id
+    if not run_dir.exists():
+        raise HTTPException(404, f"运行 {run_id} 不存在")
+
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    writer.writerow([
+        "branch", "step", "agent_id", "platform", "action_type",
+        "target_id", "thinking", "effect", "interest_level", "purchase_intent",
+    ])
+
+    for branch_dir in sorted(run_dir.iterdir()):
+        events_file = branch_dir / "events.jsonl"
+        if not events_file.exists():
+            continue
+        branch_id = branch_dir.name.replace("branch_", "")
+        for line in events_file.read_text(encoding="utf-8").strip().split("\n"):
+            if not line:
+                continue
+            ev = json.loads(line)
+            action = ev.get("action", {})
+            state = ev.get("internal_state", {})
+            writer.writerow([
+                branch_id,
+                ev.get("branch_step", ""),
+                ev.get("agent_id", ""),
+                ev.get("platform", ""),
+                action.get("type", ""),
+                action.get("target_id", ""),
+                ev.get("thinking", "")[:200],
+                ev.get("result", {}).get("effect", ""),
+                state.get("interest_level", ""),
+                state.get("purchase_intent", ""),
+            ])
+
+    buf.seek(0)
+    return StreamingResponse(
+        buf,
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="{run_id}.csv"'},
+    )
+
+
+@router.get("/{run_id}/journeys")
+async def get_agent_journeys(run_id: str, branch_id: int = 0) -> dict[str, Any]:
+    """获取指定分支中所有 Agent 的决策旅程。"""
+    states_path = Path("outputs") / run_id / f"branch_{branch_id}" / "agent_states.json"
+    if not states_path.exists():
+        raise HTTPException(404, f"分支 {run_id}/branch_{branch_id} 不存在")
+
+    agent_states = json.loads(states_path.read_text(encoding="utf-8"))
+    journeys: dict[str, Any] = {}
+
+    for agent_id, state in agent_states.items():
+        steps = []
+        for log in state.get("action_log", []):
+            action = log.get("action", {})
+            internal = log.get("internal_state", {})
+            steps.append({
+                "step": log.get("step", 0),
+                "platform": action.get("platform", ""),
+                "action_type": action.get("type", ""),
+                "target_id": action.get("target_id", ""),
+                "thinking": log.get("thinking", "")[:150],
+                "effect": log.get("result", {}).get("effect", ""),
+                "interest_level": internal.get("interest_level", 0),
+                "purchase_intent": internal.get("purchase_intent", 0),
+            })
+        journeys[agent_id] = {
+            "persona_name": state.get("persona_name", agent_id),
+            "final_state": state.get("internal_state", {}),
+            "total_actions": len(steps),
+            "steps": steps,
+        }
+
+    return {"run_id": run_id, "branch_id": branch_id, "journeys": journeys}
+
+
+@router.get("/{run_id}/sentiment")
+async def get_sentiment(run_id: str, branch_id: int = 0) -> dict[str, Any]:
+    """获取指定分支的情感分析数据。"""
+    branch = _load_branch(run_id, branch_id)
+    if not branch:
+        raise HTTPException(404, f"分支 {run_id}/branch_{branch_id} 不存在")
+    sentiment = branch.get("sentiment", {})
+    return {"run_id": run_id, "branch_id": branch_id, "sentiment": sentiment}
+
+
+@router.get("/{run_id}/kol")
+async def get_kol_performance(run_id: str, branch_id: int = 0) -> dict[str, Any]:
+    """获取指定分支的 KOL 影响力数据。"""
+    branch = _load_branch(run_id, branch_id)
+    if not branch:
+        raise HTTPException(404, f"分支 {run_id}/branch_{branch_id} 不存在")
+    kol = branch.get("kol", {})
+    return {"run_id": run_id, "branch_id": branch_id, "kol": kol}
+
+
+@router.get("/{run_id}/temporal")
+async def get_temporal_analysis(run_id: str, branch_id: int | None = None) -> dict[str, Any]:
+    """获取时间维度分析数据。
+
+    不指定 branch_id 时返回聚合数据，指定时返回单分支数据。
+    """
+    if branch_id is not None:
+        branch = _load_branch(run_id, branch_id)
+        if not branch:
+            raise HTTPException(404, f"分支 {run_id}/branch_{branch_id} 不存在")
+        temporal = branch.get("temporal", {})
+        return {"run_id": run_id, "branch_id": branch_id, "temporal": temporal}
+
+    # 返回聚合数据
+    result = _load_result(run_id)
+    if not result:
+        raise HTTPException(404, f"运行 {run_id} 不存在")
+    temporal = result.get("temporal_overview", {})
+    return {"run_id": run_id, "temporal": temporal}
+
+
 @router.get("/{run_id}")
 async def get_simulation_result(run_id: str) -> dict[str, Any]:
     """获取完整模拟结果。"""
@@ -217,3 +356,90 @@ async def get_simulation_result(run_id: str) -> dict[str, Any]:
     if result:
         return result
     raise HTTPException(404, f"运行 {run_id} 不存在或尚未完成")
+
+
+# ──────────────── 场景与人设管理 ────────────────
+
+# 使用独立 router 避免被 /{run_id} 路径吞掉
+scenario_router = APIRouter(tags=["scenarios"])
+profile_router = APIRouter(tags=["profiles"])
+
+SCENARIOS_DIR = Path("scenarios")
+PROFILES_DIR = Path("profiles")
+
+
+@scenario_router.get("/scenarios")
+async def list_scenarios() -> list[dict[str, Any]]:
+    """列出所有可用场景文件。"""
+    scenarios = []
+    if not SCENARIOS_DIR.exists():
+        return scenarios
+    for yml_file in sorted(SCENARIOS_DIR.glob("*.yml")):
+        try:
+            data = yaml.safe_load(yml_file.read_text(encoding="utf-8"))
+            scenarios.append({
+                "file": f"scenarios/{yml_file.name}",
+                "id": data.get("id", yml_file.stem),
+                "name": data.get("name", yml_file.stem),
+                "description": data.get("description", ""),
+                "num_steps": data.get("simulation", {}).get("num_steps", 20),
+                "num_branches": data.get("simulation", {}).get("num_branches", 5),
+            })
+        except Exception:
+            scenarios.append({"file": f"scenarios/{yml_file.name}", "id": yml_file.stem,
+                              "name": yml_file.stem, "description": "解析失败"})
+    return scenarios
+
+
+@scenario_router.post("/scenarios/upload", status_code=201)
+async def upload_scenario(file: UploadFile) -> dict[str, Any]:
+    """上传自定义场景 YAML 文件。"""
+    if not file.filename or not file.filename.endswith((".yml", ".yaml")):
+        raise HTTPException(400, "仅支持 .yml 或 .yaml 文件")
+
+    content = await file.read()
+    try:
+        data = yaml.safe_load(content.decode("utf-8"))
+    except Exception as e:
+        raise HTTPException(400, f"YAML 解析失败: {e}")
+
+    # 基础校验
+    if not isinstance(data, dict):
+        raise HTTPException(400, "YAML 顶层必须是字典")
+    if "platforms" not in data:
+        raise HTTPException(400, "缺少 platforms 配置")
+    if "agents" not in data:
+        raise HTTPException(400, "缺少 agents 配置")
+
+    # 写入 scenarios 目录
+    SCENARIOS_DIR.mkdir(exist_ok=True)
+    dest = SCENARIOS_DIR / file.filename
+    dest.write_bytes(content)
+
+    return {
+        "file": f"scenarios/{file.filename}",
+        "id": data.get("id", dest.stem),
+        "name": data.get("name", dest.stem),
+        "message": "场景上传成功",
+    }
+
+
+@profile_router.get("/profiles")
+async def list_profiles() -> list[dict[str, Any]]:
+    """列出所有可用人设。"""
+    profiles = []
+    if not PROFILES_DIR.exists():
+        return profiles
+    for yml_file in sorted(PROFILES_DIR.glob("*.yml")):
+        try:
+            data = yaml.safe_load(yml_file.read_text(encoding="utf-8"))
+            profiles.append({
+                "id": data.get("id", yml_file.stem),
+                "name": data.get("name", yml_file.stem),
+                "description": data.get("description", ""),
+                "decision_style": data.get("consumer_traits", {}).get("decision_style", ""),
+                "price_sensitivity": data.get("consumer_traits", {}).get("price_sensitivity", 0),
+            })
+        except Exception:
+            profiles.append({"id": yml_file.stem, "name": yml_file.stem, "description": "解析失败"})
+    return profiles

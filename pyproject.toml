@@ -10,6 +10,7 @@ dependencies = [
     "pyyaml>=6.0.3",
     "redis>=7.3.0",
     "uvicorn>=0.41.0",
+    "python-multipart>=0.0.20",
     "websockets>=16.0",
 ]
 

@@ -1,0 +1,124 @@
+id: brand_battle
+name: 多品牌面膜竞争
+description: >
+  三个品牌同时在四平台发力，观察消费者在竞争环境中的选择。
+  主产品(润颜¥59) vs 竞品A(大牌¥89) vs 竞品B(平价¥29)。
+
+product:
+  name: 润颜氨基酸面膜
+  price: 59
+  category: 面膜
+  key_ingredients: [氨基酸, 玻尿酸, 烟酰胺]
+  selling_points: [温和不刺激, 成分干净, 敏感肌可用]
+  brand_awareness: low
+
+platforms:
+  - type: xiaohongshu
+    initial_content:
+      # 主品牌种草
+      - title: 成分党推荐｜氨基酸面膜真实测评
+        content: >
+          氨基酸+玻尿酸+烟酰胺的黄金组合，59元10片，
+          成分干净敏感肌可用，用了两周泛红明显改善。
+        tags: [面膜, 氨基酸面膜, 成分党, 敏感肌]
+        initial_likes: 45
+        initial_comments: 12
+      # 竞品A 种草
+      - title: 大牌面膜值不值得买？实话实说
+        content: >
+          某大牌氨基酸修护面膜89元5片，大牌品质确实好，
+          但性价比一般。适合预算充足追求品牌的姐妹。
+        tags: [面膜, 大牌面膜, 测评]
+        initial_likes: 80
+        initial_comments: 25
+      # 竞品B 种草
+      - title: 29元面膜能用吗？白菜价测评
+        content: >
+          全网最便宜的面膜！29元10片，基础补水够用，
+          但成分比较简单，没什么修护效果。
+        tags: [面膜, 平价面膜, 白菜价]
+        initial_likes: 60
+        initial_comments: 18
+
+  - type: taobao
+    initial_products:
+      - id: product_main
+        name: 润颜氨基酸面膜（10片装）
+        price: 59
+        initial_reviews: 45
+        initial_rating: 4.7
+        initial_sales: 580
+      - id: competitor_a
+        name: 某大牌氨基酸修护面膜（5片装）
+        price: 89
+        initial_reviews: 5600
+        initial_rating: 4.8
+        initial_sales: 120000
+      - id: competitor_b
+        name: 平价补水面膜（10片装）
+        price: 29
+        initial_reviews: 3200
+        initial_rating: 4.3
+        initial_sales: 85000
+
+  - type: douyin
+    initial_content:
+      - title: 三款面膜横评！哪个最值？
+        content: 59元 vs 89元 vs 29元，三个价位面膜全面对比
+        author_id: kol_skincare
+        tags: [面膜横评, 面膜测评, 性价比]
+        duration: 120
+        initial_views: 12000
+        initial_likes: 600
+        initial_comments: 80
+        completion_rate: 0.70
+      - title: 氨基酸面膜成分深扒
+        content: 润颜氨基酸面膜全成分解析，成分党必看
+        author_id: kol_beauty
+        tags: [面膜, 成分党, 氨基酸面膜]
+        duration: 60
+        initial_views: 3000
+        initial_likes: 200
+        initial_comments: 30
+        completion_rate: 0.65
+
+  - type: weibo
+    initial_content:
+      - content: "#面膜测评# 最近测了三款不同价位的面膜，59元的氨基酸面膜竟然比89元的大牌更适合敏感肌 #氨基酸面膜# #护肤#"
+        author_id: kol_skincare
+        topics: [面膜测评, 氨基酸面膜, 护肤]
+        initial_likes: 35
+        initial_reposts: 10
+        initial_comments: 12
+      - content: "#平价面膜# 29元面膜和59元面膜到底差在哪？成分对比来了 #面膜推荐#"
+        author_id: kol_beauty
+        topics: [平价面膜, 面膜推荐]
+        initial_likes: 25
+        initial_reposts: 6
+        initial_comments: 8
+
+agents:
+  profiles:
+    - type: ingredient_nerd
+      count: 2
+    - type: impulsive_buyer
+      count: 1
+    - type: price_hunter
+      count: 2
+    - type: rational_buyer
+      count: 1
+    - type: student
+      count: 2
+    - type: mom
+      count: 1
+    - type: male_casual
+      count: 1
+
+  relationships:
+    - type: random_follow
+      density: 0.2
+
+simulation:
+  num_steps: 15
+  step_duration_hours: 12
+  num_branches: 5

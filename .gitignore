@@ -22,3 +22,7 @@ wheels/
 
 # pytest
 .pytest_cache/
+
+# 运行时数据
+.chroma_data/
+outputs/

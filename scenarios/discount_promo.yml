@@ -1,0 +1,83 @@
+id: discount_promo
+name: 折扣促销策略
+description: >
+  主打淘宝限时折扣 + 满减活动，少量社交媒体引流。
+  适合与 kol_seeding 做 A/B 对比，验证价格驱动 vs 内容驱动的效果差异。
+
+product:
+  name: 润颜氨基酸面膜
+  price: 39
+  category: 面膜
+  key_ingredients: [氨基酸, 玻尿酸, 烟酰胺]
+  selling_points: [限时特价, 买二送一, 温和不刺激, 敏感肌可用]
+  brand_awareness: low
+
+platforms:
+  - type: xiaohongshu
+    initial_content:
+      - title: 薅羊毛！59的面膜现在只要39！
+        content: >
+          姐妹们快冲！润颜氨基酸面膜做活动，原价59现在只要39！
+          10片装，一片不到4块钱，氨基酸+玻尿酸+烟酰胺，白菜价！
+        tags: [面膜, 薅羊毛, 平价护肤, 限时折扣]
+        initial_likes: 30
+        initial_comments: 15
+
+  - type: taobao
+    initial_products:
+      - id: product_main
+        name: 【限时特价】润颜氨基酸面膜（10片装）原价59
+        price: 39
+        description: "限时折扣！买二送一！氨基酸+玻尿酸+烟酰胺，温和不刺激"
+        initial_reviews: 12
+        initial_rating: 4.6
+        initial_sales: 230
+      - id: competitor_a
+        name: 某大牌氨基酸修护面膜（5片装）
+        price: 89
+        initial_reviews: 5600
+        initial_rating: 4.8
+        initial_sales: 120000
+
+  - type: douyin
+    initial_content:
+      - title: 39元抢！氨基酸面膜限时折扣
+        content: 原价59现在只要39！氨基酸面膜限时特价，手慢无！
+        author_id: brand_official
+        tags: [面膜, 限时折扣, 薅羊毛]
+        duration: 30
+        initial_views: 2000
+        initial_likes: 80
+        initial_comments: 15
+        completion_rate: 0.55
+
+  - type: weibo
+    initial_content:
+      - content: "#限时折扣# 润颜氨基酸面膜限时特价39元！原价59，买二送一！氨基酸+玻尿酸+烟酰胺 #面膜# #薅羊毛#"
+        author_id: brand_official
+        topics: [限时折扣, 面膜, 薅羊毛]
+        initial_likes: 20
+        initial_reposts: 8
+        initial_comments: 5
+
+agents:
+  profiles:
+    - type: ingredient_nerd
+      count: 1
+    - type: impulsive_buyer
+      count: 2
+    - type: price_hunter
+      count: 2
+    - type: rational_buyer
+      count: 1
+    - type: lurker
+      count: 1
+
+  relationships:
+    - type: random_follow
+      density: 0.25
+
+simulation:
+  num_steps: 10
+  step_duration_hours: 12
+  num_branches: 5

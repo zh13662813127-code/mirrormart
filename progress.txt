@@ -136,7 +136,142 @@
 - [x] FastAPI 静态文件服务 + Chart.js 图表
 - [x] 68 个测试通过，API 全部端点验证通过
 
+### ✅ Phase 3 — WebSocket 实时进度 + Docker + A/B 场景 (2026-03-24)
+- [x] 前端 WebSocket 实时进度（dashboard.js 重写）
+  - 创建模拟后自动连接 ws://host/ws/{run_id}
+  - 实时进度条（百分比，基于分支×步数计算）
+  - 6 指标实时面板（XHS帖子/点赞、抖音播放、微博转发、淘宝购买/营收）
+  - 事件时间线（agent_action、step_complete、run_complete）
+  - WebSocket 不可用时自动降级为 HTTP 轮询
+- [x] Docker 容器化部署
+  - Dockerfile（python:3.11-slim + uv + 多阶段依赖缓存）
+  - docker-compose.yml（mirrormart + redis 双容器）
+  - .dockerignore
+- [x] 新增两个 A/B 对比场景
+  - scenarios/kol_seeding.yml — KOL 种草策略（多篇 KOL 测评内容，7 Agent）
+  - scenarios/discount_promo.yml — 折扣促销策略（限时特价39元，7 Agent）
+  - 前端下拉菜单已更新
+- [x] 68 个测试全部通过
+
+### ✅ Phase 3.5 — 新人设 + 场景管理系统 (2026-03-24)
+- [x] 3 个新人设类型
+  - profiles/student.yml — 学生党小陈（极度价格敏感，薅羊毛，受同龄人影响）
+  - profiles/mom.yml — 宝妈张姐（安全第一，关注成分安全/孕妇可用，购买力强）
+  - profiles/male_casual.yml — 直男小王（护肤入门，看销量评分决策，简单粗暴）
+- [x] 场景管理 API
+  - GET /scenarios — 列出所有可用场景（动态读取 scenarios/ 目录）
+  - POST /scenarios/upload — 上传自定义场景 YAML（含校验）
+  - GET /profiles — 列出所有可用人设
+- [x] 前端场景/人设管理页
+  - 新增「场景/人设」Tab
+  - 场景列表表格（名称、步数、分支、描述）
+  - 人设列表表格（名称、决策风格、价格敏感度、描述）
+  - YAML 文件上传表单
+  - 创建模拟的场景下拉动态加载（不再硬编码）
+- [x] 依赖更新: python-multipart（文件上传）
+- [x] 94 个测试全部通过（新增 26 个）
+
+### ✅ Phase 4 — 数据导出 + 个体旅程可视化 (2026-03-24)
+- [x] CSV 导出 API (GET /simulations/{run_id}/export)
+  - 所有分支事件导出为 CSV（branch, step, agent, platform, action, thinking, effect, 意向值）
+  - 前端「运行详情」页加导出按钮
+- [x] Agent 旅程 API (GET /simulations/{run_id}/journeys?branch_id=0)
+  - 返回每个 Agent 的完整决策路径
+  - 含 thinking、effect、interest_level、purchase_intent
+- [x] 前端「个体旅程」Tab
+  - 每个 Agent 一张卡片：人设名称、最终状态标签（兴趣/意向/是否已购买）
+  - 意向曲线图（Chart.js line）：购买意向 + 兴趣值随步骤变化
+  - 时间线式步骤展示：平台颜色区分、行为类型、效果、内心想法
+  - 购买行为高亮（绿色节点）
+
+### ✅ Phase 4.5 — 增强报告 + Agent 记忆增强 (2026-03-24)
+- [x] 增强版分析报告 (engine._generate_report)
+  - 四平台完整指标表（XHS帖/赞/评/转、抖音视频/播放/赞、微博帖/转发/评、淘宝购买/营收/收藏）
+  - Agent 行为模式分析（行为类型分布、平台使用分布）
+  - 自动关键发现（最佳/最差分支、分支差异显著性、加购未转化问题检测）
+  - 报告查看 API (GET /simulations/{run_id}/report)
+  - 前端「查看报告」按钮 + Markdown 渲染
+- [x] Agent 跨步骤记忆增强 (agent.py)
+  - decide() 注入最近反思摘要（interest_tags + decision_summary）
+  - decide() 注入行为模式统计（行为分布 + 平台分布 + 连续重复行为警告）
+  - 帮助 Agent 避免重复无效行为，提升决策质量
+
+### ✅ Phase 5 — 社交网络扩散 + 多品牌竞争 (2026-03-24)
+- [x] 社交网络扩散模型 (src/mirrormart/diffusion.py)
+  - DiffusionEngine: 每步结束后通过关注图传播购买意向
+  - 11 种行为的影响力系数（purchase=0.12 最强, like=0.02 最弱）
+  - 一度关系直接传播 + 二度关系衰减传播（decay=0.5）
+  - max_boost=0.15 防止单步突变
+- [x] engine.py 集成扩散引擎
+  - 每步结束后调用 diffusion.propagate()
+  - build_follow_graphs() 从平台实例提取关注图
+- [x] 多品牌竞争支持
+  - _summarize_branch 新增 conversion_by_product 字段
+  - _aggregate 新增 product_competition 统计（各产品购买数+市场份额）
+  - _generate_report 增强：市场份额柱状图 + 竞争分析
+- [x] 多品牌竞争场景 (scenarios/brand_battle.yml)
+  - 三品牌：润颜¥59 vs 大牌¥89 vs 平价¥29
+  - 四平台初始内容 + 10 个 Agent（含新人设 student/mom/male_casual）
+- [x] 前端产品竞争柱状图 (dashboard.js)
+- [x] 68 个测试全部通过
+
+### ✅ Phase 6 — 情感分析 + KOL 影响力追踪 (2026-03-24)
+- [x] 情感分析模块 (src/mirrormart/sentiment.py)
+  - 中文消费场景关键词库（36正面 + 27负面关键词）
+  - analyze_sentiment(): 文本极性分析 (-1~1)
+  - SentimentTracker: 按平台按时间步追踪舆情趋势
+  - 输出: 整体极性、平台情感分布、趋势曲线、最正面/负面内容
+- [x] KOL 影响力追踪模块 (src/mirrormart/kol_tracker.py)
+  - KOL 内容注册 + Agent 曝光记录
+  - 末次归因模型: 购买归因到最近曝光的 KOL 内容
+  - 曝光→互动→转化漏斗计算
+  - ROI 计算（含默认 KOL 成本配置）
+  - 输出: KOL 排行、互动率、转化率、ROI、归因详情
+- [x] engine.py 集成
+  - 每步事件自动进行情感分析 + KOL 追踪
+  - KOL 内容从平台初始内容自动注册
+  - 分支汇总含 sentiment + kol 数据
+  - 聚合结果含 sentiment_overview + kol_overview
+  - 报告新增第7章舆情分析 + 第8章KOL影响力分析
+- [x] API 新增 2 个端点
+  - GET /simulations/{run_id}/sentiment?branch_id=0
+  - GET /simulations/{run_id}/kol?branch_id=0
+- [x] 前端新增 2 个 Tab
+  - 舆情分析: 极性概览、平台情感表、趋势折线图、正/负面内容展示
+  - KOL 分析: 转化漏斗、互动堆叠柱状图、KOL 详情表、归因时间线
+- [x] 94 个测试全部通过
+
+### ✅ Phase 7 — 个性化推荐 + 时间维度分析 (2026-04-07)
+- [x] 小红书个性化推荐
+  - 追踪 Agent 点赞/收藏/评论的帖子标签偏好（权重：收藏2 > 评论1.5 > 点赞1）
+  - feed 算法从三路变四路: 关注(35%) + 热度(35%) + 兴趣标签(15%) + 个性化(15%)
+  - _personalized_score() 基于标签匹配度计算
+- [x] 抖音个性化推荐
+  - 追踪 Agent 点赞/评论/分享视频的标签偏好（权重：分享2 > 评论1.5 > 点赞1）
+  - _recommend_score() 新增个性化加分项
+- [x] 微博个性化推荐
+  - 追踪 Agent 互动的话题偏好 + 作者偏好（权重：转发2 > 评论1.5 > 点赞1）
+  - feed 算法: 关注(40%) + 热门(35%) + 个性化(25%)
+  - 个性化分数 = 话题匹配(60%) + 作者匹配(40%)
+- [x] 时间维度分析模块 (temporal.py)
+  - TemporalAnalyzer: 按时间步追踪行为密度、平台使用、购买意向、转化事件
+  - 阶段分析: 自动将模拟分为早期/中期/晚期三阶段，对比各阶段特征
+  - 转化高峰检测
+- [x] engine.py 集成时间维度分析
+  - 每步事件自动进行时间维度追踪
+  - 分支汇总含 temporal 数据
+  - 聚合结果含 temporal_overview（跨分支平均）
+  - 报告新增第9章时间维度分析
+- [x] 时间维度 API + 前端可视化
+  - GET /simulations/{run_id}/temporal — 获取时间维度数据
+  - 前端新增「时间维度」Tab
+  - 阶段概览卡片（早期/中期/晚期的事件、转化、意向）
+  - 行为密度 + 购买意向双轴趋势图
+  - 平台使用堆叠面积图
+  - 转化时间线柱状图
+- [x] 三平台 state snapshot/restore 更新（含个性化偏好数据）
+
 ## 下一步行动
-- WebSocket 实时进度推送到仪表盘
-- 更多场景（A/B 对比不同投放策略）
-- 部署方案（Docker）
+- Agent 跨平台行为关联（从小红书种草到淘宝购买的完整路径追踪）
+- 自定义推荐算法参数化（场景 YAML 可配置 feed 权重比例）
+- 更多可视化增强（行为热力图矩阵、Agent 关系网络图）
