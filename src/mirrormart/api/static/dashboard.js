@@ -1081,6 +1081,32 @@ function buildNetworkGraph(journeys, container) {
 
   // 清理旧图
   if (graph3d) { graph3d._destructor && graph3d._destructor(); graph3d = null; }
+  container.innerHTML = '';
+
+  // Canvas 文字 Sprite 工厂（不依赖 SpriteText）
+  function makeTextSprite(text, opts) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const fontSize = opts.fontSize || 36;
+    const font = `${opts.bold ? 'bold ' : ''}${fontSize}px sans-serif`;
+    ctx.font = font;
+    const w = ctx.measureText(text).width + 16;
+    canvas.width = w;
+    canvas.height = fontSize + 12;
+    ctx.font = font;
+    ctx.fillStyle = opts.color || '#fff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, w / 2, canvas.height / 2);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.minFilter = THREE.LinearFilter;
+    const material = new THREE.SpriteMaterial({ map: texture, depthWrite: false, transparent: true });
+    const sprite = new THREE.Sprite(material);
+    const scale = opts.scale || 1;
+    sprite.scale.set(w / fontSize * scale, scale, 1);
+    return sprite;
+  }
 
   // 3D 力导向图
   const maxActions = Math.max(...nodes.map(n => n.total_actions), 1);
@@ -1089,24 +1115,21 @@ function buildNetworkGraph(journeys, container) {
     .width(width)
     .height(height)
     .backgroundColor('#0b0f1a')
+    .showNavInfo(false)
     .graphData({ nodes, links })
-    // 节点：用 sprite 文字，大小和亮度区分状态
+    // 节点：Canvas 文字 sprite
     .nodeThreeObject(node => {
-      const sprite = new SpriteText(node.name);
-      const size = 3 + (node.total_actions / maxActions) * 5;
-      sprite.textHeight = size;
-      sprite.fontWeight = node.purchased ? '700' : '400';
-      sprite.color = node.purchased ? '#ffffff'
+      const scale = 2.5 + (node.total_actions / maxActions) * 4;
+      const color = node.purchased ? '#ffffff'
         : node.intent > 0.5 ? 'rgba(255,255,255,0.85)'
         : 'rgba(255,255,255,0.5)';
-      sprite.backgroundColor = false;
-      sprite.padding = 1;
-      return sprite;
+      return makeTextSprite(node.name, { bold: node.purchased, color, scale });
     })
+    .nodeThreeObjectExtend(false)
     .nodeLabel(node => `${node.name} | ${node.total_actions}次行为 | ${node.purchased ? '已购买' : Math.round(node.intent * 100) + '%意向'}`)
     // 连线
-    .linkWidth(link => Math.max(0.2, Math.min(link.weight * 0.4, 2)))
-    .linkOpacity(0.3)
+    .linkWidth(link => Math.max(0.3, Math.min(link.weight * 0.5, 2.5)))
+    .linkOpacity(0.35)
     .linkColor(() => '#667eea')
     // 点击节点
     .onNodeClick(node => showNodeDetail(node))
@@ -1114,7 +1137,7 @@ function buildNetworkGraph(journeys, container) {
     .d3Force('charge', d3.forceManyBody().strength(-120))
     .d3Force('link', d3.forceLink().distance(60).strength(l => Math.min(l.weight * 0.05, 0.3)));
 
-  // 初始视角稍微拉远
+  // 初始视角
   graph3d.cameraPosition({ z: 300 });
 }
 
